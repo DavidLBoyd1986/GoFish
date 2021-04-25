@@ -4,15 +4,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
+import com.boyd.deckofcards.Card.Rank;
+import com.boyd.deckofcards.Card.Suit;
 
 class DeckOfCards implements DeckOfCardsInterface {
 
-	// I'll uncomment totalNumOfCards if I ever need to use it
-	// private final int totalNumOfCards = 52;
-	public enum Suit {DIAMOND, HEART, CLUB, SPADE};
-	public enum Rank {TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING, ACE};
+    private final int totalNumOfCards = Suit.values().length * Rank.values().length;
+ 
 	public ArrayList<Card> deck = new ArrayList<Card>();
 	
+	/**
+	 * Build the DeckOfCards by creating and adding a Card for every combination of Suit and Rank
+	 */
 	public DeckOfCards() {
 		for ( Suit suit : Suit.values() ) {
 			for ( Rank rank : Rank.values() ) {
@@ -30,12 +33,6 @@ class DeckOfCards implements DeckOfCardsInterface {
 				foundCard = true;
 			}}
 		return foundCard;
-	}
-	
-	@Override
-	public void dealCards(int numOfPlayers, int numOfCards) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
