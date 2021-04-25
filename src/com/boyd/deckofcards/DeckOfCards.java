@@ -7,7 +7,7 @@ import java.util.Random;
 import com.boyd.deckofcards.Card.Rank;
 import com.boyd.deckofcards.Card.Suit;
 
-class DeckOfCards implements DeckOfCardsInterface {
+public class DeckOfCards implements DeckOfCardsInterface {
 
     private final int totalNumOfCards = Suit.values().length * Rank.values().length;
  
@@ -85,6 +85,7 @@ class DeckOfCards implements DeckOfCardsInterface {
 		for ( Card card : deck) {
 			if ( card.getSuit() == suit && card.getRank() == rank) {
 				foundCard = true;
+				deck.remove(card);
 			}
 		}
 		// I had to write the method this way because it shows errors if it doesn't return Card at the end.
@@ -273,20 +274,23 @@ class DeckOfCards implements DeckOfCardsInterface {
 		}
 		System.out.println(deck);
 		
+		System.out.println("STARTING GET EXACT CARD");
 		Card twoHeart = new Card(Suit.HEART, Rank.TWO);
 		Card twoHearttwo = new Card(Suit.HEART, Rank.TWO);
 		Card threeHeart = new Card(Suit.HEART, Rank.THREE);
+		DeckOfCards testDeck = new DeckOfCards();
 		System.out.println(twoHeart == threeHeart);
 		System.out.println(twoHeart.getSuit() == twoHeart.getSuit());
 		System.out.println(twoHeart.equals(twoHearttwo));
 		//Have to include try and catch with this method since it throws an exception
-		try {System.out.println(deck.getExactCard(Suit.SPADE, Rank.NINE)); }
+		try {System.out.println(testDeck.getExactCard(Suit.SPADE, Rank.NINE)); }
 			catch (Exception e) { System.out.println("Card not found");}
 		//Have to include try and catch with this method since it throws an exception
-		try {System.out.println(deck.getExactCard(Suit.DIAMOND, Rank.TWO)); }
+		try {System.out.println(testDeck.getExactCard(Suit.DIAMOND, Rank.TWO)); }
 			catch (Exception e) { System.out.println("Card not found");}
-		System.out.println(deck.hasCard(Suit.DIAMOND, Rank.TWO));
-		System.out.println(deck.hasCard(Suit.SPADE, Rank.NINE));
+		System.out.println(testDeck.hasCard(Suit.DIAMOND, Rank.TWO));
+		System.out.println(testDeck.hasCard(Suit.SPADE, Rank.NINE));
+		System.out.println("ENDING GET EXACT CARD");
 		
 		// Test addCardTop()
 		System.out.println(deck);
