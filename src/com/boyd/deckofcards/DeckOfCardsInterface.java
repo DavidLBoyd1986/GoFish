@@ -6,6 +6,10 @@ package com.boyd.deckofcards;
 import com.boyd.deckofcards.Card.Rank;
 import com.boyd.deckofcards.Card.Suit;
 
+import java.util.Optional;
+
+
+
 /**
  * @author David
  *
@@ -19,7 +23,12 @@ public interface DeckOfCardsInterface {
 	/**
 	 * @return - int of amount of cards in the DeckOfCards object;
 	 */
-	public int getNumCards();
+	public int getNumCardsInDeck();
+	
+	/**
+	 * @return - int of amount of cards not in the DeckOfCards object;
+	 */
+	public int getNumCardsNotInDeck();
 	
 	/**
 	 * See if Card is in the DeckOfCards
@@ -57,10 +66,19 @@ public interface DeckOfCardsInterface {
 	 * Get a requested Card from the DeckOfCards;
 	 * @param suit - the Suit of the requested Card
 	 * @param rank - the Rank of the requested Card
-	 * @return - the requested Card
-	 * @throws Exception - if Card is not in the DeckOfCards
+	 * @return - An Optional<Card> that will contain the Card requested or be empty if the card wasn't in the deck
 	 */
-	public Card getExactCard(Suit suit, Rank rank) throws Exception ;
+	public Optional<Card> getExactCard(Suit suit, Rank rank);
+	
+	/**
+	 * Get requested Card(s) from the DeckOfCards;
+	 * @param array[] of Pair<Suit,Rank> representing the requested Card(s)
+	 * @param suit - the Suit of the requested Card
+	 * @param rank - the Rank of the requested Card
+	 * @return - An Array with the requested Card(s) or an empty array
+	 * Need to implement this
+	 */
+	//public Pair[] getExactCards(Pair<Suit,Rank>[52]);
 	
 	/**
 	 * Get the specified amount of cards off the top of the DeckOfCards

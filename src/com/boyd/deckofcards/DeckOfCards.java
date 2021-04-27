@@ -3,6 +3,7 @@ package com.boyd.deckofcards;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Optional;
 import java.util.Random;
 import com.boyd.deckofcards.Card.Rank;
 import com.boyd.deckofcards.Card.Suit;
@@ -36,8 +37,13 @@ public class DeckOfCards implements DeckOfCardsInterface {
 	}
 
 	@Override
-	public int getNumCards() {
+	public int getNumCardsInDeck() {
 		return deck.size();
+	}
+	
+	@Override
+	public int getNumCardsNotInDeck() {
+		return totalNumOfCards - deck.size();
 	}
 
 
@@ -76,24 +82,18 @@ public class DeckOfCards implements DeckOfCardsInterface {
 		return card;
 	}
 	
-	// This method is funky. Not sure how to get it better written
 	@Override
-	public Card getExactCard(Suit suit, Rank rank) throws Exception {
+	public Optional<Card> getExactCard(Suit suit, Rank rank) {
 		
-		boolean foundCard = false;
-		Card returnCard = new Card(suit, rank);
-		for ( Card card : deck) {
-			if ( card.getSuit() == suit && card.getRank() == rank) {
-				foundCard = true;
-				deck.remove(card);
-			}
-		}
-		// I had to write the method this way because it shows errors if it doesn't return Card at the end.
-		// throwing the exception had to be before the return Card
-		if (!foundCard) {
-			throw new Exception();
+		Optional<Card> card = Optional.empty();
+		Card cardRequested = new Card(suit, rank);
+		int index = deck.indexOf(cardRequested);
+		if (index == -1) {
+			return card;
 		} else {
-			return returnCard;
+			deck.remove(index);
+			card = Optional.of(cardRequested);
+			return card;
 		}
 	}
 
@@ -230,6 +230,7 @@ public class DeckOfCards implements DeckOfCardsInterface {
 	
 	public String toString() {
 		return deck.toString();
+		
 	}
 	
 	public static void main(String[] args) {
@@ -258,13 +259,13 @@ public class DeckOfCards implements DeckOfCardsInterface {
 		for ( Card card :cardsBottom) {
 			System.out.println(card);
 		}
-		System.out.println(deck.getNumCards());
+		System.out.println(deck.getNumCardsInDeck());
 		Card[] cardsRandom = deck.getCardsRandom(3);
 		System.out.println(cardsRandom);
 		for ( Card card : cardsRandom ) {
 			System.out.println(card);
 		}
-		System.out.println(deck.getNumCards());
+		System.out.println(deck.getNumCardsInDeck());
 		System.out.println(deck);
 		int[] cardsToGet = {1, 3, 4};
 		Card[] cardsSpecific = deck.getCardsByIndex(cardsToGet);
@@ -282,14 +283,16 @@ public class DeckOfCards implements DeckOfCardsInterface {
 		System.out.println(twoHeart == threeHeart);
 		System.out.println(twoHeart.getSuit() == twoHeart.getSuit());
 		System.out.println(twoHeart.equals(twoHearttwo));
+		Optional<Card> testGetExactCard = testDeck.getExactCard(Suit.SPADE, Rank.ACE);
+		if ( testGetExactCard.isPresent()) {
+			Card exactCard = testGetExactCard.get();
+			System.out.println("This is the card requested: " + exactCard);
+		}
 		//Have to include try and catch with this method since it throws an exception
-		try {System.out.println(testDeck.getExactCard(Suit.SPADE, Rank.NINE)); }
-			catch (Exception e) { System.out.println("Card not found");}
-		//Have to include try and catch with this method since it throws an exception
-		try {System.out.println(testDeck.getExactCard(Suit.DIAMOND, Rank.TWO)); }
-			catch (Exception e) { System.out.println("Card not found");}
-		System.out.println(testDeck.hasCard(Suit.DIAMOND, Rank.TWO));
-		System.out.println(testDeck.hasCard(Suit.SPADE, Rank.NINE));
+		Optional<Card> testGetExactCardTwo = testDeck.getExactCard(Suit.SPADE, Rank.ACE);
+		if (! testGetExactCardTwo.isPresent()) {
+			System.out.println( "Card not present, don't try get()");
+		}
 		System.out.println("ENDING GET EXACT CARD");
 		
 		// Test addCardTop()
