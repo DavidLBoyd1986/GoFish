@@ -13,9 +13,18 @@ public class DeckOfCards implements DeckOfCardsInterface {
     private final int totalNumOfCards = Suit.values().length * Rank.values().length;
  
 	public ArrayList<Card> deck = new ArrayList<Card>();
+	public ArrayList<Card> discardPile = new ArrayList<Card>();
 	
 	/**
 	 * Build the DeckOfCards by creating and adding a Card for every combination of Suit and Rank
+	 * 
+	 * Adding some Reqs and Specs here that will be cleaned up later
+	 * 
+	 * Requirements:
+	 * 1. It's on the user of this class to verify the DeckOfCards is not empty (out of cards) before calling get methods.
+	 * 
+	 * 		I didn't want to force the user to load their code with try/catch statements when they should design their game
+	 * 		with the intent that the deck never ran out, and if it did the discard pile would be added back into the deck
 	 */
 	public DeckOfCards() {
 		for ( Suit suit : Suit.values() ) {
@@ -46,6 +55,11 @@ public class DeckOfCards implements DeckOfCardsInterface {
 		return totalNumOfCards - deck.size();
 	}
 
+	@Override
+	public String seeCardByIndex(int index) {
+		Card card = deck.get(index);
+		return card.toString();
+	}
 
 	@Override
 	public void shuffleDeck() {
@@ -97,14 +111,31 @@ public class DeckOfCards implements DeckOfCardsInterface {
 		}
 	}
 
+	public Card[] getExactCards(SuitPair[] requestedCards) {
+		
+		Card[] returnedCards = new Card[requestedCards.length];
+		int count = 0;
+		
+		for ( SuitPair pair : requestedCards) {
+			Card requestedCard = new Card(pair.getSuit(), pair.getRank());
+			int cardIndex = deck.indexOf(requestedCard);
+			if( cardIndex >= 0 ) {
+				returnedCards[count] = requestedCard;
+				deck.remove(cardIndex);
+				count ++;
+			}
+		}
+		return returnedCards;
+	}
 
 	@Override
 	public Card[] getCardsTop(int numOfCards) {
 		Card[] cards = new Card[numOfCards];
 		int count = 0;
 		while ( count < numOfCards ) {
-			cards[count] = deck.get(count);
-			deck.remove(count);
+			//Always take the top card [0]
+			cards[count] = deck.get(0);
+			deck.remove(0);
 			count++;
 		}
 		return cards;
@@ -125,13 +156,18 @@ public class DeckOfCards implements DeckOfCardsInterface {
 	@Override
 	public Card[] getCardsByIndex(int[] cardsSelected) {
 		Card[] cards = new Card[cardsSelected.length];
-		// Array must be sorted so it always gets the earliest card in the array first
-		Arrays.sort(cardsSelected);
+		// Array must be sorted so it always gets the last Card in the deck first
+		Integer[] cardsSelectedReversed = new Integer[cardsSelected.length];
+		for ( int i = 0; i < cardsSelected.length; i++) {
+			cardsSelectedReversed[i] = Integer.valueOf(cardsSelected[i]);
+		}
+		// Had to turn into Integer to use Collections.reverseOrder
+		Arrays.sort(cardsSelectedReversed, Collections.reverseOrder());
+		
 		int count = 0;
-		for ( int i : cardsSelected) {
-			// Since the array gets smaller I have to subtract the # of items removed to get the selection specified
-			Card card = deck.get(i - count);
-			deck.remove(i - count);
+		for ( Integer i : cardsSelectedReversed) {
+			Card card = deck.get(i.intValue());
+			deck.remove(i.intValue());
 			cards[count] = card;
 			count ++;
 		}
@@ -227,134 +263,88 @@ public class DeckOfCards implements DeckOfCardsInterface {
 			deck.add(random.nextInt(deck.size()), suppliedCard);
 		}
 	}
+
+	@Override
+	public int hashCode() {
+		int hashCode = 0;
+		for ( Card card : deck ) {
+			hashCode += card.hashCode();
+		}
+		return hashCode;
+	}
 	
+	@Override
+	public boolean equals(Object o) {
+		if (o == this) return true;
+		if (!(o instanceof DeckOfCards) ) return false;
+		DeckOfCards other = (DeckOfCards)o;
+		if (this.getNumCardsInDeck() != other.getNumCardsInDeck()) {
+			return false;
+		}
+		for (int i = 0; i <= this.getNumCardsInDeck() - 1; i++) {
+			if (!this.seeCardByIndex(i).equals(other.seeCardByIndex(i))) {
+				return false;
+			}
+		}
+		return true;
+		}		
+
 	public String toString() {
 		return deck.toString();
 		
 	}
 	
+	/**
+	 * This class is only used to request Cards by adding SuitPair to a SuitPair[]
+	 * which is used as a parameter in getExactCards(SuitPair[])
+	 */
+	public class SuitPair {
+		
+		public final Suit first;
+		public final Rank second;
+		
+		String suitString;
+		String rankString;
+
+		
+		public SuitPair(Suit suit, Rank rank) {
+			
+			suitString = suit.toString();
+			rankString = rank.toString();
+			this.first = suit;
+			this.second = rank;
+		}
+
+		public Suit getSuit() {
+			return this.first;
+		}
+		
+		public Rank getRank() {
+			return this.second;
+		}
+		
+		public String toString() {
+			return rankString + "_" + suitString;
+		}
+		
+		@Override
+		public int hashCode() {
+			return ( this.first.hashCode() + this.second.hashCode() );
+		}
+		
+		@Override
+		public boolean equals(Object o) {
+			if (o == this) return true;
+			if (!(o instanceof SuitPair) ) return false;
+			SuitPair other = (SuitPair)o;
+			boolean suitPair = ( this.suitString == other.suitString && this.rankString == other.rankString );
+			return suitPair;
+		}
+	}
+	
 	public static void main(String[] args) {
 		
-		//These are all simple test of the application. Will write junit tests later.
-		DeckOfCards deck = new DeckOfCards();
-		System.out.println(deck);
-		Card topCard = deck.getTopCard();
-		System.out.println("TopCard = " + topCard);
-		Card bottomCard = deck.getBottomCard();
-		System.out.println("BottomCard = " + bottomCard);
-		Card specificCard = deck.getCardByIndex(4);
-		System.out.println("SpecificCard = " + specificCard);
-		Card randomCard = deck.getRandomCard();
-		System.out.println("RandCard = " + randomCard);
-		deck.shuffleDeck();
-		System.out.println(deck);
-		Card[] cardsTop = deck.getCardsTop(4);
-		System.out.println(cardsTop);
-		for ( Card card : cardsTop) {
-			System.out.println(card);
-		}
-		System.out.println(deck);
-		Card[] cardsBottom = deck.getCardsBottom(5);
-		System.out.println(cardsBottom);
-		for ( Card card :cardsBottom) {
-			System.out.println(card);
-		}
-		System.out.println(deck.getNumCardsInDeck());
-		Card[] cardsRandom = deck.getCardsRandom(3);
-		System.out.println(cardsRandom);
-		for ( Card card : cardsRandom ) {
-			System.out.println(card);
-		}
-		System.out.println(deck.getNumCardsInDeck());
-		System.out.println(deck);
-		int[] cardsToGet = {1, 3, 4};
-		Card[] cardsSpecific = deck.getCardsByIndex(cardsToGet);
-		System.out.println(cardsSpecific);
-		for ( Card card : cardsSpecific) {
-			System.out.println(card);
-		}
-		System.out.println(deck);
-		
-		System.out.println("STARTING GET EXACT CARD");
-		Card twoHeart = new Card(Suit.HEART, Rank.TWO);
-		Card twoHearttwo = new Card(Suit.HEART, Rank.TWO);
-		Card threeHeart = new Card(Suit.HEART, Rank.THREE);
-		DeckOfCards testDeck = new DeckOfCards();
-		System.out.println(twoHeart == threeHeart);
-		System.out.println(twoHeart.getSuit() == twoHeart.getSuit());
-		System.out.println(twoHeart.equals(twoHearttwo));
-		Optional<Card> testGetExactCard = testDeck.getExactCard(Suit.SPADE, Rank.ACE);
-		if ( testGetExactCard.isPresent()) {
-			Card exactCard = testGetExactCard.get();
-			System.out.println("This is the card requested: " + exactCard);
-		}
-		//Have to include try and catch with this method since it throws an exception
-		Optional<Card> testGetExactCardTwo = testDeck.getExactCard(Suit.SPADE, Rank.ACE);
-		if (! testGetExactCardTwo.isPresent()) {
-			System.out.println( "Card not present, don't try get()");
-		}
-		System.out.println("ENDING GET EXACT CARD");
-		
-		// Test addCardTop()
-		System.out.println(deck);
-		Card testTopCard = deck.getTopCard();
-		System.out.println(testTopCard);
-		System.out.println(deck);
-		deck.addCardTop(testTopCard);
-		System.out.println(deck);
-		
-		// Test addCardBottom()
-		Card testBottomCard = deck.getBottomCard();
-		System.out.println(testBottomCard);
-		System.out.println(deck);
-		deck.addCardBottom(testBottomCard);
-		System.out.println(deck);
-		
-		// Test addCardRandom()
-		Card testRandomCard = deck.getRandomCard();
-		System.out.println(testRandomCard);
-		System.out.println(deck);
-		deck.addCardRandom(testRandomCard);
-		System.out.println(deck);
-		
-		// Test addCardsTop()
-		System.out.println(deck);
-		Card testTopCard1 = deck.getTopCard();
-		Card testBottomCard1 = deck.getBottomCard();
-		Card testRandomCard1 = deck.getRandomCard();
-		System.out.println(testTopCard1);
-		System.out.println(testBottomCard1);
-		System.out.println(testRandomCard1);
-		System.out.println(deck);
-		Card[] testCardsTop = {testTopCard1, testBottomCard1, testRandomCard1};
-		deck.addCardsTop(testCardsTop);
-		System.out.println(deck);
-		
-		// Test addCardsBottom()
-		System.out.println(deck);
-		Card testTopCard2 = deck.getTopCard();
-		Card testBottomCard2 = deck.getBottomCard();
-		Card testRandomCard2 = deck.getRandomCard();
-		System.out.println(testTopCard2);
-		System.out.println(testBottomCard2);
-		System.out.println(testRandomCard2);
-		System.out.println(deck);
-		Card[] testCardsBottom = {testTopCard2, testBottomCard2, testRandomCard2};
-		deck.addCardsBottom(testCardsBottom);
-		System.out.println(deck);
-		
-		// Test addCardsRandom()
-		System.out.println(deck);
-		Card testTopCard3 = deck.getTopCard();
-		Card testBottomCard3 = deck.getBottomCard();
-		Card testRandomCard3 = deck.getRandomCard();
-		System.out.println(testTopCard3);
-		System.out.println(testBottomCard3);
-		System.out.println(testRandomCard3);
-		System.out.println(deck);
-		Card[] testCardsRandom = {testTopCard3, testBottomCard3, testRandomCard3};
-		deck.addCardsRandom(testCardsRandom);
-		System.out.println(deck);
+
 	}
 }
 

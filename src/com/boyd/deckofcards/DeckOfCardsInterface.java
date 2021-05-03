@@ -5,6 +5,7 @@ package com.boyd.deckofcards;
 
 import com.boyd.deckofcards.Card.Rank;
 import com.boyd.deckofcards.Card.Suit;
+import com.boyd.deckofcards.SuitPair;
 
 import java.util.Optional;
 
@@ -39,6 +40,13 @@ public interface DeckOfCardsInterface {
 	public boolean hasCard(Suit suit, Rank rank);
 	
 	/**
+	 * See the card (String Representation) at a specific index in the DeckOfCards
+	 * @param index - integer index for the card you want to see
+	 * @return - String representation for the Card at that index
+	 */
+	public String seeCardByIndex(int index);
+	
+	/**
 	 * Get the top Card off the DeckOfCards
 	 * @return - Card on top of the DeckOfCards
 	 */
@@ -52,7 +60,10 @@ public interface DeckOfCardsInterface {
 	
 	/**
 	 * Get the Card from the requested index counting from the top of the DeckOfCards
+	 * @param The index must be <= (deck.getNumOfCardsInDeck - 1)
 	 * @return - Card from the requested index counting from the top of the DeckOfCards
+	 * This function is sloppy, and might not be required, so i might axe it down the road.
+	 * @param should be int between (1 and deck.getNumOfCardsInDeck), will implement that later.
 	 */
 	public Card getCardByIndex(int index);
 	
@@ -78,7 +89,7 @@ public interface DeckOfCardsInterface {
 	 * @return - An Array with the requested Card(s) or an empty array
 	 * Need to implement this
 	 */
-	//public Pair[] getExactCards(Pair<Suit,Rank>[52]);
+	//public Card[] getExactCards(SuitPair[] requestedCards);
 	
 	/**
 	 * Get the specified amount of cards off the top of the DeckOfCards
@@ -102,9 +113,11 @@ public interface DeckOfCardsInterface {
 	public Card[] getCardsByIndex(int[] cardsSelected);
 	
 	/**
-	 * Get the specified amount of cards from random spots in the DeckOfCards
-	 * @param - numOfCards requested; requires numOfCards > 0;
-	 * @return - Card[] containing the specified amount of cards
+	 * Get the Cards from the requested indexes in the int[]
+	 * @param The index must be between (0 and (deck.getNumOfCardsInDeck - 1))
+	 * @return - Card from the requested index counting from the top of the DeckOfCards
+	 * This function is sloppy, and might not be required, so i might axe it down the road.
+	 * @param should be int[] with values between (1 and deck.getNumOfCardsInDeck), will implement that later.
 	 */
 	public Card[] getCardsRandom(int numOfCards);
 	
