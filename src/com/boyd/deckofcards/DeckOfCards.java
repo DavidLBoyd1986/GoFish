@@ -54,9 +54,20 @@ public class DeckOfCards implements DeckOfCardsInterface {
 	public int getNumCardsNotInDeck() {
 		return totalNumOfCards - deck.size();
 	}
+	
+	@Override
+	public int getNumCardsInDiscardPile() {
+		return discardPile.size();
+	}
+	
+	@Override
+	public int getNumCardsNotInDeckOrDiscard() {
+		return (totalNumOfCards - (discardPile.size() + deck.size()));
+	}
 
 	@Override
 	public String seeCardByIndex(int index) {
+		index--;
 		Card card = deck.get(index);
 		return card.toString();
 	}
@@ -82,6 +93,7 @@ public class DeckOfCards implements DeckOfCardsInterface {
 	
 	@Override
 	public Card getCardByIndex(int index) {
+		index--;
 		Card card = deck.get(index);
 		deck.remove(index);
 		return card;
@@ -156,10 +168,13 @@ public class DeckOfCards implements DeckOfCardsInterface {
 	@Override
 	public Card[] getCardsByIndex(int[] cardsSelected) {
 		Card[] cards = new Card[cardsSelected.length];
+		// Subtract the index by 1 so it works on 0-51 and not 1-52	
 		// Array must be sorted so it always gets the last Card in the deck first
 		Integer[] cardsSelectedReversed = new Integer[cardsSelected.length];
 		for ( int i = 0; i < cardsSelected.length; i++) {
-			cardsSelectedReversed[i] = Integer.valueOf(cardsSelected[i]);
+			int cardIndex = cardsSelected[i];
+			cardIndex--;
+			cardsSelectedReversed[i] = Integer.valueOf(cardIndex);
 		}
 		// Had to turn into Integer to use Collections.reverseOrder
 		Arrays.sort(cardsSelectedReversed, Collections.reverseOrder());
@@ -199,6 +214,7 @@ public class DeckOfCards implements DeckOfCardsInterface {
 		deck.add(0, card);
 	}
 	
+	@Override
 	public void addCardBottom(Card card) {
 		for ( Card deckCard : deck ) {
 			if ( deckCard.equals(card) ) {
@@ -208,6 +224,7 @@ public class DeckOfCards implements DeckOfCardsInterface {
 		deck.add(deck.size(), card);
 	}
 	
+	@Override
 	public void addCardRandom(Card card) {
 		Random random = new Random();
 		for ( Card deckCard : deck ) {
@@ -263,6 +280,22 @@ public class DeckOfCards implements DeckOfCardsInterface {
 			deck.add(random.nextInt(deck.size()), suppliedCard);
 		}
 	}
+	
+	@Override
+	public void discardCard(Card card) {
+		discardPile.add(card);
+	}
+	
+	
+	@Override
+	public void discardCards(Card[] cards) {
+		discardPile.addAll(Arrays.asList(cards));
+	}
+	
+	@Override
+	public void addDiscardPileToDeck() {
+		deck.addAll(0, discardPile);
+	}
 
 	@Override
 	public int hashCode() {
@@ -281,7 +314,7 @@ public class DeckOfCards implements DeckOfCardsInterface {
 		if (this.getNumCardsInDeck() != other.getNumCardsInDeck()) {
 			return false;
 		}
-		for (int i = 0; i <= this.getNumCardsInDeck() - 1; i++) {
+		for (int i = 1; i <= this.getNumCardsInDeck(); i++) {
 			if (!this.seeCardByIndex(i).equals(other.seeCardByIndex(i))) {
 				return false;
 			}
@@ -289,6 +322,7 @@ public class DeckOfCards implements DeckOfCardsInterface {
 		return true;
 		}		
 
+	@Override
 	public String toString() {
 		return deck.toString();
 		
