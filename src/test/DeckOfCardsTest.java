@@ -19,7 +19,7 @@ import com.boyd.deckofcards.DeckOfCards;
 
 class DeckOfCardsTest {
 
-	   /*
+	 /*
      * Testing strategy
      * ==================
      * 
@@ -73,6 +73,16 @@ class DeckOfCardsTest {
      * Test 23 - addCardsRandom() puts the cards back in the deck
      * 
      * Test 24 - getExactCards() tests requested Cards returned, test SuitPair as well
+     * 
+     * Test 25 - discardCard() - tests the Card is added to the discardPile
+     * 
+     * Test 26 - discardCards() - tests the Cards are added to the discardPile
+     * 
+     * Test 27 - discardCards() - tests no Error is thrown when an empty Card[] is added
+     * 
+     * Test 28 - addDiscardPileToDeck() - test it drops the discardPile on top of DeckOfCards with out shuffling
+     * 
+     * Test 29 - seeCardByIndex() - test it returns Card at the index
 
      */
 
@@ -135,7 +145,7 @@ class DeckOfCardsTest {
 		DeckOfCards testDeck = new DeckOfCards();
 		DeckOfCards copyDeck = new DeckOfCards();
 		Card topCard = testDeck.getTopCard();
-		assert(topCard.equals(copyDeck.getCardByIndex(0)));		
+		assert(topCard.equals(copyDeck.getCardByIndex(1)));		
 	}
 	
 	@Test //9
@@ -143,7 +153,7 @@ class DeckOfCardsTest {
 		DeckOfCards testDeck = new DeckOfCards();
 		DeckOfCards copyDeck = new DeckOfCards();
 		Card bottomCard = testDeck.getBottomCard();
-		assert(bottomCard.equals(copyDeck.getCardByIndex(51)));		
+		assert(bottomCard.equals(copyDeck.getCardByIndex(52)));		
 	}
 	
 	@Test //10
@@ -197,30 +207,17 @@ class DeckOfCardsTest {
 		DeckOfCards copyDeck = new DeckOfCards();	
 		int[] cardsIndex = { 4, 7, 11, 26, 34, 42, 51 };
 		Card[] retrievedCards = testDeck.getCardsByIndex(cardsIndex);
-		
-		// Array must be sorted so it always gets the last Card in the deck first
-		Integer[] cardsIndexReversed = new Integer[cardsIndex.length];
-		for ( int i = 0; i < cardsIndex.length; i++) {
-			cardsIndexReversed[i] = Integer.valueOf(cardsIndex[i]);
-		}
-		// Had to turn into Integer to use Collections.reverseOrder
-		Arrays.sort(cardsIndexReversed, Collections.reverseOrder());
-		// Add all the cards requested from the copyDeck to see if they match the retrieved cards from the test deck
-		Card[] retrievedCopyCards = new Card[cardsIndexReversed.length];
-		for ( int i = 0 ; i < cardsIndexReversed.length ; i++ ) {
-			retrievedCopyCards[i] = copyDeck.getCardByIndex(cardsIndexReversed[i].intValue());
-		}
-		// Test by comparing the retrieved Cards to verify they match
 		boolean testResult = true;
-		int count = 0;
-		for ( Card card : retrievedCards ) {
-			if (! card.equals(retrievedCopyCards[count])) {
+		int cardIndex = cardsIndex.length - 1;
+		for ( int i = 0 ; i < cardsIndex.length ; i++ ) {
+			if (!retrievedCards[i].equals(copyDeck.getCardByIndex(cardsIndex[cardIndex]))) {
 				testResult = false;
 				break;
 			}
-			count ++;
+			cardIndex--;
 		}
 		assert(testResult);
+
 	}
 	
 	@Test //15
@@ -329,7 +326,6 @@ class DeckOfCardsTest {
 		DeckOfCards.SuitPair cardRequest2 = deck.new SuitPair(Suit.DIAMOND, Rank.QUEEN);		
 		// Test getExactCards()
 		SuitPair[] cardRequestArray = {cardRequest1, cardRequest2};
-		System.out.println(deck.getNumCardsInDeck());
 		Card[] retrievedCards = deck.getExactCards(cardRequestArray);
 		Card fiveClub = new Card(Suit.CLUB, Rank.FIVE);
 		Card queenDiamond = new Card(Suit.DIAMOND, Rank.QUEEN);
@@ -343,4 +339,54 @@ class DeckOfCardsTest {
 		}
 		assert(testResult);
 	}
+	
+	@Test //25
+	void testDiscardCard() {
+		DeckOfCards testDeck = new DeckOfCards();
+		Card testCard = testDeck.getBottomCard();
+		testDeck.discardCard(testCard);
+		assert( testDeck.getNumCardsInDiscardPile() == 1 && testDeck.getNumCardsInDeck() == 51 && testDeck.getNumCardsNotInDeck() == 1 );
+	}
+	
+	@Test //26
+	void testDiscardCards() {
+		DeckOfCards testDeck = new DeckOfCards();
+		Card[] testCards = testDeck.getCardsBottom(21);
+		testDeck.discardCards(testCards);
+		assert( testDeck.getNumCardsInDiscardPile() == 21 && testDeck.getNumCardsInDeck() == 31 && testDeck.getNumCardsNotInDeck() == 21);
+	}
+	
+	@Test //27
+	void testDiscardCardsEmpty() {
+		DeckOfCards testDeck = new DeckOfCards();
+		Card[] testCards = {};
+		testDeck.discardCards(testCards);
+		assert(testDeck.getNumCardsInDiscardPile() == 0);
+	}
+	
+	@Test //28
+	void testAddDiscardPileToDeck() {
+		DeckOfCards testDeck = new DeckOfCards();
+		Card[] testCards = testDeck.getCardsBottom(13);
+		testDeck.discardCards(testCards);
+		boolean allSpades = true;
+		for ( Card card : testDeck.discardPile ) {
+			if (!card.getSuit().equals(Suit.SPADE)) {
+				allSpades = false;
+				break;
+			}
+		}
+		assert(allSpades && testDeck.getNumCardsInDiscardPile() == 13 && testDeck.getNumCardsNotInDeck() == 13);
+	}
+	
+	@Test //29
+	void testSeeCardByIndex() {
+		DeckOfCards testDeck = new DeckOfCards();
+		DeckOfCards copyDeck = new DeckOfCards();
+		String testCard = testDeck.seeCardByIndex(15);
+		Card copyCard = copyDeck.getCardByIndex(15);
+		assert(testCard.equals(copyCard.toString()));		
+	}
+	
+	
 }

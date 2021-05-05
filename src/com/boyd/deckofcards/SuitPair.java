@@ -1,31 +1,31 @@
 package com.boyd.deckofcards;
 
-import java.util.AbstractMap;
-
 import com.boyd.deckofcards.Card.Rank;
 import com.boyd.deckofcards.Card.Suit;
 
+
 public class SuitPair {
+	
+	public final Suit first;
+	public final Rank second;
 	
 	String suitString;
 	String rankString;
-	AbstractMap.SimpleImmutableEntry<Suit, Rank> pair;
 	
 	public SuitPair(Suit suit, Rank rank) {
 		
 		suitString = suit.toString();
 		rankString = rank.toString();
-		
-		final AbstractMap.SimpleImmutableEntry<Suit, Rank> pair
-		    = new AbstractMap.SimpleImmutableEntry<>(suit, rank);
+		this.first = suit;
+		this.second = rank;
 	}
-	
+
 	public Suit getSuit() {
-		return pair.getKey();
+		return this.first;
 	}
 	
 	public Rank getRank() {
-		return pair.getValue();
+		return this.second;
 	}
 	
 	public String toString() {
@@ -34,7 +34,7 @@ public class SuitPair {
 	
 	@Override
 	public int hashCode() {
-		return pair.hashCode();
+		return ( this.first.hashCode() + this.second.hashCode() );
 	}
 	
 	@Override
