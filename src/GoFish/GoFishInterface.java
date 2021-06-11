@@ -8,6 +8,12 @@ import java.util.ArrayList;
 public interface GoFishInterface {
 
 	/**
+	 * Creates a game of GoFish
+	 * 
+	 */
+	public void createGame();
+	
+	/**
 	 * Decides who the dealer is by dealing one card face up to every player, the player with the lowest card is set to be the dealer
 	 * 
 	 * Sets the variable 'dealer' to be that player

@@ -147,22 +147,45 @@ public class Player implements PlayerInterface {
 	}
 	
 	@Override
-	public void takeTurn() {
+	public boolean takeTurn() {
+		//These are declared here because the actual initialization is in a try clause, and would create and error.
+		Rank rankRequested = null;
+		Player playerRequested = null;
+		boolean repeatTurn = false;
+		int numOfCardsRetrieved = 0;
 		//Get the rank you will request
 		try {
-			Rank rankRequested = getRankSelection();
+			rankRequested = getRankSelection();
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("Error taking turn while running getRankSelection()");			
 		}
 		//Get the player you will make the request to
 		try {
-			Player playerRequested = getPlayerSelection();
+			playerRequested = getPlayerSelection();
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("Error taking turn while running getPlayerSelection()");
 		}
-		boolean goFish = playerRequested.hasRank(rankRequested);
+		//Request Card and take cards if player has it, go fish and draw card otherwise
+		boolean cardRequest = requestCards(rankRequested, playerRequested);
+		if (cardRequest) {
+			Card[] retrievedCards = getCards(rankRequested, playerRequested);
+			numOfCardsRetrieved = retrievedCards.length;
+			for (Card card : retrievedCards) {
+				hand.add(card);
+			repeatTurn = true;
+			}
+		} else {
+			Card drawnCard = drawCard(GoFish.deck);
+			numOfCardsRetrieved = 1;
+			hand.add(drawnCard);
+			repeatTurn = false;
+		}
+		//Update BookCheck
+		updateBookCheck(rankRequested, numOfCardsRetrieved);
+		//End Turn, returns True for repeatTurn if Player didn't GoFish
+		return repeatTurn;
 	}
 	
 	// This function will only be for testing on command line. It will be replaced once I build a GUI

@@ -99,7 +99,7 @@ public interface PlayerInterface {
 	 * @param rank - the Rank to be requested from the other Player
 	 * @param player - the Player the request is made to.
 	 */
-	public void takeTurn();
+	public boolean takeTurn();
 	
 	/**
 	 * method used to get the Rank the Player is requesting
