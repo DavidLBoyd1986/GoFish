@@ -15,10 +15,9 @@ import java.util.Scanner;
  */
 public class Player implements PlayerInterface {
 
-	public enum SkillLevel {EASY, MEDIUM, HARD};
 	public String name;
-	public SkillLevel skillLevel;
 	public int position;
+	public boolean repeatTurn;
 	
 	public ArrayList<Card> hand;
 	public HashMap<Rank, Card[]> books;
@@ -28,12 +27,11 @@ public class Player implements PlayerInterface {
 	/**
 	 * Build the Player object
 	 * 
-	 * @param name - a String representing the Player's name
-	 * @param skillLevel - an enum representing the skill level of this opponent
+	 * @param initName - a String representing the Player's name
+	 * @param initPosition - an int representing the Player's position at the table
 	 */
-	public Player(String initName, SkillLevel initSkillLevel, int initPosition) {
+	public Player(String initName, int initPosition) {
 		name = initName;
-		skillLevel = initSkillLevel;
 		position = initPosition;
 		hand = new ArrayList<Card>();
 		books = new HashMap<Rank, Card[]>();
@@ -41,6 +39,11 @@ public class Player implements PlayerInterface {
 		
 	}
 
+	@Override
+	public void setRepeatTurn(boolean repeat) {
+		repeatTurn = repeat;
+	}
+	
 	@Override
 	public String getName() {
 		return name;
@@ -54,6 +57,12 @@ public class Player implements PlayerInterface {
 	@Override
 	public ArrayList<Card> getHand() {
 		return hand;
+	}
+	
+	@Override
+	public int getNumOfBooks() {
+		int numOfBooks = books.size();
+		return numOfBooks;
 	}
 	
 	@Override
@@ -147,12 +156,12 @@ public class Player implements PlayerInterface {
 	}
 	
 	@Override
-	public boolean takeTurn() {
+	public void takeTurn() {
 		//These are declared here because the actual initialization is in a try clause, and would create and error.
 		Rank rankRequested = null;
 		Player playerRequested = null;
-		boolean repeatTurn = false;
 		int numOfCardsRetrieved = 0;
+		
 		//Get the rank you will request
 		try {
 			rankRequested = getRankSelection();
@@ -184,8 +193,6 @@ public class Player implements PlayerInterface {
 		}
 		//Update BookCheck
 		updateBookCheck(rankRequested, numOfCardsRetrieved);
-		//End Turn, returns True for repeatTurn if Player didn't GoFish
-		return repeatTurn;
 	}
 	
 	// This function will only be for testing on command line. It will be replaced once I build a GUI

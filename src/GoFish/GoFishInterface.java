@@ -18,14 +18,14 @@ public interface GoFishInterface {
 	 * 
 	 * Sets the variable 'dealer' to be that player
 	 */
-	public void decideDealer();
+	//public void decideDealer();
 	
 	/**
 	 * Deal the Cards to the Players, the amount of Cards the Players get depends on the number of Players
 	 * 
 	 * Moves Cards from the DeckOfCards to the Player's hands
 	 */
-	public void dealCards();
+	public ArrayList<Player> dealCards(ArrayList<Player> players);
 	
 	/**
 	 * See if all 13 books have been won, and the game is over
@@ -39,7 +39,7 @@ public interface GoFishInterface {
 	 * 
 	 * @return - Player that is the winner of the game, who has the most books
 	 */
-	public Player getWinner();
+	public String getWinner();
 	
 	/**
 	 * Creates a Player character who will play the game
@@ -50,14 +50,14 @@ public interface GoFishInterface {
 	 * HARD - The Player remembers what Cards anyone asked for from other Players
 	 * @return - Player object that can play the game
 	 */
-	public Player createPlayer(int skillLevel);
+	//public Player createPlayer(int skillLevel);
 	
 	/**
 	 * Places Players around a table in clockwise fashion
 	 * 
 	 * Positions are 1 - getNumOfPlayers() with 1 being the dealer
 	 */
-	public void placePlayers();
+	//public void placePlayers();
 	
 	/**
 	 * Set the number of Players for go fish

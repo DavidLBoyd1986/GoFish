@@ -7,6 +7,12 @@ import java.util.HashMap;
 public interface PlayerInterface {
 
 	/**
+	 * Sets the repeatTurn boolean
+	 * @param repeat - boolean
+	 */
+	public void setRepeatTurn(boolean repeat);
+	
+	/**
 	 * Gets the Player's name
 	 * 
 	 * @return - String of the Player's name
@@ -26,6 +32,12 @@ public interface PlayerInterface {
 	 * @return - An ArrayList representing that Player's hands.
 	 */
 	public ArrayList<Card> getHand();
+	
+	/**
+	 * Gets all the books the player has
+	 * @return HashMap - that holds all the books
+	 */
+	public int getNumOfBooks();
 	
 	/**
 	 * Determines if a Player has a Card of that Rank in his hand
@@ -99,7 +111,7 @@ public interface PlayerInterface {
 	 * @param rank - the Rank to be requested from the other Player
 	 * @param player - the Player the request is made to.
 	 */
-	public boolean takeTurn();
+	public void takeTurn();
 	
 	/**
 	 * method used to get the Rank the Player is requesting

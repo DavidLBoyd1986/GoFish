@@ -20,6 +20,7 @@ public class GoFish implements GoFishInterface {
 	public static ArrayList<Player> players = new ArrayList<Player>();
 	public int numOfPlayers = 4;
 	public static DeckOfCards deck = new DeckOfCards();
+	public boolean gameOver = false;
 	/**
 	 * 
 	 */
@@ -40,6 +41,22 @@ public class GoFish implements GoFishInterface {
 		return numOfPlayers;
 	}
 	
+	@Override
+	public String getWinner() {
+		int numOfBooks = 0;
+		String winner = "";
+		for (Player player : players) {
+			if (player.getNumOfBooks() == numOfBooks) {
+				// TODO Need to decide how to break a tie
+				winner = player.getName();
+			} else if (player.getNumOfBooks() > numOfBooks) {
+				numOfBooks = player.getNumOfBooks();
+				winner = player.getName();
+			}
+		}
+		return winner;
+	}
+
 	@Override
 	public ArrayList<Player> getPlayers() {
 		return players;
@@ -77,9 +94,84 @@ public class GoFish implements GoFishInterface {
 		// TODO update the thrown Exception
 		throw new Exception("ERROR - No Player was returned in getPlayerSelection()");
 	}
+	
+	public ArrayList<Player> dealCards(ArrayList<Player> players) {
+		//Decide how many cards to deal based on numOfPlayers
+		int cardsToDeal = 0;
+		if (numOfPlayers < 4) {
+			cardsToDeal = 7;
+		} else if ((numOfPlayers > 3) && (numOfPlayers < 6)) {
+			cardsToDeal = 5;
+		} else {
+			System.out.println("numOfPlayers is not valid. Maybe add an exception  here");
+		}
+		
+		for (int i = 1; i <= cardsToDeal; i++) {
+			for (Player player : players) {
+				player.drawCard(deck);
+			}
+		}
+		return players;
+	}
+	
+	@Override
+	public boolean isGameOver() {
+		// Look at all the players books to see if all the books have been created
+		int bookCount = 0;
+		for (Player player : players) {
+			bookCount += player.getNumOfBooks();
+		}
+		if (bookCount == 13) {
+			gameOver = true;
+		} else {
+			gameOver = false;
+		}
+		return gameOver;
+	}
 
 	public void createGame(){
 		
+		gameOver = false;
+		
+		//Get num of players
+		
+		//Decide order around table
+			// TODO Randomize the Player positions
+		
+		// Create User's Player
+		Player user = new Player("David", 1);
+		players.add(user);
+		
+		//Create Computer Players
+		for (int i = 2; i <= numOfPlayers; i++) {
+			players.add(new EasyPlayer("Easy", i));
+		}
+		
+		//Decide dealer
+			// TODO dealer will always be Randomized Player 1, need to implement that before this can be done
+		
+		//Deal Cards
+		players = dealCards(players);
+		
+		//Decide who goes first (will be person left of dealer)
+			// TODO need to decide dealer before I can do this
+		
+		//Start game loop (while isGameOver is False, continue gameloop)
+		while (!gameOver) {
+			
+			for (Player player : players) {
+				player.setRepeatTurn(true);
+			//Player loop (while repeatTurn is true, continue playerloop)
+				while (player.repeatTurn) {
+					player.takeTurn();
+					gameOver = isGameOver();
+				}
+			}
+		}
+		
+		String winner = getWinner();
+		
+		System.out.println("The winner is: " + winner);
 	}
 	
 	
