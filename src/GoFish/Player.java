@@ -113,7 +113,9 @@ public class Player implements PlayerInterface {
 				count++;
 			}
 		}
-		player.updateBookCheck(rank, requestedCards.length * -1);
+		// The below originally had (rank, requestedCards.length * -1)
+		// changing it to (rank, count)
+		player.updateBookCheck(rank, count);
 		return requestedCards;
 	}
 	

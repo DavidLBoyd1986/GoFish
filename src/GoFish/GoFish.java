@@ -169,6 +169,8 @@ public class GoFish implements GoFishInterface {
 				player.setRepeatTurn(true);
 			//Player loop (while repeatTurn is true, continue playerloop)
 				while (player.repeatTurn) {
+					//debugging bookcheck methods
+					System.out.println(player.bookCheck);
 					player.takeTurn(players);
 					gameOver = isGameOver();
 				}
