@@ -3,6 +3,7 @@ import com.boyd.deckofcards.Card.Rank;
 import com.boyd.deckofcards.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Scanner;
 
 public interface PlayerInterface {
 
@@ -66,7 +67,6 @@ public interface PlayerInterface {
 	 * Gets the requested Cards from another Player or a Card from the top of the DeckOfCards.
 	 * 
 	 * If the Player has Cards of the requested Rank the returned Card[] will be all the Cards of that Rank from his hand
-	 * If the Player doesn't have Cards of the requested Rank an empty Card[] will be returned
 	 * 
 	 * @Param rank - the Rank of the requested Cards
 	 * @Param player - the Player the request is made to
@@ -75,12 +75,11 @@ public interface PlayerInterface {
 	public Card[] getCards(Rank rank, Player player);
 	
 	/**
-	 * Draws one Card from the top of the DeckOfCards
+	 * Draws one Card from the top of the DeckOfCards, and puts it in the Player's hand
 	 * 
 	 * @param deck - DeckOfCards the Player will draw the card from
-	 * @return - a Card from the top of the DeckOfCards
 	 */
-	public Card drawCard(DeckOfCards deck);
+	public void drawCard(DeckOfCards deck);
 	
 	/**
 	 * Updates a Player's bookCheck with the number of Card's by Rank they have
@@ -111,19 +110,19 @@ public interface PlayerInterface {
 	 * @param rank - the Rank to be requested from the other Player
 	 * @param player - the Player the request is made to.
 	 */
-	public void takeTurn();
+	public void takeTurn(ArrayList<Player> initPlayers);
 	
 	/**
 	 * method used to get the Rank the Player is requesting
 	 * @return - the Rank the Player is requesting
 	 */
-	public Rank getRankSelection() throws Exception;
+	public Rank getRankSelection(Scanner inputScanner);
 	
 	/**
 	 * method used to get the Player the request is made to
 	 * @return - the Player the request is made to
 	 */
-	public Player getPlayerSelection() throws Exception;
+	public Player getPlayerSelection(Scanner inputScanner, ArrayList<Player> players);
 	
 
 	

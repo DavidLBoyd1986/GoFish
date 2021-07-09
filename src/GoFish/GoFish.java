@@ -17,15 +17,17 @@ import com.boyd.deckofcards.*;
  */
 public class GoFish implements GoFishInterface {
 
-	public static ArrayList<Player> players = new ArrayList<Player>();
-	public int numOfPlayers = 4;
+	public ArrayList<Player> players;
+	public int numOfPlayers;
 	public static DeckOfCards deck = new DeckOfCards();
-	public boolean gameOver = false;
+	public boolean gameOver;
 	/**
 	 * 
 	 */
 	public GoFish() {
-		// TODO Auto-generated constructor stub
+		players = new ArrayList<Player>();
+		numOfPlayers = 4;
+		gameOver = false;
 	}
 	
 	@Override
@@ -66,8 +68,7 @@ public class GoFish implements GoFishInterface {
 	 * method used to get the Player the request is made to
 	 * @return - the Player the request is made to
 	 */
-	static public Player getPlayerSelection() throws Exception{
-		ArrayList<Player> players = GoFish.players;
+	static public Player getPlayerSelection(ArrayList<Player> players) throws Exception{
 		String playerRequest = "";
 		System.out.print("Please select which player the request will be made to:");
 		// Player toString will be outputted
@@ -129,7 +130,7 @@ public class GoFish implements GoFishInterface {
 		return gameOver;
 	}
 
-	public void createGame(){
+	public void createGame() {
 		
 		gameOver = false;
 		
@@ -163,7 +164,7 @@ public class GoFish implements GoFishInterface {
 				player.setRepeatTurn(true);
 			//Player loop (while repeatTurn is true, continue playerloop)
 				while (player.repeatTurn) {
-					player.takeTurn();
+					player.takeTurn(players);
 					gameOver = isGameOver();
 				}
 			}
@@ -179,7 +180,8 @@ public class GoFish implements GoFishInterface {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		GoFish game1 = new GoFish();
+		game1.createGame();
 
 	}
 

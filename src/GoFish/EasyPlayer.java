@@ -14,7 +14,7 @@ public class EasyPlayer extends Player implements PlayerInterface {
 	}
 
 	@Override
-	public void takeTurn() {
+	public void takeTurn(ArrayList<Player> players) {
 
 		Random random = new Random();
 		boolean repeatTurn = false;
@@ -24,7 +24,6 @@ public class EasyPlayer extends Player implements PlayerInterface {
 		Card cardRequested = hand.get(random.nextInt(hand.size()));
 		Rank rankRequested = cardRequested.getRank();
 		//Get the player you will make the request to
-		ArrayList<Player> players = GoFish.players;
 		Player playerRequested = players.get(random.nextInt(players.size()));
 
 		//Request Card and take cards if player has it, go fish and draw card otherwise
@@ -37,9 +36,8 @@ public class EasyPlayer extends Player implements PlayerInterface {
 			repeatTurn = true;
 			}
 		} else {
-			Card drawnCard = drawCard(GoFish.deck);
+			drawCard(GoFish.deck);
 			numOfCardsRetrieved = 1;
-			hand.add(drawnCard);
 			repeatTurn = false;
 		}
 		//Update BookCheck

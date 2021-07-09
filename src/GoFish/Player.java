@@ -2,7 +2,7 @@
  * 
  */
 package GoFish;
-import GoFish.GoFish;
+//import GoFish.GoFish;
 import com.boyd.deckofcards.*;
 import com.boyd.deckofcards.Card.Rank;
 import java.util.ArrayList;
@@ -16,6 +16,7 @@ import java.util.Scanner;
 public class Player implements PlayerInterface {
 
 	public String name;
+	public String ID;
 	public int position;
 	public boolean repeatTurn;
 	
@@ -36,6 +37,7 @@ public class Player implements PlayerInterface {
 		hand = new ArrayList<Card>();
 		books = new HashMap<Rank, Card[]>();
 		bookCheck = new HashMap<Rank, Integer>();
+		ID = name + "_" + position;
 		
 	}
 
@@ -52,6 +54,10 @@ public class Player implements PlayerInterface {
 	@Override
 	public int getPosition() {
 		return position;
+	}
+	
+	public String getID() {
+		return ID;
 	}
 	
 	@Override
@@ -84,8 +90,8 @@ public class Player implements PlayerInterface {
 	}
 	
 	@Override
-	public Card drawCard(DeckOfCards deck) {
-		return deck.getTopCard();
+	public void drawCard(DeckOfCards deck) {
+		hand.add(deck.getTopCard());
 	}
 	
 	@Override
@@ -156,22 +162,24 @@ public class Player implements PlayerInterface {
 	}
 	
 	@Override
-	public void takeTurn() {
+	public void takeTurn(ArrayList<Player> players) {
 		//These are declared here because the actual initialization is in a try clause, and would create and error.
 		Rank rankRequested = null;
 		Player playerRequested = null;
 		int numOfCardsRetrieved = 0;
-		
+		Scanner inputScanner = new Scanner(System.in);
+		inputScanner.useDelimiter(System.lineSeparator());
+
 		//Get the rank you will request
 		try {
-			rankRequested = getRankSelection();
+			rankRequested = getRankSelection(inputScanner);
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("Error taking turn while running getRankSelection()");			
 		}
 		//Get the player you will make the request to
 		try {
-			playerRequested = getPlayerSelection();
+			playerRequested = getPlayerSelection(inputScanner, players);
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("Error taking turn while running getPlayerSelection()");
@@ -186,9 +194,8 @@ public class Player implements PlayerInterface {
 			repeatTurn = true;
 			}
 		} else {
-			Card drawnCard = drawCard(GoFish.deck);
+			drawCard(GoFish.deck);
 			numOfCardsRetrieved = 1;
-			hand.add(drawnCard);
 			repeatTurn = false;
 		}
 		//Update BookCheck
@@ -197,8 +204,8 @@ public class Player implements PlayerInterface {
 	
 	// This function will only be for testing on command line. It will be replaced once I build a GUI
 	@Override
-	public Rank getRankSelection() throws Exception{
-		System.out.println("Please enter what Rank you want to ask a Player for based on the following list:");
+	public Rank getRankSelection(Scanner inputScanner) {
+		System.out.println("Please enter what Rank you want to ask a Player for based on the following list: ");
 		ArrayList<Rank> rankList = new ArrayList<Rank>();
 		for (Card card : hand) {
 			if (!rankList.contains(card.getRank())) {
@@ -206,53 +213,52 @@ public class Player implements PlayerInterface {
 			}
 		}
 		for (Rank rank : rankList) {
-			System.out.println(rank);
+			System.out.println(rank.toString());
 		}
-		// TODO update exception for User input
-		try {
-		Scanner in = new Scanner(System.in);
-		Rank rank = Rank.valueOf(in.next(name));
-		in.close();
+
+		System.out.println("Enter Rank: ");
+		//Scanner inputRank = new Scanner(System.in);
+		String rankRequest = inputScanner.next();
+		Rank rank = Rank.valueOf(rankRequest);
+		//inputScanner.close();
 		return rank;
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-		// TODO update the thrown Exception
-		throw new Exception("ERROR - No rank was returned with getRankSelection()");
 	}
 	
 	/**
 	 * method used to get the Player the request is made to
 	 * @return - the Player the request is made to
 	 */
-	public Player getPlayerSelection() throws Exception{
-		ArrayList<Player> players = GoFish.players;
-		String playerRequest = "";
-		System.out.print("Please select which player the request will be made to:");
+	public Player getPlayerSelection(Scanner inputScanner, ArrayList<Player> players) {
+
+		System.out.println("Please select which player the request will be made to: ");
 		// Player toString will be outputted
 		for (Player player : players) {
 			System.out.println(player);
 		}
 		// The user input will be a String that matches Player toString output (Case insensitive)
 		// TODO update Exception for User input
-		try {
-		Scanner in = new Scanner(System.in);
-		playerRequest = in.next();
-		in.close();
-		} catch(Exception e ) {
-			e.printStackTrace();
-		}
+		System.out.println("Enter Player selection: ");
+		//Scanner inputPlayer = new Scanner(System.in);
+		String playerRequest = inputScanner.next();
+		System.out.println(playerRequest);
+		inputScanner.close();
+		
+		//Create Player object to return, and then assign the requested Player as that object
+		Player returnedPlayer = null;
 		playerRequest.toLowerCase();
 		for (Player player : players) {
 			String playerString = player.toString();
 			playerString.toLowerCase();
 			if (playerString.equals(playerRequest)) {
-				return player;
+				returnedPlayer = player;
 			}
 		}
-		// TODO update the thrown Exception
-		throw new Exception("ERROR - No Player was returned in getPlayerSelection()");
+		
+		return returnedPlayer;
 	}
 	
+	public String toString() {
+		return this.ID;
+	}
 	
 }
