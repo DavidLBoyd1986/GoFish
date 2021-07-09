@@ -7,6 +7,8 @@ import com.boyd.deckofcards.*;
 import com.boyd.deckofcards.Card.Rank;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Objects;
 import java.util.Scanner;
 
 /**
@@ -103,10 +105,11 @@ public class Player implements PlayerInterface {
 	public Card[] getCards(Rank rank, Player player) {
 		Card[] requestedCards = new Card[4];
 		int count = 0;
-		for (Card card : player.getHand()) {
+		for (Iterator<Card> iterator = player.getHand().iterator(); iterator.hasNext();) {
+			Card card = iterator.next();
 			if (card.getRank().equals(rank)) {
 				requestedCards[count] = card;
-				player.getHand().remove(card);
+				iterator.remove();
 				count++;
 			}
 		}
@@ -190,7 +193,9 @@ public class Player implements PlayerInterface {
 			Card[] retrievedCards = getCards(rankRequested, playerRequested);
 			numOfCardsRetrieved = retrievedCards.length;
 			for (Card card : retrievedCards) {
+				if (Objects.nonNull(card)) {
 				hand.add(card);
+				}
 			repeatTurn = true;
 			}
 		} else {
@@ -217,10 +222,9 @@ public class Player implements PlayerInterface {
 		}
 
 		System.out.println("Enter Rank: ");
-		//Scanner inputRank = new Scanner(System.in);
 		String rankRequest = inputScanner.next();
 		Rank rank = Rank.valueOf(rankRequest);
-		//inputScanner.close();
+		// Scanner left open for selecting a Player input
 		return rank;
 	}
 	
@@ -233,15 +237,15 @@ public class Player implements PlayerInterface {
 		System.out.println("Please select which player the request will be made to: ");
 		// Player toString will be outputted
 		for (Player player : players) {
+			if (player.getID() != this.ID) {
 			System.out.println(player);
+			}
 		}
 		// The user input will be a String that matches Player toString output (Case insensitive)
 		// TODO update Exception for User input
 		System.out.println("Enter Player selection: ");
-		//Scanner inputPlayer = new Scanner(System.in);
 		String playerRequest = inputScanner.next();
-		System.out.println(playerRequest);
-		inputScanner.close();
+		//inputScanner.close();
 		
 		//Create Player object to return, and then assign the requested Player as that object
 		Player returnedPlayer = null;

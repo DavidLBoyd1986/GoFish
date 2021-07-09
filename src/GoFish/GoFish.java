@@ -154,6 +154,11 @@ public class GoFish implements GoFishInterface {
 		//Deal Cards
 		players = dealCards(players);
 		
+		//Do initialBookCheck
+		for (Player player : players) {
+			player.doInitialBookCheck();
+		}
+		
 		//Decide who goes first (will be person left of dealer)
 			// TODO need to decide dealer before I can do this
 		

@@ -2,7 +2,6 @@ package GoFish;
 import com.boyd.deckofcards.Card.Rank;
 import com.boyd.deckofcards.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Scanner;
 
 public interface PlayerInterface {

@@ -1,6 +1,7 @@
 package GoFish;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Random;
 
 import com.boyd.deckofcards.Card;
@@ -17,14 +18,21 @@ public class EasyPlayer extends Player implements PlayerInterface {
 	public void takeTurn(ArrayList<Player> players) {
 
 		Random random = new Random();
-		boolean repeatTurn = false;
+		this.repeatTurn = false;
 		int numOfCardsRetrieved = 0;
 		
 		//Get the rank you will request
 		Card cardRequested = hand.get(random.nextInt(hand.size()));
 		Rank rankRequested = cardRequested.getRank();
-		//Get the player you will make the request to
-		Player playerRequested = players.get(random.nextInt(players.size()));
+		//Get the player you will make the request to.
+		//Need to create new list without this Player
+		ArrayList<Player> playerList = new ArrayList<>();
+		for (Player player : players) {
+			if (player.getID() != this.getID()) {
+				playerList.add(player);
+			}
+		}
+		Player playerRequested = playerList.get(random.nextInt(playerList.size()));
 
 		//Request Card and take cards if player has it, go fish and draw card otherwise
 		boolean cardRequest = requestCards(rankRequested, playerRequested);
@@ -32,9 +40,11 @@ public class EasyPlayer extends Player implements PlayerInterface {
 			Card[] retrievedCards = getCards(rankRequested, playerRequested);
 			numOfCardsRetrieved = retrievedCards.length;
 			for (Card card : retrievedCards) {
+				if (Objects.nonNull(card)) {
 				hand.add(card);
-			repeatTurn = true;
+				}
 			}
+			this.repeatTurn = true;
 		} else {
 			drawCard(GoFish.deck);
 			numOfCardsRetrieved = 1;
