@@ -4,6 +4,7 @@ import com.boyd.deckofcards.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.Set;
 
 public interface PlayerInterface {
 
@@ -26,6 +27,12 @@ public interface PlayerInterface {
 	 * @return - int representing the Player's position at the table
 	 */
 	public int getPosition();
+	
+	/**
+	 * Gets all the Player's books
+	 * @return - String representing the HashMap of all the Player's books
+	 */
+	public Set<Rank> getBooks();
 	
 	/**
 	 * Gets the hand for the Player

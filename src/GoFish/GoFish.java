@@ -179,6 +179,7 @@ public class GoFish implements GoFishInterface {
 					System.out.println(player.ID + "'s Books: " + player.books);
 					player.takeTurn(players);
 					gameOver = isGameOver();
+					System.out.println(" ");
 				}
 			}
 		}

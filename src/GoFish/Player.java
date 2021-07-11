@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.Scanner;
+import java.util.Set;
 
 /**
  * @author David
@@ -65,6 +66,11 @@ public class Player implements PlayerInterface {
 	@Override
 	public ArrayList<Card> getHand() {
 		return hand;
+	}
+	
+	@Override
+	public Set<Rank> getBooks(){
+		return books.keySet();
 	}
 	
 	@Override
@@ -142,19 +148,25 @@ public class Player implements PlayerInterface {
 	
 	@Override
 	public void updateBookCheck(Rank rank, int cardCount) {
+		//If alreayd has one of those Cards
 		if (bookCheck.containsKey(rank)) {
 			// Add the cardCounts together
 			int oldCardCount = bookCheck.get(rank).intValue();
 			Integer newCardCount = new Integer(cardCount + oldCardCount);
-			// If person has all 4 of the Rank make the book and set bookCheck to 0
+			// If person has all 4 of the Rank make the book and remove rank
 			if (newCardCount.intValue() == 4) {
 				createBook(rank);
 				newCardCount = new Integer(0);
-				bookCheck.replace(rank, oldCardCount, newCardCount);
+				bookCheck.remove(rank);
+			} else if (newCardCount.intValue() == 0) {
+				// If they lost all the cards remove the rank from bookcheck
+				bookCheck.remove(rank);
 			} else {
+				// Normal update of the cards
 				bookCheck.replace(rank, oldCardCount, newCardCount);
 			}	
 		} else {
+			// They don't have a card of the rank, so add it
 			bookCheck.put(rank, cardCount);
 		}
 	}
@@ -235,15 +247,7 @@ public class Player implements PlayerInterface {
 			}
 		}
 		
-		// Delete and use updated bookCheck
-		ArrayList<Rank> noDuplicateRanks = new ArrayList<Rank>();
-		for (Card card : this.getHand()) {
-			if (!noDuplicateRanks.contains(card.getRank()));
-				System.out.print(card.getRank() + ", ");
-				noDuplicateRanks.add(card.getRank());
-		}
-		
-
+		System.out.println(this.getBookCheck());
 		System.out.println("Enter Rank: ");
 		String rankRequest = inputScanner.next();
 		Rank rank = Rank.valueOf(rankRequest);
