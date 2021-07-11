@@ -68,6 +68,11 @@ public class Player implements PlayerInterface {
 	}
 	
 	@Override
+	public HashMap<Rank, Integer> getBookCheck() {
+		return bookCheck;
+	}
+	
+	@Override
 	public int getNumOfBooks() {
 		int numOfBooks = books.size();
 		return numOfBooks;
@@ -92,8 +97,11 @@ public class Player implements PlayerInterface {
 	}
 	
 	@Override
-	public void drawCard(DeckOfCards deck) {
-		hand.add(deck.getTopCard());
+	public Rank drawCard(DeckOfCards deck) {
+		Card cardDrawn = deck.getTopCard();
+		Rank rankDrawn = cardDrawn.getRank();
+		hand.add(cardDrawn);
+		return rankDrawn;
 	}
 	
 	@Override
@@ -113,9 +121,8 @@ public class Player implements PlayerInterface {
 				count++;
 			}
 		}
-		// The below originally had (rank, requestedCards.length * -1)
-		// changing it to (rank, count)
-		player.updateBookCheck(rank, count);
+		// The below updates the bookcheck of the Player losing the card
+		player.updateBookCheck(rank, count * -1);
 		return requestedCards;
 	}
 	
@@ -168,7 +175,7 @@ public class Player implements PlayerInterface {
 	
 	@Override
 	public void takeTurn(ArrayList<Player> players) {
-		//These are declared here because the actual initialization is in a try clause, and would create and error.
+		//These are declared here because the actual initialization is in a try clause, and would create an error.
 		Rank rankRequested = null;
 		Player playerRequested = null;
 		int numOfCardsRetrieved = 0;
@@ -193,35 +200,49 @@ public class Player implements PlayerInterface {
 		boolean cardRequest = requestCards(rankRequested, playerRequested);
 		if (cardRequest) {
 			Card[] retrievedCards = getCards(rankRequested, playerRequested);
-			numOfCardsRetrieved = retrievedCards.length;
 			for (Card card : retrievedCards) {
 				if (Objects.nonNull(card)) {
 				hand.add(card);
+				numOfCardsRetrieved += 1;
 				}
-			repeatTurn = true;
 			}
+			repeatTurn = true;
+			updateBookCheck(rankRequested, numOfCardsRetrieved);
+			System.out.println(playerRequested.getID() +
+					" had that card. Received " + numOfCardsRetrieved
+					+ " " + rankRequested + "'s");
 		} else {
-			drawCard(GoFish.deck);
+			Rank rankDrawn = drawCard(GoFish.deck);
 			numOfCardsRetrieved = 1;
 			repeatTurn = false;
+			updateBookCheck(rankDrawn, numOfCardsRetrieved);
+			System.out.println(playerRequested.getID() +
+					" didn't have that card. Go Fish!!!");
+			System.out.println("You drew a: " + rankDrawn);
 		}
-		//Update BookCheck
-		updateBookCheck(rankRequested, numOfCardsRetrieved);
+		
 	}
 	
 	// This function will only be for testing on command line. It will be replaced once I build a GUI
 	@Override
 	public Rank getRankSelection(Scanner inputScanner) {
-		System.out.println("Please enter what Rank you want to ask a Player for based on the following list: ");
+		System.out.println("Please enter what Rank of card you have in your"
+				+ " hand want to request from another Player: ");
 		ArrayList<Rank> rankList = new ArrayList<Rank>();
 		for (Card card : hand) {
 			if (!rankList.contains(card.getRank())) {
 				rankList.add(card.getRank());
 			}
 		}
-		for (Rank rank : rankList) {
-			System.out.println(rank.toString());
+		
+		// Delete and use updated bookCheck
+		ArrayList<Rank> noDuplicateRanks = new ArrayList<Rank>();
+		for (Card card : this.getHand()) {
+			if (!noDuplicateRanks.contains(card.getRank()));
+				System.out.print(card.getRank() + ", ");
+				noDuplicateRanks.add(card.getRank());
 		}
+		
 
 		System.out.println("Enter Rank: ");
 		String rankRequest = inputScanner.next();

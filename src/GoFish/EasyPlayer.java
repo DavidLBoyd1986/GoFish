@@ -38,20 +38,26 @@ public class EasyPlayer extends Player implements PlayerInterface {
 		boolean cardRequest = requestCards(rankRequested, playerRequested);
 		if (cardRequest) {
 			Card[] retrievedCards = getCards(rankRequested, playerRequested);
-			numOfCardsRetrieved = retrievedCards.length;
 			for (Card card : retrievedCards) {
 				if (Objects.nonNull(card)) {
 				hand.add(card);
+				numOfCardsRetrieved += 1;
 				}
 			}
+			updateBookCheck(rankRequested, numOfCardsRetrieved);
 			this.repeatTurn = true;
+			System.out.println(this.getID() + " requested " + rankRequested
+					+ " from " + playerRequested + " and received "
+					+ numOfCardsRetrieved + " cards.");
 		} else {
-			drawCard(GoFish.deck);
+			Rank rankDrawn = drawCard(GoFish.deck);
 			numOfCardsRetrieved = 1;
 			repeatTurn = false;
+			updateBookCheck(rankDrawn, numOfCardsRetrieved);
+			System.out.println(this.getID() + " requested " + rankRequested
+					+ " from " + playerRequested + " and had to Go Fish.");
 		}
-		//Update BookCheck
-		updateBookCheck(rankRequested, numOfCardsRetrieved);
+
 	}
 	
 }

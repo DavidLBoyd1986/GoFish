@@ -2,6 +2,7 @@ package GoFish;
 import com.boyd.deckofcards.Card.Rank;
 import com.boyd.deckofcards.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public interface PlayerInterface {
@@ -32,6 +33,12 @@ public interface PlayerInterface {
 	 * @return - An ArrayList representing that Player's hands.
 	 */
 	public ArrayList<Card> getHand();
+	/**
+	 * Gets the bookCheck HashMap
+	 * 
+	 * @return the bookCheck Hashmap
+	 */
+	public HashMap<Rank, Integer> getBookCheck();
 	
 	/**
 	 * Gets all the books the player has
@@ -77,8 +84,9 @@ public interface PlayerInterface {
 	 * Draws one Card from the top of the DeckOfCards, and puts it in the Player's hand
 	 * 
 	 * @param deck - DeckOfCards the Player will draw the card from
+	 * @return drawnRank - Rank of card drawn
 	 */
-	public void drawCard(DeckOfCards deck);
+	public Rank drawCard(DeckOfCards deck);
 	
 	/**
 	 * Updates a Player's bookCheck with the number of Card's by Rank they have
