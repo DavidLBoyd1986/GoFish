@@ -175,10 +175,13 @@ public class Player implements PlayerInterface {
 	public void createBook(Rank rank) {
 		Card[] book = new Card[4];
 		int count = 0;
-		for (Card card : hand) {
+
+		for (Iterator<Card> iterator = hand.iterator(); iterator.hasNext();) {
+			Card card = iterator.next();
 			if (card.getRank().equals(rank)) {
 				book[count] = card;
 				count++;
+				iterator.remove();
 			}
 		}
 		assert(book.length == 4);
