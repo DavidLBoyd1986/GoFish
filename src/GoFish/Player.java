@@ -6,6 +6,7 @@ package GoFish;
 import com.boyd.deckofcards.*;
 import com.boyd.deckofcards.Card.Rank;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Objects;
@@ -243,51 +244,67 @@ public class Player implements PlayerInterface {
 	public Rank getRankSelection(Scanner inputScanner) {
 		System.out.println("Please enter what Rank of card you have in your"
 				+ " hand want to request from another Player: ");
-		ArrayList<Rank> rankList = new ArrayList<Rank>();
-		for (Card card : hand) {
-			if (!rankList.contains(card.getRank())) {
-				rankList.add(card.getRank());
-			}
-		}
 		
+		//Print bookcheck so User can select a Rank already held in hand
 		System.out.println(this.getBookCheck());
 		System.out.println("Enter Rank: ");
-		String rankRequest = inputScanner.next();
-		Rank rank = Rank.valueOf(rankRequest);
-		// Scanner left open for selecting a Player input
+		//variable that tests if input is valid
+		boolean inputValid = false;
+		//Set up Rank variable
+		Rank rank = null;
+		//Create list of Rank Strings to check if input is valid
+		ArrayList<String> rankCheck = new ArrayList<String>();
+		for (Rank rankString : Arrays.asList(Rank.values())) {
+			rankCheck.add(rankString.toString());
+		}
+		//Loop until input is valid
+		while (!inputValid) {
+			String rankRequest = inputScanner.next();
+			rankRequest = rankRequest.toUpperCase();
+			if (rankCheck.contains(rankRequest)) {
+					rank = Rank.valueOf(rankRequest);
+					inputValid = true;
+			} else {
+				System.out.println("Invalid Rank Selection. Try Again....");
+			}
+		}
 		return rank;
 	}
 	
-	/**
-	 * method used to get the Player the request is made to
-	 * @return - the Player the request is made to
-	 */
 	public Player getPlayerSelection(Scanner inputScanner, ArrayList<Player> players) {
 
 		System.out.println("Please select which player the request will be made to: ");
-		// Player toString will be outputted
+		// Create list of Player ID Strings to check if input is valid
+		ArrayList<String> playerIDs = new ArrayList<String>();
 		for (Player player : players) {
 			if (player.getID() != this.ID) {
-			System.out.println(player);
+				playerIDs.add(player.getID().toLowerCase());
 			}
 		}
-		// The user input will be a String that matches Player toString output (Case insensitive)
-		// TODO update Exception for User input
-		System.out.println("Enter Player selection: ");
-		String playerRequest = inputScanner.next();
-		//inputScanner.close();
-		
-		//Create Player object to return, and then assign the requested Player as that object
+		System.out.println("Enter Player to request Rank from: ");
+		System.out.println(playerIDs);
+		// Set up variables
+		boolean inputValid = false;
 		Player returnedPlayer = null;
-		playerRequest.toLowerCase();
-		for (Player player : players) {
-			String playerString = player.toString();
-			playerString.toLowerCase();
-			if (playerString.equals(playerRequest)) {
-				returnedPlayer = player;
-			}
+		//Input validation loop
+		while (!inputValid) {
+			String playerRequest = inputScanner.next();
+			playerRequest = playerRequest.toLowerCase();
+			if (playerIDs.contains(playerRequest)) {
+				//Still have to loop through Players to get the one requested.
+				for (Player player : players) {
+					String playerString = player.getID();
+					playerString = playerString.toLowerCase();
+					if (playerString.equals(playerRequest)) {
+						returnedPlayer = player;
+					}
+				}
+				inputValid = true;
+			} else {
+				System.out.println("Invalid Player Selection. Try Again....");
+			}		
 		}
-		
+		// Return Player selected
 		return returnedPlayer;
 	}
 	
