@@ -1,5 +1,8 @@
 package test;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -45,6 +48,16 @@ public class PlayerTest {
      * Test 7 - testGetBooksCardArray() returns True if HashMap has 4 cards
      * 
      * Test 8 - testCreateBookRemoveCards() returns True if createBook removes cards from hand.
+     * 
+     * Test 9 - testSetRepeatTurn() returns True if setRepeatTurn updates the value
+     * 
+     * Test 10 - testGetHand() returns True if getHand returns ArrayList of correct size
+     * 
+     * Test 11 - testGetBookCheck() returns True if getBookCheck returns an empty HashMap
+     * 
+     * Test 12 - testDoInitialBookCheck() returns True if doInitialBookCheck accurately updates bookCheck
+     * 
+     * Test 13 - testDoInitialBookCheckCreateBook() returns True if doInitialBookCheck creates a book if dealt all 4 cards.
 	*/
 	
 	
@@ -60,18 +73,18 @@ public class PlayerTest {
 		deck = new DeckOfCards();
 		testPlayer = new Player("Test", 1);
 		hand = new ArrayList<Card>();
-		hand.addAll(Arrays.asList(deck.getCardsTop(5)));
 		bookCheck = new HashMap<Rank, Integer>();
-		books = new HashMap<Rank, Card[]>();
-		//Update bookCheck
-		for (Card card : hand) {
-			if (bookCheck.containsKey(card.getRank())) {
-				int value = bookCheck.get(card.getRank()) + 1;
-				bookCheck.replace(card.getRank(), value);
-			} else {
-				bookCheck.put(card.getRank(), 1);
-			}
-		}
+//		books = new HashMap<Rank, Card[]>();
+//		hand.addAll(Arrays.asList(deck.getCardsTop(5)));
+//		//Update bookCheck
+//		for (Card card : hand) {
+//			if (bookCheck.containsKey(card.getRank())) {
+//				int value = bookCheck.get(card.getRank()) + 1;
+//				bookCheck.replace(card.getRank(), value);
+//			} else {
+//				bookCheck.put(card.getRank(), 1);
+//			}
+//		}
 		testPlayer.hand = hand;
 		testPlayer.bookCheck = bookCheck;
 	}
@@ -98,6 +111,10 @@ public class PlayerTest {
 	
 	@Test //5
 	void testGetBooksOneBook() {
+		testPlayer.hand.add(deck.getExactCard(Suit.CLUB, Rank.ACE).get());
+		testPlayer.hand.add(deck.getExactCard(Suit.HEART, Rank.ACE).get());
+		testPlayer.hand.add(deck.getExactCard(Suit.SPADE, Rank.ACE).get());
+		testPlayer.hand.add(deck.getExactCard(Suit.DIAMOND, Rank.ACE).get());
 		testPlayer.createBook(Rank.ACE);
 		HashSet<Rank> testBooks = new HashSet<Rank>();
 		testBooks.add(Rank.ACE);
@@ -106,6 +123,14 @@ public class PlayerTest {
 	
 	@Test //6
 	void testGetBooksTwoBooks() {
+		testPlayer.hand.add(deck.getExactCard(Suit.CLUB, Rank.ACE).get());
+		testPlayer.hand.add(deck.getExactCard(Suit.HEART, Rank.ACE).get());
+		testPlayer.hand.add(deck.getExactCard(Suit.SPADE, Rank.ACE).get());
+		testPlayer.hand.add(deck.getExactCard(Suit.DIAMOND, Rank.ACE).get());
+		testPlayer.hand.add(deck.getExactCard(Suit.CLUB, Rank.TWO).get());
+		testPlayer.hand.add(deck.getExactCard(Suit.HEART, Rank.TWO).get());
+		testPlayer.hand.add(deck.getExactCard(Suit.SPADE, Rank.TWO).get());
+		testPlayer.hand.add(deck.getExactCard(Suit.DIAMOND, Rank.TWO).get());
 		testPlayer.createBook(Rank.ACE);
 		testPlayer.createBook(Rank.TWO);
 		HashSet<Rank> testBooks = new HashSet<Rank>();
@@ -116,12 +141,70 @@ public class PlayerTest {
 	
 	@Test //7
 	void testGetBooksCardArray() {
+		testPlayer.hand.add(deck.getExactCard(Suit.CLUB, Rank.ACE).get());
+		testPlayer.hand.add(deck.getExactCard(Suit.HEART, Rank.ACE).get());
+		testPlayer.hand.add(deck.getExactCard(Suit.SPADE, Rank.ACE).get());
+		testPlayer.hand.add(deck.getExactCard(Suit.DIAMOND, Rank.ACE).get());
 		testPlayer.createBook(Rank.ACE);
 		assert(testPlayer.books.get(Rank.ACE).length == 4);
 	}
 	
 	@Test //8
 	void testCreateBookRemoveCards() {
-		
+		testPlayer.hand.add(deck.getExactCard(Suit.CLUB, Rank.ACE).get());
+		testPlayer.hand.add(deck.getExactCard(Suit.HEART, Rank.ACE).get());
+		testPlayer.hand.add(deck.getExactCard(Suit.SPADE, Rank.ACE).get());
+		testPlayer.hand.add(deck.getExactCard(Suit.DIAMOND, Rank.ACE).get());
+		assert(testPlayer.getHand().size() == 4);
+		testPlayer.createBook(Rank.ACE);
+		assert(testPlayer.getHand().size() == 0);
+	}
+	
+	@Test //9
+	void testSetRepeatTurn() {
+		testPlayer.setRepeatTurn(false);
+		assertFalse(testPlayer.repeatTurn);
+		testPlayer.setRepeatTurn(true);
+		assertTrue(testPlayer.repeatTurn);
+	}
+	
+	@Test //10
+	void testGetHand() {
+		assert(testPlayer.getHand().size() == 0);
+		testPlayer.hand.addAll(Arrays.asList(deck.getCardsRandom(10)));
+		assert(testPlayer.getHand().size() == 10);
+	}
+	
+	@Test //11
+	void testGetBookCheck() {
+		assert(testPlayer.getBookCheck().equals(Collections.EMPTY_MAP));
+	}
+	
+	@Test //12
+	void testDoInitialBookCheck() {
+		testPlayer.hand.add(deck.getExactCard(Suit.CLUB, Rank.ACE).get());
+		testPlayer.hand.add(deck.getExactCard(Suit.HEART, Rank.ACE).get());
+		testPlayer.hand.add(deck.getExactCard(Suit.SPADE, Rank.ACE).get());
+		testPlayer.hand.add(deck.getExactCard(Suit.CLUB, Rank.TWO).get());
+		testPlayer.hand.add(deck.getExactCard(Suit.HEART, Rank.TWO).get());
+		testPlayer.hand.add(deck.getExactCard(Suit.SPADE, Rank.TWO).get());
+		testPlayer.doInitialBookCheck();
+		HashMap<Rank, Integer> testBookCheck = new HashMap<Rank, Integer>();
+		Integer three = new Integer(3);
+		testBookCheck.put(Rank.ACE, three);
+		testBookCheck.put(Rank.TWO, three);
+		assert(testPlayer.getBookCheck().equals(testBookCheck));
+	}
+	
+	@Test //13
+	void testDoInitialBookCheckCreateBook() {
+		testPlayer.hand.add(deck.getExactCard(Suit.CLUB, Rank.ACE).get());
+		testPlayer.hand.add(deck.getExactCard(Suit.HEART, Rank.ACE).get());
+		testPlayer.hand.add(deck.getExactCard(Suit.SPADE, Rank.ACE).get());
+		testPlayer.hand.add(deck.getExactCard(Suit.DIAMOND, Rank.ACE).get());
+		testPlayer.doInitialBookCheck();
+		HashSet<Rank> testBooks = new HashSet<Rank>();
+		testBooks.add(Rank.ACE);
+		assert(testPlayer.getBooks().equals(testBooks));
 	}
 }

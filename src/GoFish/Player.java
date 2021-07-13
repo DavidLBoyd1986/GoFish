@@ -184,7 +184,7 @@ public class Player implements PlayerInterface {
 				iterator.remove();
 			}
 		}
-		assert(book.length == 4);
+		assert(count == 4);
 		books.put(rank, book);
 	}
 	
