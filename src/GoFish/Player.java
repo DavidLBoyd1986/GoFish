@@ -134,21 +134,35 @@ public class Player implements PlayerInterface {
 	
 	@Override
 	public void doInitialBookCheck() {
+		//Two variables are initialized on the off chance dealt 4 of one rank
+		boolean createBook = false;
+		Rank rankToBook = null;
+
 		for (Card card : hand) {
 			if (bookCheck.containsKey(card.getRank())) {
-				// Create a new Integer that is +1 of the previous value
-				Integer numOfRank = new Integer(bookCheck.get(card.getRank()).intValue() + 1);
+				Integer numOfRank = new Integer(
+						bookCheck.get(card.getRank()).intValue() + 1);
 				bookCheck.replace(card.getRank(), numOfRank);
+				// If dealt 4 remember rank to createBook out of loop;
+				if (numOfRank.intValue() == 4) {
+					rankToBook = card.getRank();
+					createBook = true;
+				}
 			} else {
 				Integer numOfRank = new Integer(1);
 				bookCheck.put(card.getRank(), numOfRank);
 			}
 		}
+		// Someone was dealt 4 of one rank
+		if (createBook) {
+			createBook(rankToBook);
+			bookCheck.remove(rankToBook);
+		}
 	}
 	
 	@Override
 	public void updateBookCheck(Rank rank, int cardCount) {
-		//If alreayd has one of those Cards
+		//If already has one of those Cards
 		if (bookCheck.containsKey(rank)) {
 			// Add the cardCounts together
 			int oldCardCount = bookCheck.get(rank).intValue();

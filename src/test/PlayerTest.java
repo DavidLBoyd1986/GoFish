@@ -58,6 +58,14 @@ public class PlayerTest {
      * Test 12 - testDoInitialBookCheck() returns True if doInitialBookCheck accurately updates bookCheck
      * 
      * Test 13 - testDoInitialBookCheckCreateBook() returns True if doInitialBookCheck creates a book if dealt all 4 cards.
+     * 
+     * Test 14 - testUpdateBookCheck() returns True if updateBookCheck accurately updates bookCheck
+     * 
+     * Test 15 - testGetNumOfBooks() returns True if getNumOfBooks() accurately returns the correct # of books a person has
+     * 
+     * Test 16 - testHasRank() returns True if hasRank returns the correct boolean for having that rank
+     * 
+     * Test 17 - testRequestCards() returns True if requestCards() returns the correct boolean for player having that rank
 	*/
 	
 	
@@ -206,5 +214,69 @@ public class PlayerTest {
 		HashSet<Rank> testBooks = new HashSet<Rank>();
 		testBooks.add(Rank.ACE);
 		assert(testPlayer.getBooks().equals(testBooks));
+		assert(testPlayer.getHand().size() == 0);
+		assert(testPlayer.getNumOfBooks() == 1);
+	}
+	
+	@Test //14
+	void testUpdateBookCheck() {
+		testPlayer.hand.add(deck.getExactCard(Suit.CLUB, Rank.ACE).get());
+		testPlayer.hand.add(deck.getExactCard(Suit.HEART, Rank.TWO).get());
+		testPlayer.hand.add(deck.getExactCard(Suit.SPADE, Rank.FIVE).get());
+		testPlayer.hand.add(deck.getExactCard(Suit.DIAMOND, Rank.FIVE).get());
+		testPlayer.updateBookCheck(Rank.ACE, 1);
+		testPlayer.updateBookCheck(Rank.TWO, 1);
+		testPlayer.updateBookCheck(Rank.FIVE, 2);
+		HashMap<Rank, Integer> testBookCheck = new HashMap<Rank, Integer>();
+		Integer testIntOne = new Integer(1);
+		testBookCheck.put(Rank.ACE, testIntOne);
+		testBookCheck.put(Rank.TWO, 1);
+		testBookCheck.put(Rank.FIVE, 2);
+		assert(testPlayer.getBookCheck().equals(testBookCheck));
+		assert(testPlayer.getHand().size() == 4);
+	}
+	
+	@Test //15
+	void testGetNumOfBooks() {
+		testPlayer.hand.add(deck.getExactCard(Suit.CLUB, Rank.ACE).get());
+		testPlayer.hand.add(deck.getExactCard(Suit.HEART, Rank.ACE).get());
+		testPlayer.hand.add(deck.getExactCard(Suit.SPADE, Rank.ACE).get());
+		testPlayer.hand.add(deck.getExactCard(Suit.DIAMOND, Rank.ACE).get());
+		testPlayer.hand.add(deck.getExactCard(Suit.CLUB, Rank.TWO).get());
+		testPlayer.hand.add(deck.getExactCard(Suit.HEART, Rank.TWO).get());
+		testPlayer.hand.add(deck.getExactCard(Suit.SPADE, Rank.TWO).get());
+		testPlayer.hand.add(deck.getExactCard(Suit.DIAMOND, Rank.TWO).get());
+		testPlayer.createBook(Rank.ACE);
+		testPlayer.createBook(Rank.TWO);
+		assert(testPlayer.getNumOfBooks() == 2);
+	}
+	
+	@Test //16
+	void testHasRank() {
+		testPlayer.hand.add(deck.getExactCard(Suit.HEART, Rank.KING).get());
+		testPlayer.hand.add(deck.getExactCard(Suit.CLUB, Rank.ACE).get());
+		testPlayer.hand.add(deck.getExactCard(Suit.HEART, Rank.ACE).get());
+		testPlayer.hand.add(deck.getExactCard(Suit.CLUB, Rank.QUEEN).get());
+		testPlayer.hand.add(deck.getExactCard(Suit.HEART, Rank.QUEEN).get());
+		testPlayer.hand.add(deck.getExactCard(Suit.SPADE, Rank.QUEEN).get());
+		assertTrue(testPlayer.hasRank(Rank.KING));
+		assertTrue(testPlayer.hasRank(Rank.ACE));
+		assertTrue(testPlayer.hasRank(Rank.QUEEN));
+		assertFalse(testPlayer.hasRank(Rank.TWO));
+	}
+	
+	@Test //17
+	void testRequestCards() {
+		Player testPlayer2 = new Player("test", 2);
+		testPlayer2.hand.add(deck.getExactCard(Suit.HEART, Rank.KING).get());
+		testPlayer2.hand.add(deck.getExactCard(Suit.CLUB, Rank.ACE).get());
+		testPlayer2.hand.add(deck.getExactCard(Suit.HEART, Rank.ACE).get());
+		testPlayer2.hand.add(deck.getExactCard(Suit.CLUB, Rank.QUEEN).get());
+		testPlayer2.hand.add(deck.getExactCard(Suit.HEART, Rank.QUEEN).get());
+		testPlayer2.hand.add(deck.getExactCard(Suit.SPADE, Rank.QUEEN).get());
+		assertTrue(testPlayer.requestCards(Rank.KING, testPlayer2));
+		assertTrue(testPlayer.requestCards(Rank.ACE, testPlayer2));
+		assertTrue(testPlayer.requestCards(Rank.QUEEN, testPlayer2));
+		assertFalse(testPlayer.requestCards(Rank.TWO, testPlayer2));
 	}
 }
