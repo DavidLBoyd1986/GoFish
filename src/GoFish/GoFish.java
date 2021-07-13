@@ -3,12 +3,12 @@
  */
 package GoFish;
 
-import java.util.HashMap;
+//import java.util.HashMap;
 import java.util.Scanner;
 import java.util.ArrayList;
 
-import com.boyd.deckofcards.Card;
-import com.boyd.deckofcards.Card.Rank;
+//import com.boyd.deckofcards.Card;
+//import com.boyd.deckofcards.Card.Rank;
 import com.boyd.deckofcards.*;
 
 /**
@@ -19,7 +19,7 @@ public class GoFish implements GoFishInterface {
 
 	public ArrayList<Player> players;
 	public int numOfPlayers;
-	public static DeckOfCards deck = new DeckOfCards();
+	public DeckOfCards deck;
 	public boolean gameOver;
 	/**
 	 * 
@@ -28,6 +28,9 @@ public class GoFish implements GoFishInterface {
 		players = new ArrayList<Player>();
 		numOfPlayers = 4;
 		gameOver = false;
+		deck = new DeckOfCards();
+		deck.shuffleDeck();
+		
 	}
 	
 	@Override
@@ -177,7 +180,7 @@ public class GoFish implements GoFishInterface {
 					System.out.println(player.ID + "'s BookCheck: "
 							+ player.getBookCheck());
 					System.out.println(player.ID + "'s Books: " + player.books);
-					player.takeTurn(players);
+					player.takeTurn(players, deck);
 					gameOver = isGameOver();
 					System.out.println(" ");
 				}

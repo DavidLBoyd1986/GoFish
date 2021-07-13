@@ -6,6 +6,7 @@ import java.util.Random;
 
 import com.boyd.deckofcards.Card;
 import com.boyd.deckofcards.Card.Rank;
+import com.boyd.deckofcards.DeckOfCards;
 
 public class EasyPlayer extends Player implements PlayerInterface {
 
@@ -15,7 +16,7 @@ public class EasyPlayer extends Player implements PlayerInterface {
 	}
 
 	@Override
-	public void takeTurn(ArrayList<Player> players) {
+	public void takeTurn(ArrayList<Player> players, DeckOfCards deck) {
 
 		Random random = new Random();
 		this.repeatTurn = false;
@@ -50,7 +51,7 @@ public class EasyPlayer extends Player implements PlayerInterface {
 					+ " from " + playerRequested + " and received "
 					+ numOfCardsRetrieved + " cards.");
 		} else {
-			Rank rankDrawn = drawCard(GoFish.deck);
+			Rank rankDrawn = drawCard(deck);
 			numOfCardsRetrieved = 1;
 			repeatTurn = false;
 			updateBookCheck(rankDrawn, numOfCardsRetrieved);

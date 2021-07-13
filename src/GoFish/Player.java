@@ -6,7 +6,6 @@ package GoFish;
 import com.boyd.deckofcards.*;
 import com.boyd.deckofcards.Card.Rank;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Objects;
@@ -41,7 +40,7 @@ public class Player implements PlayerInterface {
 		hand = new ArrayList<Card>();
 		books = new HashMap<Rank, Card[]>();
 		bookCheck = new HashMap<Rank, Integer>();
-		ID = name + "_" + position;
+		ID = name + position;
 		
 	}
 
@@ -190,7 +189,7 @@ public class Player implements PlayerInterface {
 	}
 	
 	@Override
-	public void takeTurn(ArrayList<Player> players) {
+	public void takeTurn(ArrayList<Player> players, DeckOfCards deck) {
 		//These are declared here because the actual initialization is in a try clause, and would create an error.
 		Rank rankRequested = null;
 		Player playerRequested = null;
@@ -228,7 +227,7 @@ public class Player implements PlayerInterface {
 					" had that card. Received " + numOfCardsRetrieved
 					+ " " + rankRequested + "'s");
 		} else {
-			Rank rankDrawn = drawCard(GoFish.deck);
+			Rank rankDrawn = drawCard(deck);
 			numOfCardsRetrieved = 1;
 			repeatTurn = false;
 			updateBookCheck(rankDrawn, numOfCardsRetrieved);
@@ -236,7 +235,6 @@ public class Player implements PlayerInterface {
 					" didn't have that card. Go Fish!!!");
 			System.out.println("You drew a: " + rankDrawn);
 		}
-		
 	}
 	
 	// This function will only be for testing on command line. It will be replaced once I build a GUI
