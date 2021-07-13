@@ -252,15 +252,17 @@ public class Player implements PlayerInterface {
 		boolean inputValid = false;
 		//Set up Rank variable
 		Rank rank = null;
-		//Create list of Rank Strings to check if input is valid
+		//Create list of Rank Strings from Cards held to verify if input's valid
 		ArrayList<String> rankCheck = new ArrayList<String>();
-		for (Rank rankString : Arrays.asList(Rank.values())) {
-			rankCheck.add(rankString.toString());
+		for (Card card : this.hand) {
+			rankCheck.add(card.getRank().toString());
 		}
+		
 		//Loop until input is valid
 		while (!inputValid) {
 			String rankRequest = inputScanner.next();
 			rankRequest = rankRequest.toUpperCase();
+			// check it's a valid Rank before changing input String to Rank
 			if (rankCheck.contains(rankRequest)) {
 					rank = Rank.valueOf(rankRequest);
 					inputValid = true;
