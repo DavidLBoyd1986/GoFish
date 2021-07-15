@@ -133,7 +133,6 @@ public class PlayerTest {
 	*/
 	
 	
-	
 	DeckOfCards deck;
 	Player testPlayer;
 	ArrayList<Card> hand;
@@ -764,4 +763,6 @@ public class PlayerTest {
 		assert(testInputCapital.getID().equals("Test44"));
 		inputScanner.close();
 	}
+	
+	
 }
