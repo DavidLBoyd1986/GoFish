@@ -241,13 +241,19 @@ public class Player implements PlayerInterface {
 					" had that card. Received " + numOfCardsRetrieved
 					+ " " + rankRequested + "'s");
 		} else {
-			Rank rankDrawn = drawCard(deck);
-			numOfCardsRetrieved = 1;
-			repeatTurn = false;
-			updateBookCheck(rankDrawn, numOfCardsRetrieved);
-			System.out.println(playerRequested.getID() +
-					" didn't have that card. Go Fish!!!");
-			System.out.println("You drew a: " + rankDrawn);
+			if (deck.getNumCardsInDeck() == 0 ) {
+				System.out.println(playerRequested.getID() +
+						" didn't have that card, but there are"
+						+ " no cards left in the deck to draw!!!");
+			} else {
+				Rank rankDrawn = drawCard(deck);
+				numOfCardsRetrieved = 1;
+				repeatTurn = false;
+				updateBookCheck(rankDrawn, numOfCardsRetrieved);
+				System.out.println(playerRequested.getID() +
+						" didn't have that card. Go Fish!!!");
+				System.out.println("You drew a: " + rankDrawn);
+			}
 		}
 	}
 	

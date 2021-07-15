@@ -51,12 +51,19 @@ public class EasyPlayer extends Player implements PlayerInterface {
 					+ " from " + playerRequested + " and received "
 					+ numOfCardsRetrieved + " cards.");
 		} else {
-			Rank rankDrawn = drawCard(deck);
-			numOfCardsRetrieved = 1;
-			repeatTurn = false;
-			updateBookCheck(rankDrawn, numOfCardsRetrieved);
-			System.out.println(this.getID() + " requested " + rankRequested
-					+ " from " + playerRequested + " and had to Go Fish.");
+			if (deck.getNumCardsInDeck() == 0 ) {
+				System.out.println(playerRequested.getID() +
+						" didn't have that card, but there are"
+						+ " no cards left in the deck to draw!!!");
+			} else {
+				Rank rankDrawn = drawCard(deck);
+				numOfCardsRetrieved = 1;
+				repeatTurn = false;
+				updateBookCheck(rankDrawn, numOfCardsRetrieved);
+				System.out.println(playerRequested.getID() +
+						" didn't have that card. Go Fish!!!");
+				System.out.println("You drew a: " + rankDrawn);
+			}
 		}
 
 	}

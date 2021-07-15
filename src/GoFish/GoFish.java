@@ -126,7 +126,7 @@ public class GoFish implements GoFishInterface {
 		//Set Number of Players --- FIX THIS AFTER TESTING!!!!!!!!!!!!!!!!!!!!
 		//Scanner inputNumOfPlayers = new Scanner(System.in);
 		//this.setNumOfPlayers(inputNumOfPlayers);
-		//this.numOfPlayers = 4;
+		this.numOfPlayers = 4;
 		
 		// Create User's Player
 		Player user = new Player("David", 1);
@@ -165,7 +165,7 @@ public class GoFish implements GoFishInterface {
 							+ player.getHand());
 					System.out.println(player.ID + "'s BookCheck: "
 							+ player.getBookCheck());
-					System.out.println(player.ID + "'s Books: " + player.books);
+					System.out.println(player.ID + "'s Books: " + player.getBooks());
 					player.takeTurn(players, deck);
 					gameOver = isGameOver();
 					System.out.println(" ");
@@ -226,7 +226,7 @@ public class GoFish implements GoFishInterface {
 							+ player.getHand());
 					System.out.println(player.ID + "'s BookCheck: "
 							+ player.getBookCheck());
-					System.out.println(player.ID + "'s Books: " + player.books);
+					System.out.println(player.ID + "'s Books: " + player.getBooks());
 					player.takeTurn(players, deck);
 					gameOver = isGameOver();
 					System.out.println(" ");
@@ -244,7 +244,7 @@ public class GoFish implements GoFishInterface {
 	 */
 	public static void main(String[] args) {
 		GoFish game1 = new GoFish();
-		game1.createGameTest();
+		game1.createGame();
 	}
 
 }
