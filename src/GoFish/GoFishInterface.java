@@ -3,6 +3,7 @@ package GoFish;
 import com.boyd.deckofcards.Card;
 import com.boyd.deckofcards.Card.Rank;
 import java.util.HashMap;
+import java.util.Scanner;
 import java.util.ArrayList;
 
 public interface GoFishInterface {
@@ -12,6 +13,31 @@ public interface GoFishInterface {
 	 * 
 	 */
 	public void createGame();
+	
+	/**
+	 * Adds a player to the game of GoFish. Should only be used at the start
+	 * @param player - player to be added
+	 */
+	public void addPlayer(Player player);
+	
+	/**
+	 * Gets the players list
+	 * @return players - an ArrayList of all the Players in the game
+	 */
+	public ArrayList<Player> getPlayers();
+	
+	/**
+	 * Set the number of Players for go fish
+	 * @param initNumOfPlayers - int between 2-5;
+	 */
+	public void setNumOfPlayers(Scanner inputNumOfPlayer);
+	
+	/**
+	 * Gets the num of Players in the game, even one's who have been eliminated because there are no cards left
+	 * 
+	 * @return - int representing the number of Players in the game.
+	 */
+	public int getNumOfPlayers();
 	
 	/**
 	 * Decides who the dealer is by dealing one card face up to every player, the player with the lowest card is set to be the dealer
@@ -59,23 +85,5 @@ public interface GoFishInterface {
 	 */
 	//public void placePlayers();
 	
-	/**
-	 * Set the number of Players for go fish
-	 * @param initNumOfPlayers - int between 2-5;
-	 */
-	public void setNumOfPlayers();
-	
-	/**
-	 * Gets the num of Players in the game, even one's who have been eliminated because there are no cards left
-	 * 
-	 * @return - int representing the number of Players in the game.
-	 */
-	public int getNumOfPlayers();
-	
-	
-	/**
-	 * Gets the players list
-	 * @return players - an ArrayList of all the Players in the game
-	 */
-	public ArrayList<Player> getPlayers();
+
 }

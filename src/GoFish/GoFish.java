@@ -26,7 +26,7 @@ public class GoFish implements GoFishInterface {
 	 */
 	public GoFish() {
 		players = new ArrayList<Player>();
-		numOfPlayers = 4;
+		//numOfPlayers = 4;
 		gameOver = false;
 		deck = new DeckOfCards();
 		deck.shuffleDeck();
@@ -34,11 +34,30 @@ public class GoFish implements GoFishInterface {
 	}
 	
 	@Override
-	public void setNumOfPlayers() {
-		System.out.println("Enter a number of players (2 <= num <= 5):");
-		Scanner scPlayers = new Scanner(System.in);
-		numOfPlayers = scPlayers.nextInt();
-		scPlayers.close();
+	public void addPlayer(Player player) {
+		this.players.add(player);
+	}
+	
+	@Override
+	public ArrayList<Player> getPlayers() {
+		return players;
+	}
+	
+	@Override
+	public void setNumOfPlayers(Scanner inputNumOfPlayers) {
+		System.out.println("Enter number of players, must be between 2 - 7: ");
+		boolean inputValid = false;
+		
+		while (!inputValid) {
+			numOfPlayers = inputNumOfPlayers.nextInt();
+			if ((numOfPlayers >= 2) && (numOfPlayers <= 7)) {
+				inputValid = true;
+			} else {
+				System.out.println(
+						"Invalid input! Please enter a number between 2-7");
+			}
+		}
+		inputNumOfPlayers.close();
 	}
 	
 	@Override
@@ -63,42 +82,6 @@ public class GoFish implements GoFishInterface {
 	}
 
 	@Override
-	public ArrayList<Player> getPlayers() {
-		return players;
-	}
-
-	/**
-	 * method used to get the Player the request is made to
-	 * @return - the Player the request is made to
-	 */
-	static public Player getPlayerSelection(ArrayList<Player> players) throws Exception{
-		String playerRequest = "";
-		System.out.print("Please select which player the request will be made to:");
-		// Player toString will be outputted
-		for (Player player : players) {
-			System.out.println(player);
-		}
-		// The user input will be a String that matches Player toString output (Case insensitive)
-		// TODO update Exception for User input
-		try {
-		Scanner in = new Scanner(System.in);
-		playerRequest = in.next();
-		in.close();
-		} catch(Exception e ) {
-			e.printStackTrace();
-		}
-		playerRequest.toLowerCase();
-		for (Player player : players) {
-			String playerString = player.toString();
-			playerString.toLowerCase();
-			if (playerString.equals(playerRequest)) {
-				return player;
-			}
-		}
-		// TODO update the thrown Exception
-		throw new Exception("ERROR - No Player was returned in getPlayerSelection()");
-	}
-	
 	public ArrayList<Player> dealCards(ArrayList<Player> players) {
 		//Decide how many cards to deal based on numOfPlayers
 		int cardsToDeal = 0;
@@ -137,10 +120,13 @@ public class GoFish implements GoFishInterface {
 		
 		gameOver = false;
 		
-		//Get num of players
 		
 		//Decide order around table
 			// TODO Randomize the Player positions
+		
+		//Set Number of Players --- UNDO THIS AFTER TESTING!!!!!!!!!!!!!!!!!!!!
+		//Scanner inputNumOfPlayers = new Scanner(System.in);
+		//this.setNumOfPlayers(inputNumOfPlayers);
 		
 		// Create User's Player
 		Player user = new Player("David", 1);
@@ -148,7 +134,7 @@ public class GoFish implements GoFishInterface {
 		
 		//Create Computer Players
 		for (int i = 2; i <= numOfPlayers; i++) {
-			players.add(new EasyPlayer("Easy", i));
+			this.addPlayer(new EasyPlayer("Easy", i));
 		}
 		
 		//Decide dealer
@@ -191,7 +177,6 @@ public class GoFish implements GoFishInterface {
 		
 		System.out.println("The winner is: " + winner);
 	}
-	
 	
 	/**
 	 * @param args
