@@ -15,6 +15,12 @@ public interface GoFishInterface {
 	public void createGame();
 	
 	/**
+	 * Creates a game of GoFish for testing full functionality
+	 * Only computers play 
+	 */
+	public void createGameTest();
+	
+	/**
 	 * Adds a player to the game of GoFish. Should only be used at the start
 	 * @param player - player to be added
 	 */
@@ -51,7 +57,7 @@ public interface GoFishInterface {
 	 * 
 	 * Moves Cards from the DeckOfCards to the Player's hands
 	 */
-	public ArrayList<Player> dealCards(ArrayList<Player> players);
+	public void dealCards();
 	
 	/**
 	 * See if all 13 books have been won, and the game is over

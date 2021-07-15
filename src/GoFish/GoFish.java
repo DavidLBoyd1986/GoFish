@@ -72,17 +72,17 @@ public class GoFish implements GoFishInterface {
 		for (Player player : players) {
 			if (player.getNumOfBooks() == numOfBooks) {
 				// TODO Need to decide how to break a tie
-				winner = player.getName();
+				winner = player.getID();
 			} else if (player.getNumOfBooks() > numOfBooks) {
 				numOfBooks = player.getNumOfBooks();
-				winner = player.getName();
+				winner = player.getID();
 			}
 		}
 		return winner;
 	}
 
 	@Override
-	public ArrayList<Player> dealCards(ArrayList<Player> players) {
+	public void dealCards() {
 		//Decide how many cards to deal based on numOfPlayers
 		int cardsToDeal = 0;
 		if (numOfPlayers < 4) {
@@ -98,7 +98,6 @@ public class GoFish implements GoFishInterface {
 				player.drawCard(deck);
 			}
 		}
-		return players;
 	}
 	
 	@Override
@@ -124,9 +123,10 @@ public class GoFish implements GoFishInterface {
 		//Decide order around table
 			// TODO Randomize the Player positions
 		
-		//Set Number of Players --- UNDO THIS AFTER TESTING!!!!!!!!!!!!!!!!!!!!
+		//Set Number of Players --- FIX THIS AFTER TESTING!!!!!!!!!!!!!!!!!!!!
 		//Scanner inputNumOfPlayers = new Scanner(System.in);
 		//this.setNumOfPlayers(inputNumOfPlayers);
+		//this.numOfPlayers = 4;
 		
 		// Create User's Player
 		Player user = new Player("David", 1);
@@ -141,7 +141,68 @@ public class GoFish implements GoFishInterface {
 			// TODO dealer will always be Randomized Player 1, need to implement that before this can be done
 		
 		//Deal Cards
-		players = dealCards(players);
+		this.dealCards();
+		
+		//Do initialBookCheck
+		for (Player player : players) {
+			player.doInitialBookCheck();
+		}
+		
+		//Decide who goes first (will be person left of dealer)
+			// TODO need to decide dealer before I can do this
+		
+		//Start game loop (while isGameOver is False, continue gameloop)
+		while (!gameOver) {
+			
+			for (Player player : players) {
+				player.setRepeatTurn(true);
+			//Player loop (while repeatTurn is true, continue playerloop)
+				while (player.repeatTurn) {
+					//debugging bookcheck methods
+					System.out.println(player.ID + " has " 
+							+ player.getHand().size() + " cards in his Hand.");
+					System.out.println(player.ID + "'s Hand: "
+							+ player.getHand());
+					System.out.println(player.ID + "'s BookCheck: "
+							+ player.getBookCheck());
+					System.out.println(player.ID + "'s Books: " + player.books);
+					player.takeTurn(players, deck);
+					gameOver = isGameOver();
+					System.out.println(" ");
+				}
+			}
+		}
+		
+		String winner = getWinner();
+		
+		System.out.println("The winner is: " + winner);
+	}
+	
+	public void createGameTest() {
+		
+		gameOver = false;
+		
+		
+		//Decide order around table
+			// TODO Randomize the Player positions
+		
+		//Set Number of Players --- FIX THIS AFTER TESTING!!!!!!!!!!!!!!!!!!!!
+		//Scanner inputNumOfPlayers = new Scanner(System.in);
+		//this.setNumOfPlayers(inputNumOfPlayers);
+		//this.numOfPlayers = 4;
+		
+		this.numOfPlayers = 4;
+		
+		//Create Computer Players
+		for (int i = 1; i <= numOfPlayers; i++) {
+			this.addPlayer(new EasyPlayer("Easy", i));
+		}
+		
+		//Decide dealer
+			// TODO dealer will always be Randomized Player 1, need to implement that before this can be done
+		
+		//Deal Cards
+		this.dealCards();
 		
 		//Do initialBookCheck
 		for (Player player : players) {
@@ -183,8 +244,7 @@ public class GoFish implements GoFishInterface {
 	 */
 	public static void main(String[] args) {
 		GoFish game1 = new GoFish();
-		game1.createGame();
-
+		game1.createGameTest();
 	}
 
 }
