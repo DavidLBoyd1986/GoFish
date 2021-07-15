@@ -272,8 +272,10 @@ public class Player implements PlayerInterface {
 		
 		//Loop until input is valid
 		while (!inputValid) {
+			//System.out.println(inputScanner.next());
 			String rankRequest = inputScanner.next();
 			rankRequest = rankRequest.toUpperCase();
+			rankRequest = rankRequest.trim();
 			// check it's a valid Rank before changing input String to Rank
 			if (rankCheck.contains(rankRequest)) {
 					rank = Rank.valueOf(rankRequest);
@@ -304,6 +306,7 @@ public class Player implements PlayerInterface {
 		while (!inputValid) {
 			String playerRequest = inputScanner.next();
 			playerRequest = playerRequest.toLowerCase();
+			playerRequest = playerRequest.trim();
 			if (playerIDs.contains(playerRequest)) {
 				//Still have to loop through Players to get the one requested.
 				for (Player player : players) {
