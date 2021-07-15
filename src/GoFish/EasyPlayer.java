@@ -21,7 +21,24 @@ public class EasyPlayer extends Player implements PlayerInterface {
 		Random random = new Random();
 		this.repeatTurn = false;
 		int numOfCardsRetrieved = 0;
-		
+		//If hand is empty can't request card, try to GoFish!!
+		if (this.getHand().size() == 0) {
+			if (deck.getNumCardsInDeck() == 0 ) {
+				System.out.println(this.getID() +
+						" is out of cards and the deck is empty. "
+						+ "Turn passed.");
+				return;
+			} else {
+				Rank rankDrawn = drawCard(deck);
+				numOfCardsRetrieved = 1;
+				repeatTurn = false;
+				updateBookCheck(rankDrawn, numOfCardsRetrieved);
+				System.out.println(this.getID() + " is out of cards. "
+						+ "They had to Go Fish!!!");
+				System.out.println("You drew a: " + rankDrawn);
+				return;
+			}
+		}
 		//Get the rank you will request
 		Card cardRequested = hand.get(random.nextInt(hand.size()));
 		Rank rankRequested = cardRequested.getRank();

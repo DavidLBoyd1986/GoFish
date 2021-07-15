@@ -155,6 +155,10 @@ public class GoFish implements GoFishInterface {
 		while (!gameOver) {
 			
 			for (Player player : players) {
+				//If player and the deck are both out of cards, player can't take turn
+				if( (player.getHand().size() == 0) && (deck.getNumCardsInDeck() == 0)) {
+					continue;
+				}
 				player.setRepeatTurn(true);
 			//Player loop (while repeatTurn is true, continue playerloop)
 				while (player.repeatTurn) {
@@ -175,7 +179,14 @@ public class GoFish implements GoFishInterface {
 		
 		String winner = getWinner();
 		
-		System.out.println("The winner is: " + winner);
+		System.out.println("Final Results:");
+		for (Player player : this.getPlayers()) {
+			System.out.println(player.getID() + "'s Books: " +
+					player.getBooks());
+		}
+		System.out.println("\nThe winner is: " + winner);
+		System.out.println("**The player in the later position "
+				+ "always wins ties**");
 	}
 	
 	public void createGameTest() {
@@ -216,6 +227,10 @@ public class GoFish implements GoFishInterface {
 		while (!gameOver) {
 			
 			for (Player player : players) {
+				//If player and the deck are both out of cards, player can't take turn
+				if( (player.getHand().size() == 0) && (deck.getNumCardsInDeck() == 0)) {
+					continue;
+				}
 				player.setRepeatTurn(true);
 			//Player loop (while repeatTurn is true, continue playerloop)
 				while (player.repeatTurn) {
@@ -226,7 +241,8 @@ public class GoFish implements GoFishInterface {
 							+ player.getHand());
 					System.out.println(player.ID + "'s BookCheck: "
 							+ player.getBookCheck());
-					System.out.println(player.ID + "'s Books: " + player.getBooks());
+					System.out.println(player.ID + "'s Books: " + 
+							player.getBooks());
 					player.takeTurn(players, deck);
 					gameOver = isGameOver();
 					System.out.println(" ");
@@ -236,7 +252,14 @@ public class GoFish implements GoFishInterface {
 		
 		String winner = getWinner();
 		
-		System.out.println("The winner is: " + winner);
+		System.out.println("Final Results:");
+		for (Player player : this.getPlayers()) {
+			System.out.println(player.getID() + "'s Books: " +
+					player.getBooks());
+		}
+		System.out.println("\nThe winner is: " + winner);
+		System.out.println("**The player in the later position "
+				+ "always wins ties**");
 	}
 	
 	/**
