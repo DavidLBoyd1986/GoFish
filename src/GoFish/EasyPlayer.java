@@ -27,6 +27,8 @@ public class EasyPlayer extends Player implements PlayerInterface {
 				System.out.println(this.getID() +
 						" is out of cards and the deck is empty. "
 						+ "Turn passed.");
+				System.out.println("THIS SECTION SHOULD BE UNREACHABLE!!!!");
+				repeatTurn = false;
 				return;
 			} else {
 				Rank rankDrawn = drawCard(deck);
@@ -65,24 +67,30 @@ public class EasyPlayer extends Player implements PlayerInterface {
 			updateBookCheck(rankRequested, numOfCardsRetrieved);
 			this.repeatTurn = true;
 			System.out.println(this.getID() + " requested " + rankRequested
-					+ " from " + playerRequested + " and received "
-					+ numOfCardsRetrieved + " cards.");
+					+ " from " + playerRequested);
+			System.out.println(this.getID() + " received "
+					+ numOfCardsRetrieved + " cards from " + playerRequested);
+		//Go Fish
 		} else {
+			// No cards left in deck
 			if (deck.getNumCardsInDeck() == 0 ) {
+				System.out.println(this.getID() + " requested " + 
+						rankRequested + " from " + playerRequested);
 				System.out.println(playerRequested.getID() +
-						" didn't have that card, but there are"
+						" didn't have that card, and there are"
 						+ " no cards left in the deck to draw!!!");
+				repeatTurn = false;
+			// Draw card
 			} else {
 				Rank rankDrawn = drawCard(deck);
 				numOfCardsRetrieved = 1;
 				repeatTurn = false;
 				updateBookCheck(rankDrawn, numOfCardsRetrieved);
+				System.out.println(this.getID() + " requested " + 
+						rankRequested + " from " + playerRequested);
 				System.out.println(playerRequested.getID() +
 						" didn't have that card. Go Fish!!!");
-				System.out.println("You drew a: " + rankDrawn);
 			}
 		}
-
 	}
-	
 }

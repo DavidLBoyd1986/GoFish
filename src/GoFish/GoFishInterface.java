@@ -33,6 +33,20 @@ public interface GoFishInterface {
 	public ArrayList<Player> getPlayers();
 	
 	/**
+	 * Gets the active players list
+	 * @return players - an ArrayList of all the Players in the game
+	 */
+	public ArrayList<Player> getActivePlayers();
+	
+	/**
+	 * This is only called if the deck is empty!!
+	 * It checks if any players are out of cards, and if so removes them from 
+	 * active players.
+	 * 
+	 */
+	public void checkActivePlayers();
+	
+	/**
 	 * Set the number of Players for go fish
 	 * @param initNumOfPlayers - int between 2-5;
 	 */

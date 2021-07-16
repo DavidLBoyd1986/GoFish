@@ -6,6 +6,7 @@ package GoFish;
 //import java.util.HashMap;
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 //import com.boyd.deckofcards.Card;
 //import com.boyd.deckofcards.Card.Rank;
@@ -18,6 +19,7 @@ import com.boyd.deckofcards.*;
 public class GoFish implements GoFishInterface {
 
 	public ArrayList<Player> players;
+	public ArrayList<Player> activePlayers;
 	public int numOfPlayers;
 	public DeckOfCards deck;
 	public boolean gameOver;
@@ -26,16 +28,17 @@ public class GoFish implements GoFishInterface {
 	 */
 	public GoFish() {
 		players = new ArrayList<Player>();
+		activePlayers = new ArrayList<Player>();
 		//numOfPlayers = 4;
 		gameOver = false;
 		deck = new DeckOfCards();
-		deck.shuffleDeck();
-		
+		deck.shuffleDeck();		
 	}
 	
 	@Override
 	public void addPlayer(Player player) {
 		this.players.add(player);
+		this.activePlayers.add(player);
 	}
 	
 	@Override
@@ -43,6 +46,25 @@ public class GoFish implements GoFishInterface {
 		return players;
 	}
 	
+	@Override
+	public ArrayList<Player> getActivePlayers() {
+		return activePlayers;
+	}
+	
+	@Override
+	public void checkActivePlayers() {
+		//Removes player from activePlayers if they are out of cards
+		for (Iterator<Player> iterator = this.getActivePlayers().iterator(); 
+				iterator.hasNext();) {
+			Player player = iterator.next();
+			if(player.getHand().size() == 0) {
+				iterator.remove();
+				System.out.println("\n" + player.getID() + 
+						" is no longer active in the game.\n");
+			}
+		}
+	}
+
 	@Override
 	public void setNumOfPlayers(Scanner inputNumOfPlayers) {
 		System.out.println("Enter number of players, must be between 2 - 7: ");
@@ -117,20 +139,18 @@ public class GoFish implements GoFishInterface {
 
 	public void createGame() {
 		
-		gameOver = false;
-		
-		
+		gameOver = false;	
 		//Decide order around table
 			// TODO Randomize the Player positions
 		
-		//Set Number of Players --- FIX THIS AFTER TESTING!!!!!!!!!!!!!!!!!!!!
+		//Set Number of Players --- THIS IS BROKE. FIX!!!
 		//Scanner inputNumOfPlayers = new Scanner(System.in);
 		//this.setNumOfPlayers(inputNumOfPlayers);
 		this.numOfPlayers = 4;
 		
 		// Create User's Player
 		Player user = new Player("David", 1);
-		players.add(user);
+		this.addPlayer(user);
 		
 		//Create Computer Players
 		for (int i = 2; i <= numOfPlayers; i++) {
@@ -153,25 +173,35 @@ public class GoFish implements GoFishInterface {
 		
 		//Start game loop (while isGameOver is False, continue gameloop)
 		while (!gameOver) {
-			
+
 			for (Player player : players) {
-				//If player and the deck are both out of cards, player can't take turn
-				if( (player.getHand().size() == 0) && (deck.getNumCardsInDeck() == 0)) {
+				//If player isn't still in the game continue
+				if (!this.getActivePlayers().contains(player)) {
 					continue;
 				}
+				//Player loop (while repeatTurn is true, continue playerloop)
 				player.setRepeatTurn(true);
-			//Player loop (while repeatTurn is true, continue playerloop)
 				while (player.repeatTurn) {
 					//debugging bookcheck methods
 					System.out.println(player.ID + " has " 
 							+ player.getHand().size() + " cards in his Hand.");
-					System.out.println(player.ID + "'s Hand: "
-							+ player.getHand());
-					System.out.println(player.ID + "'s BookCheck: "
-							+ player.getBookCheck());
+//					System.out.println(player.ID + "'s Hand: "
+//							+ player.getHand());
+//					System.out.println(player.ID + "'s BookCheck: "
+//							+ player.getBookCheck());
 					System.out.println(player.ID + "'s Books: " + player.getBooks());
-					player.takeTurn(players, deck);
+					System.out.println(this.getActivePlayers());
+					player.takeTurn(this.getActivePlayers(), deck);
 					gameOver = isGameOver();
+					//If player and deck are both out of cards: remove player
+					if(deck.getNumCardsInDeck() == 0) {
+						this.checkActivePlayers();
+					}
+					//If player isn't still in the game continue
+					if (!this.getActivePlayers().contains(player)) {
+						player.repeatTurn = false;
+						continue;
+					}
 					System.out.println(" ");
 				}
 			}
@@ -193,7 +223,6 @@ public class GoFish implements GoFishInterface {
 		
 		gameOver = false;
 		
-		
 		//Decide order around table
 			// TODO Randomize the Player positions
 		
@@ -210,11 +239,9 @@ public class GoFish implements GoFishInterface {
 		}
 		
 		//Decide dealer
-			// TODO dealer will always be Randomized Player 1, need to implement that before this can be done
-		
+			// TODO dealer will always be Randomized Player 1, need to implement that before this can be done	
 		//Deal Cards
-		this.dealCards();
-		
+		this.dealCards();	
 		//Do initialBookCheck
 		for (Player player : players) {
 			player.doInitialBookCheck();
@@ -227,24 +254,33 @@ public class GoFish implements GoFishInterface {
 		while (!gameOver) {
 			
 			for (Player player : players) {
-				//If player and the deck are both out of cards, player can't take turn
-				if( (player.getHand().size() == 0) && (deck.getNumCardsInDeck() == 0)) {
+				//If player isn't still in the game continue
+				if (!this.getActivePlayers().contains(player)) {
 					continue;
 				}
 				player.setRepeatTurn(true);
-			//Player loop (while repeatTurn is true, continue playerloop)
+				//Player loop (while repeatTurn is true, continue playerloop)
 				while (player.repeatTurn) {
 					//debugging bookcheck methods
 					System.out.println(player.ID + " has " 
 							+ player.getHand().size() + " cards in his Hand.");
-					System.out.println(player.ID + "'s Hand: "
-							+ player.getHand());
-					System.out.println(player.ID + "'s BookCheck: "
-							+ player.getBookCheck());
+//					System.out.println(player.ID + "'s Hand: "
+//							+ player.getHand());
+//					System.out.println(player.ID + "'s BookCheck: "
+//							+ player.getBookCheck());
 					System.out.println(player.ID + "'s Books: " + 
 							player.getBooks());
-					player.takeTurn(players, deck);
+					player.takeTurn(this.getActivePlayers(), deck);
 					gameOver = isGameOver();
+					//If player and deck are both out of cards: remove player
+					if(deck.getNumCardsInDeck() == 0) {
+						this.checkActivePlayers();
+					}
+					//Player could have created a book to lose last cards
+					if (!this.getActivePlayers().contains(player)) {
+						player.repeatTurn = false;
+						continue;
+					}
 					System.out.println(" ");
 				}
 			}

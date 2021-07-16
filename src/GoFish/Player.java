@@ -208,6 +208,24 @@ public class Player implements PlayerInterface {
 		Rank rankRequested = null;
 		Player playerRequested = null;
 		int numOfCardsRetrieved = 0;
+		//If hand is empty can't request card, try to GoFish!!
+		if (this.getHand().size() == 0) {
+			if (deck.getNumCardsInDeck() == 0 ) {
+				System.out.println("You are out of cards and the deck is empty. "
+						+ "Turn passed!!!!");
+				System.out.println("THIS SECTION SHOULD BE UNREACHABLE!!!!");
+				repeatTurn = false;
+				return;
+			} else {
+				Rank rankDrawn = drawCard(deck);
+				numOfCardsRetrieved = 1;
+				repeatTurn = false;
+				updateBookCheck(rankDrawn, numOfCardsRetrieved);
+				System.out.println("You are out of cards and have to Go Fish!");
+				System.out.println("You drew a: " + rankDrawn);
+				return;
+			}
+		}
 		Scanner inputScanner = new Scanner(System.in);
 		inputScanner.useDelimiter(System.lineSeparator());
 
@@ -225,7 +243,7 @@ public class Player implements PlayerInterface {
 			e.printStackTrace();
 			System.out.println("Error taking turn while running getPlayerSelection()");
 		}
-		//Request Card and take cards if player has it, go fish and draw card otherwise
+		//Request Card and take cards if player has it, go fish otherwise
 		boolean cardRequest = requestCards(rankRequested, playerRequested);
 		if (cardRequest) {
 			Card[] retrievedCards = getCards(rankRequested, playerRequested);
@@ -240,11 +258,15 @@ public class Player implements PlayerInterface {
 			System.out.println(playerRequested.getID() +
 					" had that card. Received " + numOfCardsRetrieved
 					+ " " + rankRequested + "'s");
+		//Go Fish
 		} else {
+			// No cards left in deck
 			if (deck.getNumCardsInDeck() == 0 ) {
 				System.out.println(playerRequested.getID() +
 						" didn't have that card, but there are"
 						+ " no cards left in the deck to draw!!!");
+				repeatTurn = false;
+			// Draw card
 			} else {
 				Rank rankDrawn = drawCard(deck);
 				numOfCardsRetrieved = 1;
