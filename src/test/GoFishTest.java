@@ -64,10 +64,10 @@ public class GoFishTest {
 	
 	@BeforeEach
 	public void setup() throws Exception {
-		testPlayer1 = new Player("Test", 1);
-		testPlayer2 = new Player("Test", 2);
-		testPlayer3 = new Player("Test", 3);
-		testPlayer4 = new Player("Test", 4);
+		testPlayer1 = new Player("easy", 1);
+		testPlayer2 = new Player("easy", 2);
+		testPlayer3 = new Player("easy", 3);
+		testPlayer4 = new Player("easy", 4);
 		testPlayers = new ArrayList<Player>();
 		testPlayers.add(testPlayer1);
 		testPlayers.add(testPlayer2);
@@ -248,7 +248,12 @@ public class GoFishTest {
 			}
 		}		
 		//Test it
-		assert(game1.getWinner().equals("Test1"));
+		for (Player player : game1.getPlayers()) {
+			if (player.getPosition() == 1) {
+				assert(game1.getWinner().equals(player.getID()));
+			}
+		}
+		
 	}
 	
 	@Test //Test 7
@@ -306,8 +311,11 @@ public class GoFishTest {
 			}
 		}		
 		//Test it
-		System.out.println(game1.getWinner());
-		assert(game1.getWinner().equals("Test2"));
+		for (Player player : game1.getPlayers()) {
+			if (player.getPosition() == 2) {
+				assert(game1.getWinner().equals(player.getID()));
+			}
+		}
 	}
 	
 	@Test //Test9

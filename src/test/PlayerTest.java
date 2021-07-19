@@ -127,7 +127,7 @@ public class PlayerTest {
      * 
      * Test 45 - testGetPlayerSelectionInvalidCharacters() returns True if getPlayerSelection() responds correctly to invalid inputs
      * 
-     * Test 46 - testGetPlayerSelectionInvalidMultipleRanks() returns True if getPlayerSelection() responds correctly to invalid inputs
+     * Test 46 - testGetPlayerSelectionInvalidMultiplePeople() returns True if getPlayerSelection() responds correctly to invalid inputs
      * 
      * Test 47 - testGetPlayerSelectionInvalidManyMistakes() returns True if getPlayerSelection() responds correctly to invalid inputs
 	*/
@@ -142,7 +142,7 @@ public class PlayerTest {
 	@BeforeEach
 	public void setup() throws Exception {
 		deck = new DeckOfCards();
-		testPlayer = new Player("Test", 1);
+		testPlayer = new Player("easy", 1);
 		hand = new ArrayList<Card>();
 		bookCheck = new HashMap<Rank, Integer>();
 		testPlayer.hand = hand;
@@ -151,11 +151,13 @@ public class PlayerTest {
 	
 	@Test //1
 	void testGetID() {
+		testPlayer.ID = "Test1";
 		assert(testPlayer.getID().equals("Test1"));
 	}
 	
 	@Test //2
 	void testGetName() {
+		testPlayer.name = "Test";
 		assert(testPlayer.getName().equals("Test"));
 	}
 	
@@ -586,35 +588,39 @@ public class PlayerTest {
 	
 	@Test //39
 	void testGetPlayerSelectionValidUpperCase() {
-		Player testPlayer2 = new Player("Test2", 2);
-		Player testPlayer3 = new Player("Test3", 3);
-		Player testPlayer4 = new Player("Test4", 4);
+		Player testPlayer2 = new Player("easy", 2);
+		Player testPlayer3 = new Player("easy", 3);
+		Player testPlayer4 = new Player("easy", 4);
 		ArrayList<Player> players = new ArrayList<Player>();
 		players.add(testPlayer2);
 		players.add(testPlayer3);
 		players.add(testPlayer4);
-		
-		String testInput = "TEST22\r\n";
+		for (Player player : players) {
+			player.ID = "TEST";
+		}
+		String testInput = "TEST";
 		System.setIn(new ByteArrayInputStream(testInput.getBytes()));
 		Scanner inputScanner = new Scanner(System.in);
 		inputScanner.useDelimiter(System.lineSeparator());
-		Player testInputCapital =
+		Player testPlayerSelection =
 				testPlayer.getPlayerSelection(inputScanner, players);
-		assert(testInputCapital instanceof Player);
+		assert(testPlayerSelection instanceof Player);
 		inputScanner.close();
 	}
 	
 	@Test //40
 	void testGetPlayerSelectionValidLowerCase() {
-		Player testPlayer2 = new Player("Test2", 2);
-		Player testPlayer3 = new Player("Test3", 3);
-		Player testPlayer4 = new Player("Test4", 4);
+		Player testPlayer2 = new Player("easy", 2);
+		Player testPlayer3 = new Player("easy", 3);
+		Player testPlayer4 = new Player("easy", 4);
 		ArrayList<Player> players = new ArrayList<Player>();
 		players.add(testPlayer2);
 		players.add(testPlayer3);
 		players.add(testPlayer4);
-		
-		String testInput = "test44\r\n";
+		for (Player player : players) {
+			player.ID = "TEST";
+		}
+		String testInput = "test\r\n";
 		Scanner inputScanner = new Scanner(testInput);
 		inputScanner.useDelimiter(System.lineSeparator());
 		Player testInputCapital =
@@ -632,8 +638,10 @@ public class PlayerTest {
 		players.add(testPlayer2);
 		players.add(testPlayer3);
 		players.add(testPlayer4);
-		
-		String testInput = "tESt33\r\n";
+		for (Player player : players) {
+			player.ID = "TEST";
+		}
+		String testInput = "tESt\r\n";
 		Scanner inputScanner = new Scanner(testInput);
 		inputScanner.useDelimiter(System.lineSeparator());
 		Player testInputCapital =
@@ -651,8 +659,10 @@ public class PlayerTest {
 		players.add(testPlayer2);
 		players.add(testPlayer3);
 		players.add(testPlayer4);
-		
-		String testInput = " \r\n \r\nTEST22";
+		for (Player player : players) {
+			player.ID = "TEST";
+		}
+		String testInput = " \r\n \r\nTEST";
 		System.setIn(new ByteArrayInputStream(testInput.getBytes()));
 		Scanner inputScanner = new Scanner(System.in);
 		inputScanner.useDelimiter(System.lineSeparator());
@@ -671,8 +681,10 @@ public class PlayerTest {
 		players.add(testPlayer2);
 		players.add(testPlayer3);
 		players.add(testPlayer4);
-
-		String testInput = "afdsf\r\nadfdf\r\nTest44";
+		for (Player player : players) {
+			player.ID = "TEST";
+		}
+		String testInput = "afdsf\r\nadfdf\r\nTest";
 		System.setIn(new ByteArrayInputStream(testInput.getBytes()));
 		Scanner inputScanner = new Scanner(System.in);
 		inputScanner.useDelimiter(System.lineSeparator());
@@ -691,8 +703,10 @@ public class PlayerTest {
 		players.add(testPlayer2);
 		players.add(testPlayer3);
 		players.add(testPlayer4);
-		
-		String testInput = "afdsf\r\n ad fdf\r\n TeST22";
+		for (Player player : players) {
+			player.ID = "TEST";
+		}
+		String testInput = "afdsf\r\n ad fdf\r\n TeST";
 		System.setIn(new ByteArrayInputStream(testInput.getBytes()));
 		Scanner inputScanner = new Scanner(System.in);
 		inputScanner.useDelimiter(System.lineSeparator());
@@ -711,8 +725,10 @@ public class PlayerTest {
 		players.add(testPlayer2);
 		players.add(testPlayer3);
 		players.add(testPlayer4);
-
-		String testInput = "a,!f$$f\r\ntest22";
+		for (Player player : players) {
+			player.ID = "TEST";
+		}
+		String testInput = "a,!f$$f\r\ntest";
 		System.setIn(new ByteArrayInputStream(testInput.getBytes()));
 		Scanner inputScanner = new Scanner(System.in);
 		inputScanner.useDelimiter(System.lineSeparator());
@@ -723,7 +739,7 @@ public class PlayerTest {
 	}
 	
 	@Test //46
-	void testGetPlayerSelectionInvalidMultipleRanks() {
+	void testGetPlayerSelectionInvalidMultiplePeople() {
 		Player testPlayer2 = new Player("Test2", 2);
 		Player testPlayer3 = new Player("Test3", 3);
 		Player testPlayer4 = new Player("Test4", 4);
@@ -731,15 +747,17 @@ public class PlayerTest {
 		players.add(testPlayer2);
 		players.add(testPlayer3);
 		players.add(testPlayer4);
-		
-		String testInput = "Test22Test33\r\nTest44";
+		for (Player player : players) {
+			player.ID = "TEST";
+		}
+		String testInput = "TestTEST\r\nTest";
 		System.setIn(new ByteArrayInputStream(testInput.getBytes()));
 		Scanner inputScanner = new Scanner(System.in);
 		inputScanner.useDelimiter(System.lineSeparator());
 		Player testInputCapital =
 				testPlayer.getPlayerSelection(inputScanner, players);
 		assert(testInputCapital instanceof Player);
-		assert(testInputCapital.getID().equals("Test44"));
+		assert(testInputCapital.getID().equals("TEST"));
 		inputScanner.close();
 	}
 	
@@ -752,15 +770,17 @@ public class PlayerTest {
 		players.add(testPlayer2);
 		players.add(testPlayer3);
 		players.add(testPlayer4);
-		
-		String testInput = "Test22Test33\r\nadff\r\n T WO\r\n !@#$ \r\nTest44";
+		for (Player player : players) {
+			player.ID = "TEST";
+		}
+		String testInput = "Test22Test33\r\nadff\r\n T WO\r\n !@#$ \r\nTest";
 		System.setIn(new ByteArrayInputStream(testInput.getBytes()));
 		Scanner inputScanner = new Scanner(System.in);
 		inputScanner.useDelimiter(System.lineSeparator());
 		Player testInputCapital =
 				testPlayer.getPlayerSelection(inputScanner, players);
 		assert(testInputCapital instanceof Player);
-		assert(testInputCapital.getID().equals("Test44"));
+		assert(testInputCapital.getID().equals("TEST"));
 		inputScanner.close();
 	}
 	

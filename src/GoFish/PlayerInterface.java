@@ -104,10 +104,8 @@ public interface PlayerInterface {
 	public void updateBookCheck(Rank rank, int cardCount);
 	
 	/**
-	 * checks if a Player has all 4 Cards of a specific Rank
+	 * Updates all Player's bookCheck after the initial deal
 	 * 
-	 * @param bookCheck - HashMap<Rank, Integer> available from GoFish that tracks the number of Cards by Rank
-	 * @return - boolean indicating a Player has the Cards to create a Book
 	 */
 	public void doInitialBookCheck();
 

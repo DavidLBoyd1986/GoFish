@@ -40,7 +40,7 @@ public class Player implements PlayerInterface {
 		hand = new ArrayList<Card>();
 		books = new HashMap<Rank, Card[]>();
 		bookCheck = new HashMap<Rank, Integer>();
-		ID = name + position;
+		ID = name;
 		
 	}
 

@@ -6,7 +6,9 @@ package GoFish;
 //import java.util.HashMap;
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.Random;
 
 //import com.boyd.deckofcards.Card;
 //import com.boyd.deckofcards.Card.Rank;
@@ -23,16 +25,47 @@ public class GoFish implements GoFishInterface {
 	public int numOfPlayers;
 	public DeckOfCards deck;
 	public boolean gameOver;
-	/**
-	 * 
-	 */
+	public static ArrayList<String> easyPlayerNames = 
+			new ArrayList<String>();
+	public static ArrayList<String> averagePlayerNames = 
+			new ArrayList<String>();
+	public static ArrayList<String> perfectPlayerNames = 
+			new ArrayList<String>();
+	
+	
+	
 	public GoFish() {
 		players = new ArrayList<Player>();
 		activePlayers = new ArrayList<Player>();
 		//numOfPlayers = 4;
 		gameOver = false;
 		deck = new DeckOfCards();
-		deck.shuffleDeck();		
+		deck.shuffleDeck();
+		easyPlayerNames.addAll(Arrays.asList("Jimbo", "Susie", "Rose", 
+				"Butch", "Cletus", "Patty"));
+		averagePlayerNames.addAll(Arrays.asList("David", "Eric", "Ryan", 
+				"Amanda", "April", "Ashley"));
+		perfectPlayerNames.addAll(Arrays.asList("Urkel", "Albert", "Isaac", 
+				"Ada", "Emily", "Elizabeth"));
+	}
+	
+	public static String getPlayerName(String difficulty) {
+		Random random = new Random();
+		String playerName = "";
+		if (difficulty == "easy") {
+			playerName = easyPlayerNames.get(
+					random.nextInt(easyPlayerNames.size()));
+			easyPlayerNames.remove(playerName);
+		} else if (difficulty == "average") {
+			playerName = averagePlayerNames.get(
+					random.nextInt(averagePlayerNames.size()));
+			easyPlayerNames.remove(playerName);
+		} else if (difficulty == "perfect") {
+			playerName = perfectPlayerNames.get(
+					random.nextInt(perfectPlayerNames.size()));
+			easyPlayerNames.remove(playerName);
+		}
+		return playerName;
 	}
 	
 	@Override
@@ -154,7 +187,7 @@ public class GoFish implements GoFishInterface {
 		
 		//Create Computer Players
 		for (int i = 2; i <= numOfPlayers; i++) {
-			this.addPlayer(new EasyPlayer("Easy", i));
+			this.addPlayer(new EasyPlayer("easy", i));
 		}
 		
 		//Decide dealer
@@ -182,13 +215,9 @@ public class GoFish implements GoFishInterface {
 				//Player loop (while repeatTurn is true, continue playerloop)
 				player.setRepeatTurn(true);
 				while (player.repeatTurn) {
-					//debugging bookcheck methods
+					//Regular Output
 					System.out.println(player.ID + " has " 
 							+ player.getHand().size() + " cards in his Hand.");
-//					System.out.println(player.ID + "'s Hand: "
-//							+ player.getHand());
-//					System.out.println(player.ID + "'s BookCheck: "
-//							+ player.getBookCheck());
 					System.out.println(player.ID + "'s Books: " + player.getBooks());
 					System.out.println(this.getActivePlayers());
 					player.takeTurn(this.getActivePlayers(), deck);
@@ -235,7 +264,7 @@ public class GoFish implements GoFishInterface {
 		
 		//Create Computer Players
 		for (int i = 1; i <= numOfPlayers; i++) {
-			this.addPlayer(new EasyPlayer("Easy", i));
+			this.addPlayer(new EasyPlayer("easy", i));
 		}
 		
 		//Decide dealer
@@ -298,12 +327,9 @@ public class GoFish implements GoFishInterface {
 				+ "always wins ties**");
 	}
 	
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
 		GoFish game1 = new GoFish();
-		game1.createGame();
+		game1.createGameTest();
 	}
 
 }

@@ -1,6 +1,7 @@
 package GoFish;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 import java.util.Random;
 
@@ -10,9 +11,15 @@ import com.boyd.deckofcards.DeckOfCards;
 
 public class EasyPlayer extends Player implements PlayerInterface {
 
-	public EasyPlayer(String initName, int initPosition) {
-		super(initName, initPosition);
-		// TODO Auto-generated constructor stub
+	public EasyPlayer(String initDifficulty, int initPosition) {
+		super(initDifficulty, initPosition);
+		String difficulty = initDifficulty;
+		name = GoFish.getPlayerName(difficulty);
+		position = initPosition;
+		hand = new ArrayList<Card>();
+		books = new HashMap<Rank, Card[]>();
+		bookCheck = new HashMap<Rank, Integer>();
+		ID = name;
 	}
 
 	@Override
@@ -66,7 +73,7 @@ public class EasyPlayer extends Player implements PlayerInterface {
 			}
 			updateBookCheck(rankRequested, numOfCardsRetrieved);
 			this.repeatTurn = true;
-			System.out.println(this.getID() + " requested " + rankRequested
+			System.out.println(this.getID() + " requested a " + rankRequested
 					+ " from " + playerRequested);
 			System.out.println(this.getID() + " received "
 					+ numOfCardsRetrieved + " cards from " + playerRequested);
@@ -74,7 +81,7 @@ public class EasyPlayer extends Player implements PlayerInterface {
 		} else {
 			// No cards left in deck
 			if (deck.getNumCardsInDeck() == 0 ) {
-				System.out.println(this.getID() + " requested " + 
+				System.out.println(this.getID() + " requested a " + 
 						rankRequested + " from " + playerRequested);
 				System.out.println(playerRequested.getID() +
 						" didn't have that card, and there are"
@@ -86,7 +93,7 @@ public class EasyPlayer extends Player implements PlayerInterface {
 				numOfCardsRetrieved = 1;
 				repeatTurn = false;
 				updateBookCheck(rankDrawn, numOfCardsRetrieved);
-				System.out.println(this.getID() + " requested " + 
+				System.out.println(this.getID() + " a requested " + 
 						rankRequested + " from " + playerRequested);
 				System.out.println(playerRequested.getID() +
 						" didn't have that card. Go Fish!!!");
