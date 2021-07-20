@@ -42,11 +42,11 @@ public class GoFish implements GoFishInterface {
 		deck = new DeckOfCards();
 		deck.shuffleDeck();
 		easyPlayerNames.addAll(Arrays.asList("Jimbo", "Susie", "Rose", 
-				"Butch", "Cletus", "Patty"));
+				"Butch", "Cletus", "Patty", "Randy"));
 		averagePlayerNames.addAll(Arrays.asList("David", "Eric", "Ryan", 
-				"Amanda", "April", "Ashley"));
+				"Amanda", "April", "Ashley", "Derek"));
 		perfectPlayerNames.addAll(Arrays.asList("Urkel", "Albert", "Isaac", 
-				"Ada", "Emily", "Elizabeth"));
+				"Ada", "Emily", "Elizabeth", "Alan"));
 	}
 	
 	public static String getPlayerName(String difficulty) {
@@ -99,12 +99,12 @@ public class GoFish implements GoFishInterface {
 	}
 
 	@Override
-	public void setNumOfPlayers(Scanner inputNumOfPlayers) {
+	public void setNumOfPlayers(Scanner inputStream) {
 		System.out.println("Enter number of players, must be between 2 - 7: ");
 		boolean inputValid = false;
 		
 		while (!inputValid) {
-			numOfPlayers = inputNumOfPlayers.nextInt();
+			numOfPlayers = inputStream.nextInt();
 			if ((numOfPlayers >= 2) && (numOfPlayers <= 7)) {
 				inputValid = true;
 			} else {
@@ -112,7 +112,6 @@ public class GoFish implements GoFishInterface {
 						"Invalid input! Please enter a number between 2-7");
 			}
 		}
-		inputNumOfPlayers.close();
 	}
 	
 	@Override
@@ -142,7 +141,7 @@ public class GoFish implements GoFishInterface {
 		int cardsToDeal = 0;
 		if (numOfPlayers < 4) {
 			cardsToDeal = 7;
-		} else if ((numOfPlayers > 3) && (numOfPlayers < 6)) {
+		} else if ((numOfPlayers >= 4) && (numOfPlayers <= 7)) {
 			cardsToDeal = 5;
 		} else {
 			System.out.println("numOfPlayers is not valid. Maybe add an exception  here");
@@ -177,9 +176,8 @@ public class GoFish implements GoFishInterface {
 			// TODO Randomize the Player positions
 		
 		//Set Number of Players --- THIS IS BROKE. FIX!!!
-		//Scanner inputNumOfPlayers = new Scanner(System.in);
-		//this.setNumOfPlayers(inputNumOfPlayers);
-		this.numOfPlayers = 4;
+		Scanner inputStream = new Scanner(System.in);
+		this.setNumOfPlayers(inputStream);
 		
 		// Create User's Player
 		Player user = new Player("David", 1);
@@ -220,7 +218,7 @@ public class GoFish implements GoFishInterface {
 							+ player.getHand().size() + " cards in his Hand.");
 					System.out.println(player.ID + "'s Books: " + player.getBooks());
 					System.out.println(this.getActivePlayers());
-					player.takeTurn(this.getActivePlayers(), deck);
+					player.takeTurn(this.getActivePlayers(), deck, inputStream);
 					gameOver = isGameOver();
 					//If player and deck are both out of cards: remove player
 					if(deck.getNumCardsInDeck() == 0) {
@@ -256,11 +254,8 @@ public class GoFish implements GoFishInterface {
 			// TODO Randomize the Player positions
 		
 		//Set Number of Players --- FIX THIS AFTER TESTING!!!!!!!!!!!!!!!!!!!!
-		//Scanner inputNumOfPlayers = new Scanner(System.in);
-		//this.setNumOfPlayers(inputNumOfPlayers);
-		//this.numOfPlayers = 4;
-		
-		this.numOfPlayers = 4;
+		Scanner inputStream = new Scanner(System.in);
+		this.setNumOfPlayers(inputStream);
 		
 		//Create Computer Players
 		for (int i = 1; i <= numOfPlayers; i++) {
@@ -299,7 +294,7 @@ public class GoFish implements GoFishInterface {
 //							+ player.getBookCheck());
 					System.out.println(player.ID + "'s Books: " + 
 							player.getBooks());
-					player.takeTurn(this.getActivePlayers(), deck);
+					player.takeTurn(this.getActivePlayers(), deck, inputStream);
 					gameOver = isGameOver();
 					//If player and deck are both out of cards: remove player
 					if(deck.getNumCardsInDeck() == 0) {
@@ -329,7 +324,7 @@ public class GoFish implements GoFishInterface {
 	
 	public static void main(String[] args) {
 		GoFish game1 = new GoFish();
-		game1.createGameTest();
+		game1.createGame();
 	}
 
 }

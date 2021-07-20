@@ -203,7 +203,7 @@ public class Player implements PlayerInterface {
 	}
 	
 	@Override
-	public void takeTurn(ArrayList<Player> players, DeckOfCards deck) {
+	public void takeTurn(ArrayList<Player> players, DeckOfCards deck, Scanner inputStream) {
 		//These are declared here because the actual initialization is in a try clause, and would create an error.
 		Rank rankRequested = null;
 		Player playerRequested = null;
@@ -226,23 +226,28 @@ public class Player implements PlayerInterface {
 				return;
 			}
 		}
-		Scanner inputScanner = new Scanner(System.in);
-		inputScanner.useDelimiter(System.lineSeparator());
+		
+		// should start try here
+		//Scanner inputScanner = new Scanner(System.in);
+
+		inputStream.useDelimiter(System.lineSeparator());
 
 		//Get the rank you will request
 		try {
-			rankRequested = getRankSelection(inputScanner);
+			rankRequested = getRankSelection(inputStream);
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("Error taking turn while running getRankSelection()");			
 		}
 		//Get the player you will make the request to
 		try {
-			playerRequested = getPlayerSelection(inputScanner, players);
+			playerRequested = getPlayerSelection(inputStream, players);
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("Error taking turn while running getPlayerSelection()");
 		}
+		// add finally here to close stream
+
 		//Request Card and take cards if player has it, go fish otherwise
 		boolean cardRequest = requestCards(rankRequested, playerRequested);
 		if (cardRequest) {

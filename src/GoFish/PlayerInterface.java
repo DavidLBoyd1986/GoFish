@@ -122,7 +122,7 @@ public interface PlayerInterface {
 	 * @param rank - the Rank to be requested from the other Player
 	 * @param player - the Player the request is made to.
 	 */
-	public void takeTurn(ArrayList<Player> players, DeckOfCards deck);
+	public void takeTurn(ArrayList<Player> players, DeckOfCards deck, Scanner inputStream);
 	
 	/**
 	 * method used to get the Rank the Player is requesting
