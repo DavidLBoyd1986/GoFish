@@ -21,6 +21,15 @@ public interface GoFishInterface {
 	public void createGameTest();
 	
 	/**
+	 * 	/**
+	 * Puts some delay in the Computers actions to give the game flow
+	 * And let the Player see who requests what from whom.
+	 *
+	 * @param i - number of seconds to wait
+	 */
+	public void gameDelay(int i);
+	
+	/**
 	 * Adds a player to the game of GoFish. Should only be used at the start
 	 * @param player - player to be added
 	 */

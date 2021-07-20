@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Objects;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 import com.boyd.deckofcards.Card;
 import com.boyd.deckofcards.Card.Rank;
@@ -74,16 +75,20 @@ public class EasyPlayer extends Player implements PlayerInterface {
 			}
 			updateBookCheck(rankRequested, numOfCardsRetrieved);
 			this.repeatTurn = true;
+			gameDelay(2);
 			System.out.println(this.getID() + " requested a " + rankRequested
 					+ " from " + playerRequested);
+			gameDelay(2);
 			System.out.println(this.getID() + " received "
 					+ numOfCardsRetrieved + " cards from " + playerRequested);
 		//Go Fish
 		} else {
 			// No cards left in deck
 			if (deck.getNumCardsInDeck() == 0 ) {
+				gameDelay(2);
 				System.out.println(this.getID() + " requested a " + 
 						rankRequested + " from " + playerRequested);
+				gameDelay(2);
 				System.out.println(playerRequested.getID() +
 						" didn't have that card, and there are"
 						+ " no cards left in the deck to draw!!!");
@@ -94,8 +99,10 @@ public class EasyPlayer extends Player implements PlayerInterface {
 				numOfCardsRetrieved = 1;
 				repeatTurn = false;
 				updateBookCheck(rankDrawn, numOfCardsRetrieved);
+				gameDelay(2);
 				System.out.println(this.getID() + " a requested " + 
 						rankRequested + " from " + playerRequested);
+				gameDelay(2);
 				System.out.println(playerRequested.getID() +
 						" didn't have that card. Go Fish!!!");
 			}

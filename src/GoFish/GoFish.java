@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 //import com.boyd.deckofcards.Card;
 //import com.boyd.deckofcards.Card.Rank;
@@ -47,6 +48,15 @@ public class GoFish implements GoFishInterface {
 				"Amanda", "April", "Ashley", "Derek"));
 		perfectPlayerNames.addAll(Arrays.asList("Urkel", "Albert", "Isaac", 
 				"Ada", "Emily", "Elizabeth", "Alan"));
+	}
+	
+	@Override
+	public void gameDelay(int i) {
+		//Add a delay so the game has flow
+		try {
+			TimeUnit.SECONDS.sleep(i);
+		} catch(InterruptedException ex)
+		{ Thread.currentThread().interrupt(); }
 	}
 	
 	public static String getPlayerName(String difficulty) {
@@ -213,9 +223,10 @@ public class GoFish implements GoFishInterface {
 				//Player loop (while repeatTurn is true, continue playerloop)
 				player.setRepeatTurn(true);
 				while (player.repeatTurn) {
+					gameDelay(1);
 					//Regular Output
 					System.out.println(player.ID + " has " 
-							+ player.getHand().size() + " cards in his Hand.");
+							+ player.getHand().size() + " cards.");
 					System.out.println(player.ID + "'s Books: " + player.getBooks());
 					System.out.println(this.getActivePlayers());
 					player.takeTurn(this.getActivePlayers(), deck, inputStream);
@@ -285,6 +296,10 @@ public class GoFish implements GoFishInterface {
 				player.setRepeatTurn(true);
 				//Player loop (while repeatTurn is true, continue playerloop)
 				while (player.repeatTurn) {
+					
+					//Add a delay so the game has flow
+					gameDelay(1);
+					
 					//debugging bookcheck methods
 					System.out.println(player.ID + " has " 
 							+ player.getHand().size() + " cards in his Hand.");

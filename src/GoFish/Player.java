@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author David
@@ -49,6 +50,15 @@ public class Player implements PlayerInterface {
 		repeatTurn = repeat;
 	}
 	
+	@Override
+	public void gameDelay(int i) {
+		//Add a delay so the game has flow
+		try {
+			TimeUnit.SECONDS.sleep(i);
+		} catch(InterruptedException ex)
+		{ Thread.currentThread().interrupt(); }
+	}
+
 	@Override
 	public String getName() {
 		return name;
@@ -211,6 +221,7 @@ public class Player implements PlayerInterface {
 		//If hand is empty can't request card, try to GoFish!!
 		if (this.getHand().size() == 0) {
 			if (deck.getNumCardsInDeck() == 0 ) {
+				gameDelay(1);
 				System.out.println("You are out of cards and the deck is empty. "
 						+ "Turn passed!!!!");
 				System.out.println("THIS SECTION SHOULD BE UNREACHABLE!!!!");
@@ -221,7 +232,9 @@ public class Player implements PlayerInterface {
 				numOfCardsRetrieved = 1;
 				repeatTurn = false;
 				updateBookCheck(rankDrawn, numOfCardsRetrieved);
+				gameDelay(1);
 				System.out.println("You are out of cards and have to Go Fish!");
+				gameDelay(1);
 				System.out.println("You drew a: " + rankDrawn);
 				return;
 			}
@@ -260,6 +273,7 @@ public class Player implements PlayerInterface {
 			}
 			repeatTurn = true;
 			updateBookCheck(rankRequested, numOfCardsRetrieved);
+			gameDelay(1);
 			System.out.println(playerRequested.getID() +
 					" had that card. Received " + numOfCardsRetrieved
 					+ " " + rankRequested + "'s");
@@ -267,8 +281,9 @@ public class Player implements PlayerInterface {
 		} else {
 			// No cards left in deck
 			if (deck.getNumCardsInDeck() == 0 ) {
+				gameDelay(1);
 				System.out.println(playerRequested.getID() +
-						" didn't have that card, but there are"
+						" didn't have that card, and there are"
 						+ " no cards left in the deck to draw!!!");
 				repeatTurn = false;
 			// Draw card
@@ -277,8 +292,10 @@ public class Player implements PlayerInterface {
 				numOfCardsRetrieved = 1;
 				repeatTurn = false;
 				updateBookCheck(rankDrawn, numOfCardsRetrieved);
+				gameDelay(1);
 				System.out.println(playerRequested.getID() +
 						" didn't have that card. Go Fish!!!");
+				gameDelay(1);
 				System.out.println("You drew a: " + rankDrawn);
 			}
 		}

@@ -15,6 +15,15 @@ public interface PlayerInterface {
 	public void setRepeatTurn(boolean repeat);
 	
 	/**
+	 * 	/**
+	 * Puts some delay in the Computers actions to give the game flow
+	 * And let the Player see who requests what from whom.
+	 *
+	 * @param i - number of seconds to wait
+	 */
+	public void gameDelay(int i);
+	
+	/**
 	 * Gets the Player's name
 	 * 
 	 * @return - String of the Player's name
