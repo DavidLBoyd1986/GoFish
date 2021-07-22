@@ -186,6 +186,7 @@ public class GoFish implements GoFishInterface {
 
 	public void createGame() {
 		
+		Optional<Result> result;
 		gameOver = false;	
 		//Decide order around table
 			// TODO Randomize the Player positions
@@ -195,7 +196,7 @@ public class GoFish implements GoFishInterface {
 		this.setNumOfPlayers(inputStream);
 		
 		// Create User's Player
-		Player user = new Player("David", 1);
+		InteractivePlayer user = new InteractivePlayer("David", 1, inputStream);
 		this.addPlayer(user);
 		
 		//Create Computer Players
@@ -235,7 +236,13 @@ public class GoFish implements GoFishInterface {
 							+ player.getHand().size() + " cards.");
 					System.out.println(player.ID + "'s Books: " + player.getBooks());
 					System.out.println(this.getActivePlayers());
-					player.takeTurn(this.getActivePlayers(), deck, inputStream);
+
+					result = player.takeTurn(this.getActivePlayers(), deck, inputStream);
+					for (Player activePlayer: this.getActivePlayers()) {
+						if (activePlayer instanceof HardPlayer) {
+							activePlayer.updateResultList(result.get());
+						}
+					}
 					gameOver = isGameOver();
 					//If player and deck are both out of cards: remove player
 					if(deck.getNumCardsInDeck() == 0) {
@@ -266,7 +273,6 @@ public class GoFish implements GoFishInterface {
 	public void createGameTest() {
 		
 		gameOver = false;
-		ArrayList<Result> resultList = new ArrayList<Result>();
 		//Decide order around table
 			// TODO Randomize the Player positions
 		
@@ -316,9 +322,10 @@ public class GoFish implements GoFishInterface {
 							player.getBooks());
 					//Take the turn, and update resultList if necessary
 					result = player.takeTurn(this.getActivePlayers(), deck, inputStream);
-					if (result.isPresent()) {
-						Result returnedResult = result.get();
-						resultList.add(returnedResult);
+					for (Player activePlayer: this.getActivePlayers()) {
+						if (activePlayer instanceof HardPlayer) {
+							activePlayer.updateResultList(result.get());
+						}
 					}
 					gameOver = isGameOver();
 					//If player and deck are both out of cards: remove player
@@ -349,6 +356,6 @@ public class GoFish implements GoFishInterface {
 	
 	public static void main(String[] args) {
 		GoFish game1 = new GoFish();
-		game1.createGameTest();
+		game1.createGame();
 	}
 }

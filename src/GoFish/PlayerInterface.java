@@ -138,16 +138,23 @@ public interface PlayerInterface {
 	public Optional<Result> takeTurn(ArrayList<Player> players, DeckOfCards deck, Scanner inputStream);
 	
 	/**
-	 * method used to get the Rank the Player is requesting
-	 * @return - the Rank the Player is requesting
+	 * Updates the resultList for HardPlayer class
+	 * ONLY USED BY - HardPlayer Subclass!!!!
+	 * @param result - the result of the previous Player's turn
 	 */
-	public Rank getRankSelection(Scanner inputScanner);
-	
-	/**
-	 * method used to get the Player the request is made to
-	 * @return - the Player the request is made to
-	 */
-	public Player getPlayerSelection(Scanner inputScanner, ArrayList<Player> players);
+	public void updateResultList(Result result);
+//	
+//	/**
+//	 * method used to get the Rank the Player is requesting
+//	 * @return - the Rank the Player is requesting
+//	 */
+//	public Rank getRankSelection(Scanner inputScanner);
+//	
+//	/**
+//	 * method used to get the Player the request is made to
+//	 * @return - the Player the request is made to
+//	 */
+//	public Player getPlayerSelection(Scanner inputScanner, ArrayList<Player> players);
 	
 
 	
