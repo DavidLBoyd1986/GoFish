@@ -14,6 +14,9 @@ import java.util.concurrent.TimeUnit;
 //import com.boyd.deckofcards.Card;
 //import com.boyd.deckofcards.Card.Rank;
 import com.boyd.deckofcards.*;
+import com.boyd.deckofcards.Card.Rank;
+
+import GoFish.AveragePlayer.RequestPair;
 
 /**
  * @author David
@@ -220,6 +223,7 @@ public class GoFish implements GoFishInterface {
 				if (!this.getActivePlayers().contains(player)) {
 					continue;
 				}
+
 				//Player loop (while repeatTurn is true, continue playerloop)
 				player.setRepeatTurn(true);
 				while (player.repeatTurn) {
@@ -342,4 +346,54 @@ public class GoFish implements GoFishInterface {
 		game1.createGame();
 	}
 
+public class Result {
+		
+		private final Rank rank;
+		private final Player player;
+		private final Boolean hasCard;
+		
+		String rankString;
+		String playerString;
+		
+		public Result(Rank initRank, Player initPlayer, Boolean initHasCard) {
+			rank = initRank;
+			player = initPlayer;
+			hasCard = initHasCard;
+			playerString = player.toString();
+			rankString = rank.toString();
+		}
+
+		public Rank getRank() {
+			return rank;
+		}
+		
+		public Player getPlayer() {
+			return player;
+		}
+		
+		public Boolean getHasCard() {
+			return hasCard;
+		}
+		
+		public String toString() {
+			return "(" + rankString + ", " + playerString + 
+					", " + hasCard + ")";
+		}
+		
+		@Override
+		public int hashCode() {
+			return ( rank.hashCode() + player.hashCode() );
+		}
+		
+		@Override
+		public boolean equals(Object o) {
+			if (o == this) return true;
+			if (!(o instanceof Result) ) return false;
+			Result other = (Result)o;
+			boolean result = ( this.rank == other.rank && 
+							   this.player == other.player && 
+							   this.hasCard == other.hasCard);
+			return result;
+		}
+	}
 }
