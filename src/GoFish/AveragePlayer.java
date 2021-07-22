@@ -3,14 +3,14 @@ package GoFish;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Random;
 import java.util.Scanner;
 
 import com.boyd.deckofcards.Card;
 import com.boyd.deckofcards.DeckOfCards;
 import com.boyd.deckofcards.Card.Rank;
-import com.boyd.deckofcards.Card.Suit;
-import com.boyd.deckofcards.DeckOfCards.SuitPair;
+
 
 public class AveragePlayer extends Player implements PlayerInterface {
 
@@ -26,11 +26,12 @@ public class AveragePlayer extends Player implements PlayerInterface {
 	}
 	
 	@Override
-	public void takeTurn(ArrayList<Player> players, DeckOfCards deck, Scanner inputStream) {
+	public Optional<Result> takeTurn(ArrayList<Player> players, DeckOfCards deck, Scanner inputStream) {
 
 		Random random = new Random();
 		this.repeatTurn = false;
 		int numOfCardsRetrieved = 0;
+		Optional<Result> result = Optional.empty();
 		//If hand is empty can't request card, try to GoFish!!
 		if (this.getHand().size() == 0) {
 			if (deck.getNumCardsInDeck() == 0 ) {
@@ -39,7 +40,7 @@ public class AveragePlayer extends Player implements PlayerInterface {
 						+ "Turn passed.");
 				System.out.println("THIS SECTION SHOULD BE UNREACHABLE!!!!");
 				repeatTurn = false;
-				return;
+				return result;
 			} else {
 				Rank rankDrawn = drawCard(deck);
 				numOfCardsRetrieved = 1;
@@ -48,7 +49,7 @@ public class AveragePlayer extends Player implements PlayerInterface {
 				System.out.println(this.getID() + " is out of cards. "
 						+ "They had to Go Fish!!!");
 				System.out.println("You drew a: " + rankDrawn);
-				return;
+				return result;
 			}
 		}
 		//Get the rank you will request
@@ -66,6 +67,14 @@ public class AveragePlayer extends Player implements PlayerInterface {
 
 		//Request Card and take cards if player has it, go fish and draw card otherwise
 		boolean cardRequest = requestCards(rankRequested, playerRequested);
+		// Create a Result to return
+		if (cardRequest) {
+			result = Optional.of(
+					new Result(rankRequested, this, cardRequest));}
+		if (!cardRequest) {
+			result = Optional.of(
+					new Result(rankRequested, playerRequested, cardRequest));
+		}
 		if (cardRequest) {
 			Card[] retrievedCards = getCards(rankRequested, playerRequested);
 			for (Card card : retrievedCards) {
@@ -82,6 +91,7 @@ public class AveragePlayer extends Player implements PlayerInterface {
 			gameDelay(2);
 			System.out.println(this.getID() + " received "
 					+ numOfCardsRetrieved + " cards from " + playerRequested);
+			return result;
 		//Go Fish
 		} else {
 			// No cards left in deck
@@ -94,6 +104,7 @@ public class AveragePlayer extends Player implements PlayerInterface {
 						" didn't have that card, and there are"
 						+ " no cards left in the deck to draw!!!");
 				repeatTurn = false;
+				return result;
 			// Draw card
 			} else {
 				Rank rankDrawn = drawCard(deck);
@@ -106,6 +117,7 @@ public class AveragePlayer extends Player implements PlayerInterface {
 				gameDelay(2);
 				System.out.println(playerRequested.getID() +
 						" didn't have that card. Go Fish!!!");
+				return result;
 			}
 		}
 	}

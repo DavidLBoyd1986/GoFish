@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -213,11 +214,12 @@ public class Player implements PlayerInterface {
 	}
 	
 	@Override
-	public void takeTurn(ArrayList<Player> players, DeckOfCards deck, Scanner inputStream) {
+	public Optional<Result> takeTurn(ArrayList<Player> players, DeckOfCards deck, Scanner inputStream) {
 		//These are declared here because the actual initialization is in a try clause, and would create an error.
 		Rank rankRequested = null;
 		Player playerRequested = null;
 		int numOfCardsRetrieved = 0;
+		Optional<Result> result = Optional.empty();
 		//If hand is empty can't request card, try to GoFish!!
 		if (this.getHand().size() == 0) {
 			if (deck.getNumCardsInDeck() == 0 ) {
@@ -226,7 +228,7 @@ public class Player implements PlayerInterface {
 						+ "Turn passed!!!!");
 				System.out.println("THIS SECTION SHOULD BE UNREACHABLE!!!!");
 				repeatTurn = false;
-				return;
+				return result;
 			} else {
 				Rank rankDrawn = drawCard(deck);
 				numOfCardsRetrieved = 1;
@@ -236,15 +238,9 @@ public class Player implements PlayerInterface {
 				System.out.println("You are out of cards and have to Go Fish!");
 				gameDelay(1);
 				System.out.println("You drew a: " + rankDrawn);
-				return;
+				return result;
 			}
 		}
-		
-		// should start try here
-		//Scanner inputScanner = new Scanner(System.in);
-
-		inputStream.useDelimiter(System.lineSeparator());
-
 		//Get the rank you will request
 		try {
 			rankRequested = getRankSelection(inputStream);
@@ -259,10 +255,17 @@ public class Player implements PlayerInterface {
 			e.printStackTrace();
 			System.out.println("Error taking turn while running getPlayerSelection()");
 		}
-		// add finally here to close stream
-
-		//Request Card and take cards if player has it, go fish otherwise
+		//Request Card from another Player
 		boolean cardRequest = requestCards(rankRequested, playerRequested);
+		// Create a Result to return
+		if (cardRequest) {
+			result = Optional.of(
+					new Result(rankRequested, this, cardRequest));}
+		if (!cardRequest) {
+			result = Optional.of(
+					new Result(rankRequested, playerRequested, cardRequest));
+		}
+		//If Player had that Rank take the card(s), else GoFish
 		if (cardRequest) {
 			Card[] retrievedCards = getCards(rankRequested, playerRequested);
 			for (Card card : retrievedCards) {
@@ -277,6 +280,7 @@ public class Player implements PlayerInterface {
 			System.out.println(playerRequested.getID() +
 					" had that card. Received " + numOfCardsRetrieved
 					+ " " + rankRequested + "'s");
+			return result;
 		//Go Fish
 		} else {
 			// No cards left in deck
@@ -286,6 +290,7 @@ public class Player implements PlayerInterface {
 						" didn't have that card, and there are"
 						+ " no cards left in the deck to draw!!!");
 				repeatTurn = false;
+				return result;
 			// Draw card
 			} else {
 				Rank rankDrawn = drawCard(deck);
@@ -297,6 +302,7 @@ public class Player implements PlayerInterface {
 						" didn't have that card. Go Fish!!!");
 				gameDelay(1);
 				System.out.println("You drew a: " + rankDrawn);
+				return result;
 			}
 		}
 	}
@@ -379,4 +385,54 @@ public class Player implements PlayerInterface {
 		return this.ID;
 	}
 	
+public class Result {
+		
+		private final Rank rank;
+		private final Player player;
+		private final Boolean hasCard;
+		
+		String rankString;
+		String playerString;
+		
+		public Result(Rank initRank, Player initPlayer, Boolean initHasCard) {
+			rank = initRank;
+			player = initPlayer;
+			hasCard = initHasCard;
+			playerString = player.toString();
+			rankString = rank.toString();
+		}
+
+		public Rank getRank() {
+			return rank;
+		}
+		
+		public Player getPlayer() {
+			return player;
+		}
+		
+		public Boolean getHasCard() {
+			return hasCard;
+		}
+		
+		public String toString() {
+			return "(" + rankString + ", " + playerString + 
+					", " + hasCard + ")";
+		}
+		
+		@Override
+		public int hashCode() {
+			return ( rank.hashCode() + player.hashCode() );
+		}
+		
+		@Override
+		public boolean equals(Object o) {
+			if (o == this) return true;
+			if (!(o instanceof Result) ) return false;
+			Result other = (Result)o;
+			boolean result = ( this.rank == other.rank && 
+							   this.player == other.player && 
+							   this.hasCard == other.hasCard);
+			return result;
+		}
+	}
 }

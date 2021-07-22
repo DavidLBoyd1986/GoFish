@@ -8,6 +8,7 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -17,6 +18,7 @@ import com.boyd.deckofcards.*;
 import com.boyd.deckofcards.Card.Rank;
 
 import GoFish.AveragePlayer.RequestPair;
+import GoFish.Player.Result;
 
 /**
  * @author David
@@ -264,13 +266,15 @@ public class GoFish implements GoFishInterface {
 	public void createGameTest() {
 		
 		gameOver = false;
-		
+		ArrayList<Result> resultList = new ArrayList<Result>();
 		//Decide order around table
 			// TODO Randomize the Player positions
 		
 		//Set Number of Players --- FIX THIS AFTER TESTING!!!!!!!!!!!!!!!!!!!!
 		Scanner inputStream = new Scanner(System.in);
 		this.setNumOfPlayers(inputStream);
+		
+		inputStream.useDelimiter(System.lineSeparator());
 		
 		//Create Computer Players
 		for (int i = 1; i <= numOfPlayers; i++) {
@@ -304,16 +308,18 @@ public class GoFish implements GoFishInterface {
 					//Add a delay so the game has flow
 					gameDelay(1);
 					
+					Optional<Result> result;
 					//debugging bookcheck methods
 					System.out.println(player.ID + " has " 
 							+ player.getHand().size() + " cards in his Hand.");
-//					System.out.println(player.ID + "'s Hand: "
-//							+ player.getHand());
-//					System.out.println(player.ID + "'s BookCheck: "
-//							+ player.getBookCheck());
 					System.out.println(player.ID + "'s Books: " + 
 							player.getBooks());
-					player.takeTurn(this.getActivePlayers(), deck, inputStream);
+					//Take the turn, and update resultList if necessary
+					result = player.takeTurn(this.getActivePlayers(), deck, inputStream);
+					if (result.isPresent()) {
+						Result returnedResult = result.get();
+						resultList.add(returnedResult);
+					}
 					gameOver = isGameOver();
 					//If player and deck are both out of cards: remove player
 					if(deck.getNumCardsInDeck() == 0) {
@@ -343,57 +349,6 @@ public class GoFish implements GoFishInterface {
 	
 	public static void main(String[] args) {
 		GoFish game1 = new GoFish();
-		game1.createGame();
-	}
-
-public class Result {
-		
-		private final Rank rank;
-		private final Player player;
-		private final Boolean hasCard;
-		
-		String rankString;
-		String playerString;
-		
-		public Result(Rank initRank, Player initPlayer, Boolean initHasCard) {
-			rank = initRank;
-			player = initPlayer;
-			hasCard = initHasCard;
-			playerString = player.toString();
-			rankString = rank.toString();
-		}
-
-		public Rank getRank() {
-			return rank;
-		}
-		
-		public Player getPlayer() {
-			return player;
-		}
-		
-		public Boolean getHasCard() {
-			return hasCard;
-		}
-		
-		public String toString() {
-			return "(" + rankString + ", " + playerString + 
-					", " + hasCard + ")";
-		}
-		
-		@Override
-		public int hashCode() {
-			return ( rank.hashCode() + player.hashCode() );
-		}
-		
-		@Override
-		public boolean equals(Object o) {
-			if (o == this) return true;
-			if (!(o instanceof Result) ) return false;
-			Result other = (Result)o;
-			boolean result = ( this.rank == other.rank && 
-							   this.player == other.player && 
-							   this.hasCard == other.hasCard);
-			return result;
-		}
+		game1.createGameTest();
 	}
 }
