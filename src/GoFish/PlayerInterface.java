@@ -1,8 +1,14 @@
 package GoFish;
 import com.boyd.deckofcards.Card.Rank;
+
+import GoFish.Player.Result;
+
 import com.boyd.deckofcards.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Optional;
 import java.util.Scanner;
+import java.util.Set;
 
 public interface PlayerInterface {
 
@@ -11,6 +17,15 @@ public interface PlayerInterface {
 	 * @param repeat - boolean
 	 */
 	public void setRepeatTurn(boolean repeat);
+	
+	/**
+	 * 	/**
+	 * Puts some delay in the Computers actions to give the game flow
+	 * And let the Player see who requests what from whom.
+	 *
+	 * @param i - number of seconds to wait
+	 */
+	public void gameDelay(int i);
 	
 	/**
 	 * Gets the Player's name
@@ -27,11 +42,23 @@ public interface PlayerInterface {
 	public int getPosition();
 	
 	/**
+	 * Gets all the Player's books
+	 * @return - String representing the HashMap of all the Player's books
+	 */
+	public Set<Rank> getBooks();
+	
+	/**
 	 * Gets the hand for the Player
 	 * 
 	 * @return - An ArrayList representing that Player's hands.
 	 */
 	public ArrayList<Card> getHand();
+	/**
+	 * Gets the bookCheck HashMap
+	 * 
+	 * @return the bookCheck Hashmap
+	 */
+	public HashMap<Rank, Integer> getBookCheck();
 	
 	/**
 	 * Gets all the books the player has
@@ -77,8 +104,9 @@ public interface PlayerInterface {
 	 * Draws one Card from the top of the DeckOfCards, and puts it in the Player's hand
 	 * 
 	 * @param deck - DeckOfCards the Player will draw the card from
+	 * @return drawnRank - Rank of card drawn
 	 */
-	public void drawCard(DeckOfCards deck);
+	public Rank drawCard(DeckOfCards deck);
 	
 	/**
 	 * Updates a Player's bookCheck with the number of Card's by Rank they have
@@ -89,10 +117,8 @@ public interface PlayerInterface {
 	public void updateBookCheck(Rank rank, int cardCount);
 	
 	/**
-	 * checks if a Player has all 4 Cards of a specific Rank
+	 * Updates all Player's bookCheck after the initial deal
 	 * 
-	 * @param bookCheck - HashMap<Rank, Integer> available from GoFish that tracks the number of Cards by Rank
-	 * @return - boolean indicating a Player has the Cards to create a Book
 	 */
 	public void doInitialBookCheck();
 
@@ -109,19 +135,26 @@ public interface PlayerInterface {
 	 * @param rank - the Rank to be requested from the other Player
 	 * @param player - the Player the request is made to.
 	 */
-	public void takeTurn(ArrayList<Player> initPlayers);
+	public Optional<Result> takeTurn(ArrayList<Player> players, DeckOfCards deck, Scanner inputStream);
 	
 	/**
-	 * method used to get the Rank the Player is requesting
-	 * @return - the Rank the Player is requesting
+	 * Updates the resultList for HardPlayer class
+	 * ONLY USED BY - HardPlayer Subclass!!!!
+	 * @param result - the result of the previous Player's turn
 	 */
-	public Rank getRankSelection(Scanner inputScanner);
-	
-	/**
-	 * method used to get the Player the request is made to
-	 * @return - the Player the request is made to
-	 */
-	public Player getPlayerSelection(Scanner inputScanner, ArrayList<Player> players);
+	public void updateResultList(Result result);
+//	
+//	/**
+//	 * method used to get the Rank the Player is requesting
+//	 * @return - the Rank the Player is requesting
+//	 */
+//	public Rank getRankSelection(Scanner inputScanner);
+//	
+//	/**
+//	 * method used to get the Player the request is made to
+//	 * @return - the Player the request is made to
+//	 */
+//	public Player getPlayerSelection(Scanner inputScanner, ArrayList<Player> players);
 	
 
 	

@@ -5,11 +5,17 @@ package GoFish;
 //import GoFish.GoFish;
 import com.boyd.deckofcards.*;
 import com.boyd.deckofcards.Card.Rank;
+
+import GoFish.Player.Result;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author David
@@ -39,7 +45,7 @@ public class Player implements PlayerInterface {
 		hand = new ArrayList<Card>();
 		books = new HashMap<Rank, Card[]>();
 		bookCheck = new HashMap<Rank, Integer>();
-		ID = name + "_" + position;
+		ID = name;
 		
 	}
 
@@ -48,6 +54,15 @@ public class Player implements PlayerInterface {
 		repeatTurn = repeat;
 	}
 	
+	@Override
+	public void gameDelay(int i) {
+		//Add a delay so the game has flow
+		try {
+			TimeUnit.SECONDS.sleep(i);
+		} catch(InterruptedException ex)
+		{ Thread.currentThread().interrupt(); }
+	}
+
 	@Override
 	public String getName() {
 		return name;
@@ -65,6 +80,16 @@ public class Player implements PlayerInterface {
 	@Override
 	public ArrayList<Card> getHand() {
 		return hand;
+	}
+	
+	@Override
+	public Set<Rank> getBooks(){
+		return books.keySet();
+	}
+	
+	@Override
+	public HashMap<Rank, Integer> getBookCheck() {
+		return bookCheck;
 	}
 	
 	@Override
@@ -92,8 +117,11 @@ public class Player implements PlayerInterface {
 	}
 	
 	@Override
-	public void drawCard(DeckOfCards deck) {
-		hand.add(deck.getTopCard());
+	public Rank drawCard(DeckOfCards deck) {
+		Card cardDrawn = deck.getTopCard();
+		Rank rankDrawn = cardDrawn.getRank();
+		hand.add(cardDrawn);
+		return rankDrawn;
 	}
 	
 	@Override
@@ -113,39 +141,60 @@ public class Player implements PlayerInterface {
 				count++;
 			}
 		}
-		player.updateBookCheck(rank, requestedCards.length * -1);
+		// The below updates the bookcheck of the Player losing the card
+		player.updateBookCheck(rank, count * -1);
 		return requestedCards;
 	}
 	
 	@Override
 	public void doInitialBookCheck() {
+		//Two variables are initialized on the off chance dealt 4 of one rank
+		boolean createBook = false;
+		Rank rankToBook = null;
+
 		for (Card card : hand) {
 			if (bookCheck.containsKey(card.getRank())) {
-				// Create a new Integer that is +1 of the previous value
-				Integer numOfRank = new Integer(bookCheck.get(card.getRank()).intValue() + 1);
+				Integer numOfRank = new Integer(
+						bookCheck.get(card.getRank()).intValue() + 1);
 				bookCheck.replace(card.getRank(), numOfRank);
+				// If dealt 4 remember rank to createBook out of loop;
+				if (numOfRank.intValue() == 4) {
+					rankToBook = card.getRank();
+					createBook = true;
+				}
 			} else {
 				Integer numOfRank = new Integer(1);
 				bookCheck.put(card.getRank(), numOfRank);
 			}
 		}
+		// Someone was dealt 4 of one rank
+		if (createBook) {
+			createBook(rankToBook);
+			bookCheck.remove(rankToBook);
+		}
 	}
 	
 	@Override
 	public void updateBookCheck(Rank rank, int cardCount) {
+		//If already has one of those Cards
 		if (bookCheck.containsKey(rank)) {
 			// Add the cardCounts together
 			int oldCardCount = bookCheck.get(rank).intValue();
 			Integer newCardCount = new Integer(cardCount + oldCardCount);
-			// If person has all 4 of the Rank make the book and set bookCheck to 0
+			// If person has all 4 of the Rank make the book and remove rank
 			if (newCardCount.intValue() == 4) {
 				createBook(rank);
 				newCardCount = new Integer(0);
-				bookCheck.replace(rank, oldCardCount, newCardCount);
+				bookCheck.remove(rank);
+			} else if (newCardCount.intValue() == 0) {
+				// If they lost all the cards remove the rank from bookcheck
+				bookCheck.remove(rank);
 			} else {
+				// Normal update of the cards
 				bookCheck.replace(rank, oldCardCount, newCardCount);
 			}	
 		} else {
+			// They don't have a card of the rank, so add it
 			bookCheck.put(rank, cardCount);
 		}
 	}
@@ -154,115 +203,86 @@ public class Player implements PlayerInterface {
 	public void createBook(Rank rank) {
 		Card[] book = new Card[4];
 		int count = 0;
-		for (Card card : hand) {
+
+		for (Iterator<Card> iterator = hand.iterator(); iterator.hasNext();) {
+			Card card = iterator.next();
 			if (card.getRank().equals(rank)) {
 				book[count] = card;
 				count++;
+				iterator.remove();
 			}
 		}
-		assert(book.length == 4);
+		assert(count == 4);
 		books.put(rank, book);
 	}
 	
-	@Override
-	public void takeTurn(ArrayList<Player> players) {
-		//These are declared here because the actual initialization is in a try clause, and would create and error.
-		Rank rankRequested = null;
-		Player playerRequested = null;
-		int numOfCardsRetrieved = 0;
-		Scanner inputScanner = new Scanner(System.in);
-		inputScanner.useDelimiter(System.lineSeparator());
-
-		//Get the rank you will request
-		try {
-			rankRequested = getRankSelection(inputScanner);
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("Error taking turn while running getRankSelection()");			
-		}
-		//Get the player you will make the request to
-		try {
-			playerRequested = getPlayerSelection(inputScanner, players);
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("Error taking turn while running getPlayerSelection()");
-		}
-		//Request Card and take cards if player has it, go fish and draw card otherwise
-		boolean cardRequest = requestCards(rankRequested, playerRequested);
-		if (cardRequest) {
-			Card[] retrievedCards = getCards(rankRequested, playerRequested);
-			numOfCardsRetrieved = retrievedCards.length;
-			for (Card card : retrievedCards) {
-				if (Objects.nonNull(card)) {
-				hand.add(card);
-				}
-			repeatTurn = true;
-			}
-		} else {
-			drawCard(GoFish.deck);
-			numOfCardsRetrieved = 1;
-			repeatTurn = false;
-		}
-		//Update BookCheck
-		updateBookCheck(rankRequested, numOfCardsRetrieved);
-	}
 	
-	// This function will only be for testing on command line. It will be replaced once I build a GUI
-	@Override
-	public Rank getRankSelection(Scanner inputScanner) {
-		System.out.println("Please enter what Rank you want to ask a Player for based on the following list: ");
-		ArrayList<Rank> rankList = new ArrayList<Rank>();
-		for (Card card : hand) {
-			if (!rankList.contains(card.getRank())) {
-				rankList.add(card.getRank());
-			}
-		}
-		for (Rank rank : rankList) {
-			System.out.println(rank.toString());
-		}
-
-		System.out.println("Enter Rank: ");
-		String rankRequest = inputScanner.next();
-		Rank rank = Rank.valueOf(rankRequest);
-		// Scanner left open for selecting a Player input
-		return rank;
-	}
-	
-	/**
-	 * method used to get the Player the request is made to
-	 * @return - the Player the request is made to
-	 */
-	public Player getPlayerSelection(Scanner inputScanner, ArrayList<Player> players) {
-
-		System.out.println("Please select which player the request will be made to: ");
-		// Player toString will be outputted
-		for (Player player : players) {
-			if (player.getID() != this.ID) {
-			System.out.println(player);
-			}
-		}
-		// The user input will be a String that matches Player toString output (Case insensitive)
-		// TODO update Exception for User input
-		System.out.println("Enter Player selection: ");
-		String playerRequest = inputScanner.next();
-		//inputScanner.close();
-		
-		//Create Player object to return, and then assign the requested Player as that object
-		Player returnedPlayer = null;
-		playerRequest.toLowerCase();
-		for (Player player : players) {
-			String playerString = player.toString();
-			playerString.toLowerCase();
-			if (playerString.equals(playerRequest)) {
-				returnedPlayer = player;
-			}
-		}
-		
-		return returnedPlayer;
-	}
 	
 	public String toString() {
 		return this.ID;
 	}
 	
+	@Override
+	public Optional<Result> takeTurn(ArrayList<Player> players, DeckOfCards deck, Scanner inputStream) {
+		Optional<Result> result = null;
+		return result;
+	}
+	
+	public Optional<Result> takeTurn(ArrayList<Player> players, DeckOfCards deck) {
+		Optional<Result> result = null;
+		return result;
+	}
+	
+	public void updateResultList(Result result) {}
+
+public class Result {
+		
+		private final Rank rank;
+		private final Player player;
+		private final Boolean hasCard;
+		
+		String rankString;
+		String playerString;
+		
+		public Result(Rank initRank, Player initPlayer, Boolean initHasCard) {
+			rank = initRank;
+			player = initPlayer;
+			hasCard = initHasCard;
+			playerString = player.toString();
+			rankString = rank.toString();
+		}
+
+		public Rank getRank() {
+			return rank;
+		}
+		
+		public Player getPlayer() {
+			return player;
+		}
+		
+		public Boolean getHasCard() {
+			return hasCard;
+		}
+		
+		public String toString() {
+			return "(" + rankString + ", " + playerString + 
+					", " + hasCard + ")";
+		}
+		
+		@Override
+		public int hashCode() {
+			return ( rank.hashCode() + player.hashCode() );
+		}
+		
+		@Override
+		public boolean equals(Object o) {
+			if (o == this) return true;
+			if (!(o instanceof Result) ) return false;
+			Result other = (Result)o;
+			boolean result = ( this.rank == other.rank && 
+							   this.player == other.player && 
+							   this.hasCard == other.hasCard);
+			return result;
+		}
+	}
 }

@@ -3,12 +3,13 @@ package com.boyd.deckofcards;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.Optional;
 import java.util.Random;
 import com.boyd.deckofcards.Card.Rank;
 import com.boyd.deckofcards.Card.Suit;
 
-public class DeckOfCards implements DeckOfCardsInterface {
+public class DeckOfCards implements DeckOfCardsInterface, Iterable<Card> {
 
     private final int totalNumOfCards = Suit.values().length * Rank.values().length;
  
@@ -328,6 +329,28 @@ public class DeckOfCards implements DeckOfCardsInterface {
 		
 	}
 	
+	@Override
+	public Iterator<Card> iterator() {
+		return new Iterator<Card> () {
+			private final Iterator<Card> iter = deck.iterator();
+			
+			@Override
+			public boolean hasNext() {
+				return iter.hasNext();
+			}
+			
+			@Override
+			public Card next() {
+				return iter.next();
+			}
+			
+			@Override
+			public void remove() {
+				throw new UnsupportedOperationException("no changes allowed");
+			}
+		};
+	}
+	
 	/**
 	 * This class is only used to request Cards by adding SuitPair to a SuitPair[]
 	 * which is used as a parameter in getExactCards(SuitPair[])
@@ -374,11 +397,6 @@ public class DeckOfCards implements DeckOfCardsInterface {
 			boolean suitPair = ( this.suitString == other.suitString && this.rankString == other.rankString );
 			return suitPair;
 		}
-	}
-	
-	public static void main(String[] args) {
-		
-
 	}
 }
 
