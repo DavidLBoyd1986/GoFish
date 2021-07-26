@@ -5,16 +5,15 @@ import java.util.HashMap;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Scanner;
-
 import com.boyd.deckofcards.Card;
 import com.boyd.deckofcards.DeckOfCards;
 import com.boyd.deckofcards.Card.Rank;
 
-import GoFish.Player.Result;
-
 public class InteractivePlayer extends Player implements PlayerInterface {
 
-	public InteractivePlayer(String initName, int initPosition, Scanner inputStream) {
+	Scanner inputStream;
+	
+	public InteractivePlayer(String initName, int initPosition, Scanner initInputStream) {
 		super(initName, initPosition);
 		name = initName;
 		position = initPosition;
@@ -22,10 +21,11 @@ public class InteractivePlayer extends Player implements PlayerInterface {
 		books = new HashMap<Rank, Card[]>();
 		bookCheck = new HashMap<Rank, Integer>();
 		ID = name;
+		inputStream = initInputStream;
 	}
 	
 	@Override
-	public Optional<Result> takeTurn(ArrayList<Player> players, DeckOfCards deck, Scanner inputStream) {
+	public Optional<Result> takeTurn(ArrayList<Player> players, DeckOfCards deck) {
 		//These are declared here because the actual initialization is in a try clause, and would create an error.
 		Rank rankRequested = null;
 		Player playerRequested = null;

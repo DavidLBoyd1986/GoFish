@@ -1,14 +1,12 @@
 package GoFish;
-import com.boyd.deckofcards.Card.Rank;
 
-import GoFish.Player.Result;
-
-import com.boyd.deckofcards.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
-import java.util.Scanner;
 import java.util.Set;
+import com.boyd.deckofcards.*;
+import com.boyd.deckofcards.Card.Rank;
+import GoFish.Player.Result;
 
 public interface PlayerInterface {
 
@@ -135,7 +133,7 @@ public interface PlayerInterface {
 	 * @param rank - the Rank to be requested from the other Player
 	 * @param player - the Player the request is made to.
 	 */
-	public Optional<Result> takeTurn(ArrayList<Player> players, DeckOfCards deck, Scanner inputStream);
+	public Optional<Result> takeTurn(ArrayList<Player> players, DeckOfCards deck);
 	
 	/**
 	 * Updates the resultList for HardPlayer class

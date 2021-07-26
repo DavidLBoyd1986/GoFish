@@ -2,21 +2,15 @@
  * 
  */
 package GoFish;
-//import GoFish.GoFish;
-import com.boyd.deckofcards.*;
-import com.boyd.deckofcards.Card.Rank;
-
-import GoFish.Player.Result;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.Scanner;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-
+import com.boyd.deckofcards.*;
+import com.boyd.deckofcards.Card.Rank;
 /**
  * @author David
  *
@@ -223,11 +217,6 @@ public class Player implements PlayerInterface {
 	}
 	
 	@Override
-	public Optional<Result> takeTurn(ArrayList<Player> players, DeckOfCards deck, Scanner inputStream) {
-		Optional<Result> result = null;
-		return result;
-	}
-	
 	public Optional<Result> takeTurn(ArrayList<Player> players, DeckOfCards deck) {
 		Optional<Result> result = null;
 		return result;

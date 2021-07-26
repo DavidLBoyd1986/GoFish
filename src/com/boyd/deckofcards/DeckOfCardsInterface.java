@@ -5,7 +5,6 @@ package com.boyd.deckofcards;
 
 import com.boyd.deckofcards.Card.Rank;
 import com.boyd.deckofcards.Card.Suit;
-import com.boyd.deckofcards.SuitPair;
 
 import java.util.Optional;
 

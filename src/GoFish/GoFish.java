@@ -15,9 +15,7 @@ import java.util.concurrent.TimeUnit;
 //import com.boyd.deckofcards.Card;
 //import com.boyd.deckofcards.Card.Rank;
 import com.boyd.deckofcards.*;
-import com.boyd.deckofcards.Card.Rank;
 
-import GoFish.AveragePlayer.RequestPair;
 import GoFish.Player.Result;
 
 /**
@@ -237,10 +235,11 @@ public class GoFish implements GoFishInterface {
 					//Regular Output
 					System.out.println(player.ID + " has " 
 							+ player.getHand().size() + " cards.");
-					System.out.println(player.ID + "'s Books: " + player.getBooks());
+					System.out.println(player.ID + "'s Books: " +
+									   player.getBooks());
 					System.out.println(this.getActivePlayers());
 
-					result = player.takeTurn(this.getActivePlayers(), deck, inputStream);
+					result = player.takeTurn(this.getActivePlayers(), deck);
 					for (Player activePlayer: this.getActivePlayers()) {
 						if (activePlayer instanceof HardPlayer) {
 							activePlayer.updateResultList(result.get());
@@ -326,7 +325,7 @@ public class GoFish implements GoFishInterface {
 					System.out.println(
 							player.ID + "'s Hand: " + player.getHand());
 					//Take the turn, and update resultList if necessary
-					result = player.takeTurn(this.getActivePlayers(), deck, inputStream);
+					result = player.takeTurn(this.getActivePlayers(), deck);
 					for (Player activePlayer: this.getActivePlayers()) {
 						if (activePlayer instanceof HardPlayer) {
 							activePlayer.updateResultList(result.get());
@@ -361,6 +360,6 @@ public class GoFish implements GoFishInterface {
 	
 	public static void main(String[] args) {
 		GoFish game1 = new GoFish();
-		game1.createGame();
+		game1.createGameTest();
 	}
 }

@@ -20,16 +20,17 @@ package com.boyd.deckofcards;
  */
 public class Card {
 
+	// These are public so they can be accessed for testing purposes
 	public enum Suit {DIAMOND, HEART, CLUB, SPADE};
-	public enum Rank {TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING, ACE};
-	Suit suit;
-	Rank rank;
+	public enum Rank {TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT,
+					  NINE, TEN, JACK, QUEEN, KING, ACE};
+
+	private Suit suit;
+	private Rank rank;
 	
 	public Card(Suit initSuit, Rank initRank) {
-		
 		this.suit = initSuit;
 		this.rank = initRank;
-		
 	}
 	
 	/**

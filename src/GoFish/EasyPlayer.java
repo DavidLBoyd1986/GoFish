@@ -5,11 +5,8 @@ import java.util.HashMap;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
-import java.util.Scanner;
-
 import com.boyd.deckofcards.Card;
 import com.boyd.deckofcards.Card.Rank;
-
 import com.boyd.deckofcards.DeckOfCards;
 
 public class EasyPlayer extends Player implements PlayerInterface {
@@ -26,7 +23,7 @@ public class EasyPlayer extends Player implements PlayerInterface {
 	}
 
 	@Override
-	public Optional<Result> takeTurn(ArrayList<Player> players, DeckOfCards deck, Scanner inputStream) {
+	public Optional<Result> takeTurn(ArrayList<Player> players, DeckOfCards deck) {
 
 		Random random = new Random();
 		this.repeatTurn = false;
