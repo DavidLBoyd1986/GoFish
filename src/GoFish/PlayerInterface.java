@@ -147,6 +147,11 @@ public interface PlayerInterface {
 	public void GoFish(DeckOfCards deck, Player playerRequested,
 						 Rank rankRequested, int numOfCardsRetrieved);
 	
+	public void takeCards(Player playerRequested, Rank rankRequested,
+						  int numOfCardsRetrieved);
+	
+	public void outOfCards(DeckOfCards deck, int numOfCardsRetrieved);
+	
 	/**
 	 * Updates the resultList for HardPlayer class
 	 * ONLY USED BY - HardPlayer Subclass!!!!

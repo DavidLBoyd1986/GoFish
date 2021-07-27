@@ -6,6 +6,7 @@ package GoFish;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -224,8 +225,18 @@ public class Player implements PlayerInterface {
 		return result;
 	}
 	
+	public void outOfCards(DeckOfCards deck, int numOfCardsRetrieved) {
+		Rank rankDrawn = drawCard(deck);
+		numOfCardsRetrieved = 1;
+		repeatTurn = false;
+		updateBookCheck(rankDrawn, numOfCardsRetrieved);
+		System.out.println(this.getID() + " is out of cards. "
+				+ "They had to Go Fish!!!");
+		System.out.println("You drew a: " + rankDrawn);
+	}
+	
 	public void GoFish(DeckOfCards deck, Player playerRequested,
-			 		 	 Rank rankRequested, int numOfCardsRetrieved) {
+			 		   Rank rankRequested, int numOfCardsRetrieved) {
 		// No cards left in deck
 		if (deck.getNumCardsInDeck() == 0 ) {
 			gameDelay(2);
@@ -249,6 +260,25 @@ public class Player implements PlayerInterface {
 			System.out.println(playerRequested.getID() +
 					" didn't have that card. Go Fish!!!");
 		}
+	}
+	
+	public void takeCards(Player playerRequested, Rank rankRequested,
+			  					  int numOfCardsRetrieved) {
+		Card[] retrievedCards = getCards(rankRequested, playerRequested);
+		for (Card card : retrievedCards) {
+			if (Objects.nonNull(card)) {
+			hand.add(card);
+			numOfCardsRetrieved += 1;
+			}
+		}
+		updateBookCheck(rankRequested, numOfCardsRetrieved);
+		this.repeatTurn = true;
+		gameDelay(2);
+		System.out.println(this.getID() + " requested a " + rankRequested
+				+ " from " + playerRequested);
+		gameDelay(2);
+		System.out.println(this.getID() + " received "
+				+ numOfCardsRetrieved + " cards from " + playerRequested);
 	}
 	
 	public void updateResultList(Result result) {}

@@ -197,7 +197,7 @@ public class GoFish implements GoFishInterface {
 		inputStream.useDelimiter(System.lineSeparator());
 		
 		// Create User's Player
-		InteractivePlayer user = new InteractivePlayer("David", 1, inputStream);
+		InteractivePlayer user = new InteractivePlayer("You", 1, inputStream);
 		this.addPlayer(user);
 		
 		//Create Computer Players
