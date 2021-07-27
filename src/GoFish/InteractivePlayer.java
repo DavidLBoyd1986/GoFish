@@ -94,27 +94,8 @@ public class InteractivePlayer extends Player implements PlayerInterface {
 			return result;
 		//Go Fish
 		} else {
-			// No cards left in deck
-			if (deck.getNumCardsInDeck() == 0 ) {
-				gameDelay(1);
-				System.out.println(playerRequested.getID() +
-						" didn't have that card, and there are"
-						+ " no cards left in the deck to draw!!!");
-				repeatTurn = false;
-				return result;
-			// Draw card
-			} else {
-				Rank rankDrawn = drawCard(deck);
-				numOfCardsRetrieved = 1;
-				repeatTurn = false;
-				updateBookCheck(rankDrawn, numOfCardsRetrieved);
-				gameDelay(1);
-				System.out.println(playerRequested.getID() +
-						" didn't have that card. Go Fish!!!");
-				gameDelay(1);
-				System.out.println("You drew a: " + rankDrawn);
-				return result;
-			}
+			GoFish(deck, playerRequested, rankRequested, numOfCardsRetrieved);
+			return result;
 		}
 	}
 	

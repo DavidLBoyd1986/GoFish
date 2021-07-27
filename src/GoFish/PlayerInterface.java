@@ -136,6 +136,18 @@ public interface PlayerInterface {
 	public Optional<Result> takeTurn(ArrayList<Player> players, DeckOfCards deck);
 	
 	/**
+	 * Attempts to draw a card from the deck if the request failed
+	 * 
+	 * @param deck - deck of cards used for the game
+	 * @param playerRequested - Player the request was made to
+	 * @param rankRequested - Rank of Card requested from the Player
+	 * @param numOfCardsRetrieved - int for the # of cards retrieved. Will be 1.
+	 * @return Result - The result of the turn used for HardPlayer to track
+	 */
+	public void GoFish(DeckOfCards deck, Player playerRequested,
+						 Rank rankRequested, int numOfCardsRetrieved);
+	
+	/**
 	 * Updates the resultList for HardPlayer class
 	 * ONLY USED BY - HardPlayer Subclass!!!!
 	 * @param result - the result of the previous Player's turn

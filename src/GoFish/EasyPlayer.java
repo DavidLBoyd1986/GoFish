@@ -11,10 +11,9 @@ import com.boyd.deckofcards.DeckOfCards;
 
 public class EasyPlayer extends Player implements PlayerInterface {
 
-	public EasyPlayer(String initDifficulty, int initPosition) {
-		super(initDifficulty, initPosition);
-		String difficulty = initDifficulty;
-		name = GoFish.getPlayerName(difficulty);
+	public EasyPlayer(String initName, int initPosition) {
+		super(initName, initPosition);
+		name = initName;
 		position = initPosition;
 		hand = new ArrayList<Card>();
 		books = new HashMap<Rank, Card[]>();
@@ -91,31 +90,8 @@ public class EasyPlayer extends Player implements PlayerInterface {
 			return result;
 		//Go Fish
 		} else {
-			// No cards left in deck
-			if (deck.getNumCardsInDeck() == 0 ) {
-				gameDelay(2);
-				System.out.println(this.getID() + " requested a " + 
-						rankRequested + " from " + playerRequested);
-				gameDelay(2);
-				System.out.println(playerRequested.getID() +
-						" didn't have that card, and there are"
-						+ " no cards left in the deck to draw!!!");
-				repeatTurn = false;
-				return result;
-			// Draw card
-			} else {
-				Rank rankDrawn = drawCard(deck);
-				numOfCardsRetrieved = 1;
-				repeatTurn = false;
-				updateBookCheck(rankDrawn, numOfCardsRetrieved);
-				gameDelay(2);
-				System.out.println(this.getID() + " a requested " + 
-						rankRequested + " from " + playerRequested);
-				gameDelay(2);
-				System.out.println(playerRequested.getID() +
-						" didn't have that card. Go Fish!!!");
-				return result;
-			}
+			GoFish(deck, playerRequested, rankRequested, numOfCardsRetrieved);
+			return result;
 		}
 	}
 }

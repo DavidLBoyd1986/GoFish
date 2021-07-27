@@ -29,18 +29,18 @@ public class GoFish implements GoFishInterface {
 	public int numOfPlayers;
 	public DeckOfCards deck;
 	public boolean gameOver;
-	public static ArrayList<String> easyPlayerNames = 
-			new ArrayList<String>();
-	public static ArrayList<String> averagePlayerNames = 
-			new ArrayList<String>();
-	public static ArrayList<String> hardPlayerNames = 
-			new ArrayList<String>();
+	public ArrayList<String> easyPlayerNames;
+	public ArrayList<String> averagePlayerNames;
+	public ArrayList<String> hardPlayerNames;
 	
 	
 	
 	public GoFish() {
 		players = new ArrayList<Player>();
 		activePlayers = new ArrayList<Player>();
+		easyPlayerNames = new ArrayList<String>();
+		averagePlayerNames = new ArrayList<String>();
+		hardPlayerNames = new ArrayList<String>();
 		//numOfPlayers = 4;
 		gameOver = false;
 		deck = new DeckOfCards();
@@ -62,7 +62,7 @@ public class GoFish implements GoFishInterface {
 		{ Thread.currentThread().interrupt(); }
 	}
 	
-	public static String getPlayerName(String difficulty) {
+	public String getPlayerName(String difficulty) {
 		Random random = new Random();
 		String playerName = "";
 		difficulty = difficulty.toLowerCase();
@@ -202,8 +202,11 @@ public class GoFish implements GoFishInterface {
 		
 		//Create Computer Players
 		for (int i = 2; i <= numOfPlayers; i++) {
-			this.addPlayer(new AveragePlayer("average", i));
+			String playerName = this.getPlayerName("average");
+			this.addPlayer(new AveragePlayer(playerName, i));
 		}
+		
+		System.out.println(this.getActivePlayers());
 		
 		//Decide dealer
 			// TODO dealer will always be Randomized Player 1, need to implement that before this can be done
@@ -286,8 +289,11 @@ public class GoFish implements GoFishInterface {
 		
 		//Create Computer Players
 		for (int i = 1; i <= numOfPlayers; i++) {
-			this.addPlayer(new AveragePlayer("average", i));
+			String playerName = this.getPlayerName("average");
+			this.addPlayer(new AveragePlayer(playerName, i));
 		}
+		
+		System.out.println(this.getActivePlayers());
 		
 		//Decide dealer
 			// TODO dealer will always be Randomized Player 1, need to implement that before this can be done	

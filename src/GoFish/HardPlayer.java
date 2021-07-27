@@ -12,10 +12,9 @@ public class HardPlayer extends Player implements PlayerInterface {
 
 	ArrayList<Result> resultList;
 	
-	public HardPlayer(String initDifficulty, int initPosition) {
-		super(initDifficulty, initPosition);
-		String difficulty = initDifficulty;
-		name = GoFish.getPlayerName(difficulty);
+	public HardPlayer(String initName, int initPosition) {
+		super(initName, initPosition);
+		name = initName;
 		position = initPosition;
 		hand = new ArrayList<Card>();
 		books = new HashMap<Rank, Card[]>();
