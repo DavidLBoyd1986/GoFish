@@ -147,9 +147,21 @@ public interface PlayerInterface {
 	public void GoFish(DeckOfCards deck, Player playerRequested,
 						 Rank rankRequested, int numOfCardsRetrieved);
 	
+	/**
+	 * The Player has the requested Rank, this takes the cards from the player
+	 * 
+	 * @param playerRequested - Player the request was made to
+	 * @param rankRequested - Rank of Card requested from the Player
+	 * @param numOfCardsRetrieved - int for the # of cards retrieved.
+	 */
 	public void takeCards(Player playerRequested, Rank rankRequested,
 						  int numOfCardsRetrieved);
 	
+	/**
+	 * The player's hand is out of cards, so they must GoFish
+	 * @param deck- deck of cards used for the game
+	 * @param numOfCardsRetrieved - int for the # of cards retrieved.
+	 */
 	public void outOfCards(DeckOfCards deck, int numOfCardsRetrieved);
 	
 	/**
@@ -158,19 +170,4 @@ public interface PlayerInterface {
 	 * @param result - the result of the previous Player's turn
 	 */
 	public void updateResultList(Result result);
-//	
-//	/**
-//	 * method used to get the Rank the Player is requesting
-//	 * @return - the Rank the Player is requesting
-//	 */
-//	public Rank getRankSelection(Scanner inputScanner);
-//	
-//	/**
-//	 * method used to get the Player the request is made to
-//	 * @return - the Player the request is made to
-//	 */
-//	public Player getPlayerSelection(Scanner inputScanner, ArrayList<Player> players);
-	
-
-	
 }

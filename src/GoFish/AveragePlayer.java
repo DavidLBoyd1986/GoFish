@@ -139,7 +139,6 @@ public class AveragePlayer extends Player implements PlayerInterface {
 		//Get the rank and player you will request
 		Rank rankRequested = rankRequest();
 		Player playerRequested = playerRequest(players, rankRequested);
-
 		//Request Card and take cards if player has it, go fish and draw card otherwise
 		boolean cardRequest = requestCards(rankRequested, playerRequested);
 		//If Player had that Rank take the card(s), else GoFish

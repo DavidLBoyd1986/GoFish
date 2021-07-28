@@ -26,8 +26,6 @@ public class InteractivePlayer extends Player implements PlayerInterface {
 	@Override
 	public Optional<Result> takeTurn(ArrayList<Player> players, DeckOfCards deck) {
 		//These are declared here because the actual initialization is in a try clause, and would create an error.
-		Rank rankRequested = null;
-		Player playerRequested = null;
 		int numOfCardsRetrieved = 0;
 		Optional<Result> result = Optional.empty();
 		//If hand is empty can't request card, try to GoFish!!
@@ -35,20 +33,10 @@ public class InteractivePlayer extends Player implements PlayerInterface {
 			outOfCards(deck, numOfCardsRetrieved);
 			return result;
 		}
-		//Get the rank you will request
-		try {
-			rankRequested = getRankSelection(inputStream);
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("Error taking turn while running getRankSelection()");			
-		}
-		//Get the player you will make the request to
-		try {
-			playerRequested = getPlayerSelection(inputStream, players);
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("Error taking turn while running getPlayerSelection()");
-		}
+		//Get user input for requests
+		Result requestResult = getUserInput(players, inputStream);
+		Rank rankRequested = requestResult.getRank();
+		Player playerRequested = requestResult.getPlayer();
 		//Request Card from another Player
 		boolean cardRequest = requestCards(rankRequested, playerRequested);
 		//If Player had that Rank take the card(s), else GoFish
@@ -64,6 +52,27 @@ public class InteractivePlayer extends Player implements PlayerInterface {
 					new Result(rankRequested, playerRequested, cardRequest));
 			return result;
 		}
+	}
+	
+	public Result getUserInput(ArrayList<Player> players, Scanner inputStream) {
+		Rank rankRequested = null;
+		Player playerRequested = null;
+		//Get the rank you will request
+		try {
+			rankRequested = getRankSelection(inputStream);
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Error taking turn while running getRankSelection()");			
+		}
+		//Get the player you will make the request to
+		try {
+			playerRequested = getPlayerSelection(inputStream, players);
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Error taking turn while running getPlayerSelection()");
+		}
+		Result requestResult = new Result(rankRequested, playerRequested, false);
+		return requestResult;
 	}
 	
 	public Rank getRankSelection(Scanner inputScanner) {

@@ -13,8 +13,6 @@ import GoFish.Player;
 
 public class GoFishTest {
 
-
-
 	/*
      * Testing strategy
      * ==================
@@ -43,7 +41,6 @@ public class GoFishTest {
      * Test 9 - testCreateGameTest() - returns True if createGameTest runs smoothly and ends with a clear winner
      */
 	
-
 	Player testPlayer1;
 	Player testPlayer2;
 	Player testPlayer3;
