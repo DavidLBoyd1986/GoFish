@@ -2,10 +2,7 @@ package GoFish;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.Scanner;
-
 import com.boyd.deckofcards.Card;
 import com.boyd.deckofcards.DeckOfCards;
 import com.boyd.deckofcards.Card.Rank;
@@ -15,10 +12,9 @@ public class AveragePlayer extends Player implements PlayerInterface {
 
 	private HashMap<Rank, ArrayList<Player>> requestTracker;
 	
-	public AveragePlayer(String initDifficulty, int initPosition) {
-		super(initDifficulty, initPosition);
-		String difficulty = initDifficulty;
-		name = GoFish.getPlayerName(difficulty);
+	public AveragePlayer(String initName, int initPosition) {
+		super(initName, initPosition);
+		name = initName;
 		position = initPosition;
 		hand = new ArrayList<Card>();
 		books = new HashMap<Rank, Card[]>();
@@ -130,89 +126,33 @@ public class AveragePlayer extends Player implements PlayerInterface {
 	}
 	
 	@Override
-	public Optional<Result> takeTurn(ArrayList<Player> players, DeckOfCards deck, Scanner inputStream) {
+	public Optional<Result> takeTurn(ArrayList<Player> players, DeckOfCards deck) {
 
 		this.repeatTurn = false;
 		int numOfCardsRetrieved = 0;
 		Optional<Result> result = Optional.empty();
 		//If hand is empty can't request card, try to GoFish!!
 		if (this.getHand().size() == 0) {
-			if (deck.getNumCardsInDeck() == 0 ) {
-				System.out.println(this.getID() +
-						" is out of cards and the deck is empty. "
-						+ "Turn passed.");
-				System.out.println("THIS SECTION SHOULD BE UNREACHABLE!!!!");
-				repeatTurn = false;
-				return result;
-			} else {
-				Rank rankDrawn = drawCard(deck);
-				numOfCardsRetrieved = 1;
-				repeatTurn = false;
-				updateBookCheck(rankDrawn, numOfCardsRetrieved);
-				System.out.println(this.getID() + " is out of cards. "
-						+ "They had to Go Fish!!!");
-				System.out.println("You drew a: " + rankDrawn);
-				return result;
-			}
+			outOfCards(deck, numOfCardsRetrieved);
+			return result;
 		}
 		//Get the rank and player you will request
 		Rank rankRequested = rankRequest();
 		Player playerRequested = playerRequest(players, rankRequested);
-
 		//Request Card and take cards if player has it, go fish and draw card otherwise
 		boolean cardRequest = requestCards(rankRequested, playerRequested);
-		// Create a Result to return
+		//If Player had that Rank take the card(s), else GoFish
 		if (cardRequest) {
+			takeCards(playerRequested, rankRequested, numOfCardsRetrieved);
 			result = Optional.of(
-					new Result(rankRequested, this, cardRequest));}
-		if (!cardRequest) {
-			result = Optional.of(
-					new Result(rankRequested, playerRequested, cardRequest));
-		}
-		if (cardRequest) {
-			Card[] retrievedCards = getCards(rankRequested, playerRequested);
-			for (Card card : retrievedCards) {
-				if (Objects.nonNull(card)) {
-				hand.add(card);
-				numOfCardsRetrieved += 1;
-				}
-			}
-			updateBookCheck(rankRequested, numOfCardsRetrieved);
-			this.repeatTurn = true;
-			gameDelay(2);
-			System.out.println(this.getID() + " requested a " + rankRequested
-					+ " from " + playerRequested);
-			gameDelay(2);
-			System.out.println(this.getID() + " received "
-					+ numOfCardsRetrieved + " cards from " + playerRequested);
+					new Result(rankRequested, this, cardRequest));
 			return result;
 		//Go Fish
 		} else {
-			// No cards left in deck
-			if (deck.getNumCardsInDeck() == 0 ) {
-				gameDelay(2);
-				System.out.println(this.getID() + " requested a " + 
-						rankRequested + " from " + playerRequested);
-				gameDelay(2);
-				System.out.println(playerRequested.getID() +
-						" didn't have that card, and there are"
-						+ " no cards left in the deck to draw!!!");
-				repeatTurn = false;
-				return result;
-			// Draw card
-			} else {
-				Rank rankDrawn = drawCard(deck);
-				numOfCardsRetrieved = 1;
-				repeatTurn = false;
-				updateBookCheck(rankDrawn, numOfCardsRetrieved);
-				gameDelay(2);
-				System.out.println(this.getID() + " a requested " + 
-						rankRequested + " from " + playerRequested);
-				gameDelay(2);
-				System.out.println(playerRequested.getID() +
-						" didn't have that card. Go Fish!!!");
-				return result;
-			}
+			GoFish(deck, playerRequested, rankRequested, numOfCardsRetrieved);
+			result = Optional.of(
+					new Result(rankRequested, playerRequested, cardRequest));
+			return result;
 		}
 	}
 	

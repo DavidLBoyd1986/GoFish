@@ -1,8 +1,5 @@
 package GoFish;
 
-import com.boyd.deckofcards.Card;
-import com.boyd.deckofcards.Card.Rank;
-import java.util.HashMap;
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -96,16 +93,9 @@ public interface GoFishInterface {
 	 */
 	public String getWinner();
 	
-	/**
-	 * Creates a Player character who will play the game
-	 * 
-	 * @param skillLevel - enum representing the skill of the Player
-	 * EASY - The Player never remembers anything about what Cards were asked for from whom
-	 * MEDIUM - The Player remembers what Cards he asked for from other Players
-	 * HARD - The Player remembers what Cards anyone asked for from other Players
-	 * @return - Player object that can play the game
-	 */
-	//public Player createPlayer(int skillLevel);
+	public void outputGameResults(ArrayList<Player> players);
+	
+	public void outputTurnInformation(Player player);
 	
 	/**
 	 * Places Players around a table in clockwise fashion

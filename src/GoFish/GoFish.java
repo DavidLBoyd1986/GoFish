@@ -15,9 +15,7 @@ import java.util.concurrent.TimeUnit;
 //import com.boyd.deckofcards.Card;
 //import com.boyd.deckofcards.Card.Rank;
 import com.boyd.deckofcards.*;
-import com.boyd.deckofcards.Card.Rank;
 
-import GoFish.AveragePlayer.RequestPair;
 import GoFish.Player.Result;
 
 /**
@@ -31,18 +29,18 @@ public class GoFish implements GoFishInterface {
 	public int numOfPlayers;
 	public DeckOfCards deck;
 	public boolean gameOver;
-	public static ArrayList<String> easyPlayerNames = 
-			new ArrayList<String>();
-	public static ArrayList<String> averagePlayerNames = 
-			new ArrayList<String>();
-	public static ArrayList<String> hardPlayerNames = 
-			new ArrayList<String>();
+	public ArrayList<String> easyPlayerNames;
+	public ArrayList<String> averagePlayerNames;
+	public ArrayList<String> hardPlayerNames;
 	
 	
 	
 	public GoFish() {
 		players = new ArrayList<Player>();
 		activePlayers = new ArrayList<Player>();
+		easyPlayerNames = new ArrayList<String>();
+		averagePlayerNames = new ArrayList<String>();
+		hardPlayerNames = new ArrayList<String>();
 		//numOfPlayers = 4;
 		gameOver = false;
 		deck = new DeckOfCards();
@@ -64,7 +62,7 @@ public class GoFish implements GoFishInterface {
 		{ Thread.currentThread().interrupt(); }
 	}
 	
-	public static String getPlayerName(String difficulty) {
+	public String getPlayerName(String difficulty) {
 		Random random = new Random();
 		String playerName = "";
 		difficulty = difficulty.toLowerCase();
@@ -185,62 +183,70 @@ public class GoFish implements GoFishInterface {
 		return gameOver;
 	}
 
+	public void outputGameResults(ArrayList<Player> players) {
+		String winner = getWinner();	
+		System.out.println("Final Results:");
+		for (Player player : this.getPlayers()) {
+			System.out.println(player.getID() + "'s Books: " +
+					player.getBooks());
+		}
+		System.out.println("\nThe winner is: " + winner);
+		System.out.println("**The player in the later position "
+				+ "always wins ties**");
+	}
+	
+	public void outputTurnInformation(Player player) {
+		gameDelay(1);
+		//Regular Output
+		System.out.println(player.ID + " has " 
+				+ player.getHand().size() + " cards.");
+		System.out.println(player.ID + "'s Books: " +
+						   player.getBooks());
+		System.out.println(this.getActivePlayers());
+	}
+	
 	public void createGame() {
 		
 		Optional<Result> result;
 		gameOver = false;	
 		//Decide order around table
 			// TODO Randomize the Player positions
-		
-		//Set Number of Players --- THIS IS BROKE. FIX!!!
+		//Get User input
 		Scanner inputStream = new Scanner(System.in);
 		this.setNumOfPlayers(inputStream);
-		
 		inputStream.useDelimiter(System.lineSeparator());
-		
 		// Create User's Player
-		InteractivePlayer user = new InteractivePlayer("David", 1, inputStream);
+		InteractivePlayer user = new InteractivePlayer("You", 1, inputStream);
 		this.addPlayer(user);
-		
 		//Create Computer Players
 		for (int i = 2; i <= numOfPlayers; i++) {
-			this.addPlayer(new AveragePlayer("average", i));
-		}
-		
+			String playerName = this.getPlayerName("average");
+			this.addPlayer(new AveragePlayer(playerName, i));
+		}		
 		//Decide dealer
 			// TODO dealer will always be Randomized Player 1, need to implement that before this can be done
-		
 		//Deal Cards
 		this.dealCards();
-		
 		//Do initialBookCheck
 		for (Player player : players) {
 			player.doInitialBookCheck();
 		}
-		
 		//Decide who goes first (will be person left of dealer)
 			// TODO need to decide dealer before I can do this
-		
 		//Start game loop (while isGameOver is False, continue gameloop)
 		while (!gameOver) {
-
+			//The game loops through the players until gameOver condition is met
 			for (Player player : players) {
-				//If player isn't still in the game continue
+				//If player is out of Cards and Deck is empty they aren't active
 				if (!this.getActivePlayers().contains(player)) {
 					continue;
 				}
-
 				//Player loop (while repeatTurn is true, continue playerloop)
 				player.setRepeatTurn(true);
 				while (player.repeatTurn) {
-					gameDelay(1);
-					//Regular Output
-					System.out.println(player.ID + " has " 
-							+ player.getHand().size() + " cards.");
-					System.out.println(player.ID + "'s Books: " + player.getBooks());
-					System.out.println(this.getActivePlayers());
-
-					result = player.takeTurn(this.getActivePlayers(), deck, inputStream);
+					outputTurnInformation(player);
+					//Take the turn, and update resultList if necessary
+					result = player.takeTurn(this.getActivePlayers(), deck);
 					for (Player activePlayer: this.getActivePlayers()) {
 						if (activePlayer instanceof HardPlayer) {
 							activePlayer.updateResultList(result.get());
@@ -260,36 +266,23 @@ public class GoFish implements GoFishInterface {
 				}
 			}
 		}
-		
-		String winner = getWinner();
-		
-		System.out.println("Final Results:");
-		for (Player player : this.getPlayers()) {
-			System.out.println(player.getID() + "'s Books: " +
-					player.getBooks());
-		}
-		System.out.println("\nThe winner is: " + winner);
-		System.out.println("**The player in the later position "
-				+ "always wins ties**");
+		outputGameResults(players);
 	}
 	
 	public void createGameTest() {
-		
+		Optional<Result> result;
 		gameOver = false;
 		//Decide order around table
 			// TODO Randomize the Player positions
-		
-		//Set Number of Players --- FIX THIS AFTER TESTING!!!!!!!!!!!!!!!!!!!!
+		//Get User input
 		Scanner inputStream = new Scanner(System.in);
 		this.setNumOfPlayers(inputStream);
-		
 		inputStream.useDelimiter(System.lineSeparator());
-		
 		//Create Computer Players
 		for (int i = 1; i <= numOfPlayers; i++) {
-			this.addPlayer(new AveragePlayer("average", i));
+			String playerName = this.getPlayerName("average");
+			this.addPlayer(new AveragePlayer(playerName, i));
 		}
-		
 		//Decide dealer
 			// TODO dealer will always be Randomized Player 1, need to implement that before this can be done	
 		//Deal Cards
@@ -298,35 +291,22 @@ public class GoFish implements GoFishInterface {
 		for (Player player : players) {
 			player.doInitialBookCheck();
 		}
-		
 		//Decide who goes first (will be person left of dealer)
 			// TODO need to decide dealer before I can do this
-		
 		//Start game loop (while isGameOver is False, continue gameloop)
 		while (!gameOver) {
-			
+			//The game loops through the players until gameOver condition is met
 			for (Player player : players) {
-				//If player isn't still in the game continue
+				//If player is out of Cards and Deck is empty they aren't active
 				if (!this.getActivePlayers().contains(player)) {
 					continue;
 				}
+				// player will repeatTurn when there request is correct
 				player.setRepeatTurn(true);
-				//Player loop (while repeatTurn is true, continue playerloop)
 				while (player.repeatTurn) {
-					
-					//Add a delay so the game has flow
-					gameDelay(1);
-					
-					Optional<Result> result;
-					System.out.println(player.ID + " has " 
-							+ player.getHand().size() + " cards in his Hand.");
-					System.out.println(player.ID + "'s Books: " + 
-							player.getBooks());
-					//debugging Average and Hard Player
-					System.out.println(
-							player.ID + "'s Hand: " + player.getHand());
+					outputTurnInformation(player);
 					//Take the turn, and update resultList if necessary
-					result = player.takeTurn(this.getActivePlayers(), deck, inputStream);
+					result = player.takeTurn(this.getActivePlayers(), deck);
 					for (Player activePlayer: this.getActivePlayers()) {
 						if (activePlayer instanceof HardPlayer) {
 							activePlayer.updateResultList(result.get());
@@ -340,27 +320,17 @@ public class GoFish implements GoFishInterface {
 					//Player could have created a book to lose last cards
 					if (!this.getActivePlayers().contains(player)) {
 						player.repeatTurn = false;
-						continue;
+						//continue;
 					}
 					System.out.println(" ");
 				}
 			}
 		}
-		
-		String winner = getWinner();
-		
-		System.out.println("Final Results:");
-		for (Player player : this.getPlayers()) {
-			System.out.println(player.getID() + "'s Books: " +
-					player.getBooks());
-		}
-		System.out.println("\nThe winner is: " + winner);
-		System.out.println("**The player in the later position "
-				+ "always wins ties**");
+		outputGameResults(players);
 	}
 	
 	public static void main(String[] args) {
 		GoFish game1 = new GoFish();
-		game1.createGame();
+		game1.createGameTest();
 	}
 }

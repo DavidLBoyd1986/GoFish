@@ -1,23 +1,15 @@
 package test;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Objects;
-import java.util.Scanner;
 import java.util.Collections;
-import java.util.Set;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import com.boyd.deckofcards.Card;
 import com.boyd.deckofcards.DeckOfCards;
 import com.boyd.deckofcards.Card.Rank;
@@ -26,8 +18,6 @@ import GoFish.*;
 
 public class PlayerTest {
 
-	
-	
 	/*
      * Testing strategy
      * ==================
@@ -95,7 +85,6 @@ public class PlayerTest {
      * 
      * Test 29 - testUpdateBookCheckPlusFourCards() returns True if updateBookCheck() accurately updates for +4 and creates a book
      */
-	
 	
 	DeckOfCards deck;
 	Player testPlayer;
@@ -439,9 +428,5 @@ public class PlayerTest {
 		testPlayer.updateBookCheck(Rank.ACE, 1);
 		assert(testPlayer.getBookCheck().equals(Collections.EMPTY_MAP));
 		assert(testPlayer.getNumOfBooks() == 1);
-	}
-	
-
-	
-	
+	}	
 }

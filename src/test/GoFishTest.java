@@ -1,28 +1,17 @@
 package test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Scanner;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.boyd.deckofcards.Card;
-import com.boyd.deckofcards.DeckOfCards;
 import com.boyd.deckofcards.Card.Rank;
-
 import GoFish.GoFish;
 import GoFish.Player;
 
 public class GoFishTest {
-
-
 
 	/*
      * Testing strategy
@@ -52,7 +41,6 @@ public class GoFishTest {
      * Test 9 - testCreateGameTest() - returns True if createGameTest runs smoothly and ends with a clear winner
      */
 	
-
 	Player testPlayer1;
 	Player testPlayer2;
 	Player testPlayer3;
