@@ -280,7 +280,7 @@ public class GoFish implements GoFishInterface {
 		inputStream.useDelimiter(System.lineSeparator());
 		//Create Computer Players
 		for (int i = 1; i <= numOfPlayers; i++) {
-			String playerName = this.getPlayerName("average");
+			String playerName = this.getPlayerName("hard");
 			this.addPlayer(new AveragePlayer(playerName, i));
 		}
 		//Decide dealer
@@ -306,6 +306,7 @@ public class GoFish implements GoFishInterface {
 				while (player.repeatTurn) {
 					outputTurnInformation(player);
 					//Take the turn, and update resultList if necessary
+					System.out.println(player.getHand());
 					result = player.takeTurn(this.getActivePlayers(), deck);
 					for (Player activePlayer: this.getActivePlayers()) {
 						if (activePlayer instanceof HardPlayer) {

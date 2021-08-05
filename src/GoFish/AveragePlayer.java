@@ -151,7 +151,7 @@ public class AveragePlayer extends Player implements PlayerInterface {
 		} else {
 			GoFish(deck, playerRequested, rankRequested, numOfCardsRetrieved);
 			result = Optional.of(
-					new Result(rankRequested, playerRequested, cardRequest));
+					new Result(rankRequested, this, cardRequest));
 			return result;
 		}
 	}
