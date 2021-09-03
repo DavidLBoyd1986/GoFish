@@ -220,8 +220,8 @@ public class GoFish implements GoFishInterface {
 		this.addPlayer(user);
 		//Create Computer Players
 		for (int i = 2; i <= numOfPlayers; i++) {
-			String playerName = this.getPlayerName("average");
-			this.addPlayer(new AveragePlayer(playerName, i));
+			String playerName = this.getPlayerName("hard");
+			this.addPlayer(new HardPlayer(playerName, i));
 		}		
 		//Decide dealer
 			// TODO dealer will always be Randomized Player 1, need to implement that before this can be done
@@ -248,8 +248,9 @@ public class GoFish implements GoFishInterface {
 					//Take the turn, and update resultList if necessary
 					result = player.takeTurn(this.getActivePlayers(), deck);
 					for (Player activePlayer: this.getActivePlayers()) {
-						if (activePlayer instanceof HardPlayer) {
-							activePlayer.updateResultList(result.get());
+						if ( (activePlayer instanceof HardPlayer) &&
+							 (result.isPresent()) ) {
+							  activePlayer.updateResultList(result.get());
 						}
 					}
 					gameOver = isGameOver();
@@ -281,7 +282,7 @@ public class GoFish implements GoFishInterface {
 		//Create Computer Players
 		for (int i = 1; i <= numOfPlayers; i++) {
 			String playerName = this.getPlayerName("hard");
-			this.addPlayer(new AveragePlayer(playerName, i));
+			this.addPlayer(new HardPlayer(playerName, i));
 		}
 		//Decide dealer
 			// TODO dealer will always be Randomized Player 1, need to implement that before this can be done	
@@ -309,8 +310,9 @@ public class GoFish implements GoFishInterface {
 					System.out.println(player.getHand());
 					result = player.takeTurn(this.getActivePlayers(), deck);
 					for (Player activePlayer: this.getActivePlayers()) {
-						if (activePlayer instanceof HardPlayer) {
-							activePlayer.updateResultList(result.get());
+						if ( (activePlayer instanceof HardPlayer) &&
+							 (result.isPresent()) ) {
+							  activePlayer.updateResultList(result.get());
 						}
 					}
 					gameOver = isGameOver();
@@ -332,6 +334,6 @@ public class GoFish implements GoFishInterface {
 	
 	public static void main(String[] args) {
 		GoFish game1 = new GoFish();
-		game1.createGameTest();
+		game1.createGame();
 	}
 }

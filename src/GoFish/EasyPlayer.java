@@ -65,7 +65,7 @@ public class EasyPlayer extends Player implements PlayerInterface {
 		} else {
 			GoFish(deck, playerRequested, rankRequested, numOfCardsRetrieved);
 			result = Optional.of(
-					new Result(rankRequested, this, cardRequest));
+					new Result(rankRequested, playerRequested, cardRequest));
 			return result;
 		}
 	}

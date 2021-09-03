@@ -105,19 +105,27 @@ public class HardPlayer extends Player implements PlayerInterface {
 	}
 	
 	public Optional<Result> requestFromResults() {
-		Optional<Result> returnedResult = null;
+		Optional<Result> returnedResult = Optional.empty();
+		int resultListDepth;
 		//If I have the card and I know another player has that card, request it
 		for (Rank rankHeld : bookCheck.keySet()) {
 			// Only go so far back in resultList
-			int resultListDepth = resultList.size() - 20;
+			if ( resultList.size() > 20 ) {
+				resultListDepth = resultList.size() - 20;
+			} else {
+				resultListDepth = 0;
+			}
 			// Make it so if a book was created, remove those ranks from resultList
 			// Then get rid of depth resultListDepth
-			for (int i = resultList.size(); i-- > resultListDepth;) {
-				Result result = resultList.get(i);
-				if ( (result.getRank().equals(rankHeld)) ||
-					 (result.getHasCard()) ) {
+			for (int i = resultList.size(); i > resultListDepth; i--) {
+				Result result = resultList.get(i-1);
+				if (!result.getHasCard()) {
+					continue;
+				}
+				if ( (result.getRank().equals(rankHeld)) &&
+					 (result.getPlayer() != this) ) {
 					returnedResult = Optional.of(result);
-					break;
+					return returnedResult;
 				}
 			}
 		}
@@ -174,15 +182,20 @@ public class HardPlayer extends Player implements PlayerInterface {
 			outOfCards(deck, numOfCardsRetrieved);
 			return result;
 		}
-		//Try to get a request from the resultList
-		Optional<Result> resultRequest = requestFromResults();
-		//If resultRequest empty, get the rank and player you will request...
-		if (!resultRequest.isPresent()) {
+		//Try to get a request from the resultList if enough turns have passed
+		if (resultList.size() > 4) {
+			Optional<Result> resultRequest = requestFromResults();
+			//If resultRequest empty, get the rank and player you will request...
+			if (!resultRequest.isPresent()) {
+				rankRequested = rankRequest();
+				playerRequested = playerRequest(players, rankRequested);
+			} else {
+				rankRequested = resultRequest.get().getRank();
+				playerRequested = resultRequest.get().getPlayer();
+			}
+		} else {
 			rankRequested = rankRequest();
 			playerRequested = playerRequest(players, rankRequested);
-		} else {
-			rankRequested = resultRequest.get().getRank();
-			playerRequested = resultRequest.get().getPlayer();
 		}
 		//Request Card and take cards if player has it, go fish and draw card otherwise
 		boolean cardRequest = requestCards(rankRequested, playerRequested);
@@ -196,7 +209,7 @@ public class HardPlayer extends Player implements PlayerInterface {
 		} else {
 			GoFish(deck, playerRequested, rankRequested, numOfCardsRetrieved);
 			result = Optional.of(
-					new Result(rankRequested, this, cardRequest));
+					new Result(rankRequested, playerRequested, cardRequest));
 			return result;
 		}
 	}
