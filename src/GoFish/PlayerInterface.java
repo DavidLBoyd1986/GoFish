@@ -164,10 +164,4 @@ public interface PlayerInterface {
 	 */
 	public void outOfCards(DeckOfCards deck, int numOfCardsRetrieved);
 	
-	/**
-	 * Updates the resultList for HardPlayer class
-	 * ONLY USED BY - HardPlayer Subclass!!!!
-	 * @param result - the result of the previous Player's turn
-	 */
-	public void updateResultList(Result result);
 }

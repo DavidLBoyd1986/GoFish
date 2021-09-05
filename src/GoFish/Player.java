@@ -281,7 +281,6 @@ public class Player implements PlayerInterface {
 				+ numOfCardsRetrieved + " cards from " + playerRequested);
 	}
 	
-	public void updateResultList(Result result) {}
 
 public class Result {
 		

@@ -28,8 +28,8 @@ public class HardPlayer extends Player implements PlayerInterface {
 		resultList = new ArrayList<Result>();
 	}
 	
-	public void updateResultList(Result result) {
-		resultList.add(result);
+	public void updateResultList(ArrayList<Result> updatedResultList) {
+		resultList = updatedResultList;
 	}
 	
 	public ArrayList<Result> getResultList() {

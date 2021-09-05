@@ -1,6 +1,9 @@
 package GoFish;
 
 import java.util.Scanner;
+
+import GoFish.Player.Result;
+
 import java.util.ArrayList;
 
 public interface GoFishInterface {
@@ -93,10 +96,28 @@ public interface GoFishInterface {
 	 */
 	public String getWinner();
 	
+	/**
+	 * Prints the game results to the console
+	 * 
+	 * @param players - List of the Players in the game
+	 */
 	public void outputGameResults(ArrayList<Player> players);
 	
+	/**
+	 * Prints the turn results to the console
+	 * 
+	 * @param player - Player who just took the turn
+	 */
 	public void outputTurnInformation(Player player);
 	
+	/**
+	 * Removes Ranks that are Books from Result List since they are out of game
+	 * 
+	 * @param players - List of Players in the games
+	 * @return resultList - Updated resultList with Ranks removed that are books
+	 */
+	public void removeRankFromResults(ArrayList<Player> players);
+
 	/**
 	 * Places Players around a table in clockwise fashion
 	 * 

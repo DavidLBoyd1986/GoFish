@@ -15,6 +15,7 @@ import java.util.concurrent.TimeUnit;
 //import com.boyd.deckofcards.Card;
 //import com.boyd.deckofcards.Card.Rank;
 import com.boyd.deckofcards.*;
+import com.boyd.deckofcards.Card.Rank;
 
 import GoFish.Player.Result;
 
@@ -32,19 +33,21 @@ public class GoFish implements GoFishInterface {
 	public ArrayList<String> easyPlayerNames;
 	public ArrayList<String> averagePlayerNames;
 	public ArrayList<String> hardPlayerNames;
-	
+	public ArrayList<Result> resultList;
+	public ArrayList<Rank> booksRemoved;
 	
 	
 	public GoFish() {
 		players = new ArrayList<Player>();
 		activePlayers = new ArrayList<Player>();
-		easyPlayerNames = new ArrayList<String>();
-		averagePlayerNames = new ArrayList<String>();
-		hardPlayerNames = new ArrayList<String>();
-		//numOfPlayers = 4;
 		gameOver = false;
 		deck = new DeckOfCards();
 		deck.shuffleDeck();
+		resultList = new ArrayList<Result>();
+		booksRemoved = new ArrayList<Rank>();
+		easyPlayerNames = new ArrayList<String>();
+		averagePlayerNames = new ArrayList<String>();
+		hardPlayerNames = new ArrayList<String>();
 		easyPlayerNames.addAll(Arrays.asList("Jimbo", "Susie", "Rose", 
 				"Butch", "Cletus", "Patty", "Randy"));
 		averagePlayerNames.addAll(Arrays.asList("Dylan", "Eric", "Ryan", 
@@ -182,6 +185,24 @@ public class GoFish implements GoFishInterface {
 		}
 		return gameOver;
 	}
+	
+	public void removeRankFromResults(ArrayList<Player> players) {
+		// Get the books from every Player
+		for (Player player : players) {
+			for (Rank book : player.getBooks()) {
+				if (!booksRemoved.contains(book)) {
+					// If the books Rank is still in resultList remove it
+					for (Iterator<Result> iterator = resultList.iterator(); iterator.hasNext();) {
+						Result result = iterator.next();
+						if (result.getRank().equals(book)) {
+							iterator.remove();
+						}
+					}
+					booksRemoved.add(book);
+				}
+			}
+		}
+	}
 
 	public void outputGameResults(ArrayList<Player> players) {
 		String winner = getWinner();	
@@ -245,14 +266,15 @@ public class GoFish implements GoFishInterface {
 				player.setRepeatTurn(true);
 				while (player.repeatTurn) {
 					outputTurnInformation(player);
-					//Take the turn, and update resultList if necessary
-					result = player.takeTurn(this.getActivePlayers(), deck);
-					for (Player activePlayer: this.getActivePlayers()) {
-						if ( (activePlayer instanceof HardPlayer) &&
-							 (result.isPresent()) ) {
-							  activePlayer.updateResultList(result.get());
-						}
+					//update HardPlayer's resultList
+					if (player instanceof HardPlayer) {
+						((HardPlayer) player).updateResultList(resultList);
 					}
+					result = player.takeTurn(this.getActivePlayers(), deck);
+					// Update resultList
+					if (result.isPresent()) {
+						resultList.add(result.get());
+						}
 					gameOver = isGameOver();
 					//If player and deck are both out of cards: remove player
 					if(deck.getNumCardsInDeck() == 0) {
@@ -308,13 +330,17 @@ public class GoFish implements GoFishInterface {
 					outputTurnInformation(player);
 					//Take the turn, and update resultList if necessary
 					System.out.println(player.getHand());
-					result = player.takeTurn(this.getActivePlayers(), deck);
-					for (Player activePlayer: this.getActivePlayers()) {
-						if ( (activePlayer instanceof HardPlayer) &&
-							 (result.isPresent()) ) {
-							  activePlayer.updateResultList(result.get());
-						}
+					//Remove book's Rank from resultList
+					removeRankFromResults(players);
+					//update HardPlayer's resultList
+					if (player instanceof HardPlayer) {
+						((HardPlayer) player).updateResultList(resultList);
 					}
+					result = player.takeTurn(this.getActivePlayers(), deck);
+					// Update resultList
+					if (result.isPresent()) {
+						resultList.add(result.get());
+						}
 					gameOver = isGameOver();
 					//If player and deck are both out of cards: remove player
 					if(deck.getNumCardsInDeck() == 0) {
@@ -334,6 +360,6 @@ public class GoFish implements GoFishInterface {
 	
 	public static void main(String[] args) {
 		GoFish game1 = new GoFish();
-		game1.createGame();
+		game1.createGameTest();
 	}
 }
