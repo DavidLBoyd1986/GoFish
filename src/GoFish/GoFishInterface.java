@@ -30,6 +30,13 @@ public interface GoFishInterface {
 	public void gameDelay(int i);
 	
 	/**
+	 * Gets the user's input to decide the player type (easy, average, hard)
+	 * @param inputStream - scanner object
+	 * @return - String of player's type.
+	 */
+	public String getPlayerType(Scanner inputStream, int opponentNumber);
+	
+	/**
 	 * Adds a player to the game of GoFish. Should only be used at the start
 	 * @param player - player to be added
 	 */

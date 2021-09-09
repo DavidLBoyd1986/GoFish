@@ -65,24 +65,50 @@ public class GoFish implements GoFishInterface {
 		{ Thread.currentThread().interrupt(); }
 	}
 	
-	public String getPlayerName(String difficulty) {
+	public String getPlayerType(Scanner inputStream, int opponentNumber) {
+		String playerType = "easy";
+		System.out.println("Select opponent " + opponentNumber + 
+				"'s difficulty: Easy, Average, Hard");
+		boolean inputValid = false;
+		
+		while (!inputValid) {
+			playerType = inputStream.next();
+			playerType = playerType.toLowerCase();
+			if ( (playerType.equals("easy")) ||
+				 (playerType.equals("average")) ||
+				 (playerType.equals("hard")) ) {
+				inputValid = true;
+			} else {
+				System.out.println(
+						"Invalid input! Please enter a correct difficulty");
+			}
+		}
+		
+		return playerType;
+	}
+	
+	public Player createPlayer(String difficulty, int position) {
 		Random random = new Random();
 		String playerName = "";
 		difficulty = difficulty.toLowerCase();
+		Player player = null;
 		if (difficulty.equals("easy")) {
 			playerName = easyPlayerNames.get(
 					random.nextInt(easyPlayerNames.size()));
 			easyPlayerNames.remove(playerName);
+			player = new EasyPlayer(playerName, position);
 		} else if (difficulty.equals("average")) {
 			playerName = averagePlayerNames.get(
 					random.nextInt(averagePlayerNames.size()));
 			averagePlayerNames.remove(playerName);
+			player = new AveragePlayer(playerName, position);
 		} else if (difficulty.equals("hard")) {
 			playerName = hardPlayerNames.get(
 					random.nextInt(hardPlayerNames.size()));
 			hardPlayerNames.remove(playerName);
+			player = new HardPlayer(playerName, position);
 		}
-		return playerName;
+		return player;
 	}
 	
 	@Override
@@ -241,8 +267,9 @@ public class GoFish implements GoFishInterface {
 		this.addPlayer(user);
 		//Create Computer Players
 		for (int i = 2; i <= numOfPlayers; i++) {
-			String playerName = this.getPlayerName("hard");
-			this.addPlayer(new HardPlayer(playerName, i));
+			String playerType = this.getPlayerType(inputStream, i);
+			Player player = this.createPlayer(playerType, i);
+			this.addPlayer(player);
 		}		
 		//Decide dealer
 			// TODO dealer will always be Randomized Player 1, need to implement that before this can be done
@@ -266,6 +293,9 @@ public class GoFish implements GoFishInterface {
 				player.setRepeatTurn(true);
 				while (player.repeatTurn) {
 					outputTurnInformation(player);
+					System.out.println(player.getHand());
+					//Remove book's Rank from resultList
+					removeRankFromResults(players);
 					//update HardPlayer's resultList
 					if (player instanceof HardPlayer) {
 						((HardPlayer) player).updateResultList(resultList);
@@ -293,6 +323,7 @@ public class GoFish implements GoFishInterface {
 	}
 	
 	public void createGameTest() {
+		int numOfPlayerTurns = 0;
 		Optional<Result> result;
 		gameOver = false;
 		//Decide order around table
@@ -303,8 +334,9 @@ public class GoFish implements GoFishInterface {
 		inputStream.useDelimiter(System.lineSeparator());
 		//Create Computer Players
 		for (int i = 1; i <= numOfPlayers; i++) {
-			String playerName = this.getPlayerName("hard");
-			this.addPlayer(new HardPlayer(playerName, i));
+			String playerType = this.getPlayerType(inputStream, i);
+			Player player = this.createPlayer(playerType, i);
+			this.addPlayer(player);
 		}
 		//Decide dealer
 			// TODO dealer will always be Randomized Player 1, need to implement that before this can be done	
@@ -319,6 +351,7 @@ public class GoFish implements GoFishInterface {
 		//Start game loop (while isGameOver is False, continue gameloop)
 		while (!gameOver) {
 			//The game loops through the players until gameOver condition is met
+			
 			for (Player player : players) {
 				//If player is out of Cards and Deck is empty they aren't active
 				if (!this.getActivePlayers().contains(player)) {
@@ -326,6 +359,7 @@ public class GoFish implements GoFishInterface {
 				}
 				// player will repeatTurn when there request is correct
 				player.setRepeatTurn(true);
+				numOfPlayerTurns++;
 				while (player.repeatTurn) {
 					outputTurnInformation(player);
 					//Take the turn, and update resultList if necessary
@@ -356,10 +390,19 @@ public class GoFish implements GoFishInterface {
 			}
 		}
 		outputGameResults(players);
+		System.out.println("Num of Player Turns = " + numOfPlayerTurns);
 	}
 	
 	public static void main(String[] args) {
 		GoFish game1 = new GoFish();
-		game1.createGameTest();
+		game1.createGame();
+//		GoFish game2 = new GoFish();
+//		game2.createGameTest();
+//		GoFish game3 = new GoFish();
+//		game3.createGameTest();
+//		GoFish game4 = new GoFish();
+//		game4.createGameTest();
+//		GoFish game5 = new GoFish();
+//		game5.createGameTest();
 	}
 }

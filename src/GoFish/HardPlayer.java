@@ -125,7 +125,7 @@ public class HardPlayer extends Player implements PlayerInterface {
 				if ( (result.getRank().equals(rankHeld)) &&
 					 (result.getPlayer() != this) ) {
 					returnedResult = Optional.of(result);
-					resultList.remove(i);
+					resultList.remove(i-1);
 					return returnedResult;
 				}
 			}
