@@ -1,20 +1,17 @@
 package test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Collections;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import GoFish.Player;
 import com.boyd.deckofcards.Card;
-import com.boyd.deckofcards.DeckOfCards;
 import com.boyd.deckofcards.Card.Rank;
 import com.boyd.deckofcards.Card.Suit;
-import GoFish.*;
+import com.boyd.deckofcards.DeckOfCards;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.util.*;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class PlayerTest {
 

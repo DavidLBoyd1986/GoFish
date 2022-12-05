@@ -1,7 +1,7 @@
-package GoFish;
+package com.boyd.gofish;
 
-import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public interface GoFishInterface {
 

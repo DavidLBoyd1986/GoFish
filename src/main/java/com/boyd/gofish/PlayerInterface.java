@@ -1,12 +1,14 @@
-package GoFish;
+package com.boyd.gofish;
+
+import com.boyd.gofish.Player.Result;
+import com.boyd.deckofcards.Card;
+import com.boyd.deckofcards.Card.Rank;
+import com.boyd.deckofcards.DeckOfCards;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.Set;
-import com.boyd.deckofcards.*;
-import com.boyd.deckofcards.Card.Rank;
-import GoFish.Player.Result;
 
 public interface PlayerInterface {
 

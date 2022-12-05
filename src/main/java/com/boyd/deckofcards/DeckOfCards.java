@@ -1,13 +1,9 @@
 package com.boyd.deckofcards;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.Optional;
-import java.util.Random;
 import com.boyd.deckofcards.Card.Rank;
 import com.boyd.deckofcards.Card.Suit;
+
+import java.util.*;
 
 public class DeckOfCards implements DeckOfCardsInterface, Iterable<Card> {
 

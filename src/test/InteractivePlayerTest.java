@@ -1,20 +1,18 @@
 package test;
 
+import GoFish.InteractivePlayer;
+import GoFish.Player;
+import com.boyd.deckofcards.Card;
+import com.boyd.deckofcards.Card.Rank;
+import com.boyd.deckofcards.Card.Suit;
+import com.boyd.deckofcards.DeckOfCards;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import com.boyd.deckofcards.Card;
-import com.boyd.deckofcards.DeckOfCards;
-import com.boyd.deckofcards.Card.Rank;
-import com.boyd.deckofcards.Card.Suit;
-
-import GoFish.InteractivePlayer;
-import GoFish.Player;
 
 public class InteractivePlayerTest {
 

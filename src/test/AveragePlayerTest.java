@@ -1,20 +1,16 @@
 package test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import com.boyd.deckofcards.Card;
-import com.boyd.deckofcards.DeckOfCards;
-import com.boyd.deckofcards.Card.Rank;
-import com.boyd.deckofcards.Card.Suit;
-
 import GoFish.AveragePlayer;
 import GoFish.GoFish;
 import GoFish.Player;
+import com.boyd.deckofcards.Card.Rank;
+import com.boyd.deckofcards.Card.Suit;
+import com.boyd.deckofcards.DeckOfCards;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class AveragePlayerTest {
 

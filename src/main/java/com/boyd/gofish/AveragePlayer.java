@@ -1,11 +1,12 @@
-package GoFish;
+package com.boyd.gofish;
+
+import com.boyd.deckofcards.Card;
+import com.boyd.deckofcards.Card.Rank;
+import com.boyd.deckofcards.DeckOfCards;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
-import com.boyd.deckofcards.Card;
-import com.boyd.deckofcards.DeckOfCards;
-import com.boyd.deckofcards.Card.Rank;
 
 
 public class AveragePlayer extends Player implements PlayerInterface {

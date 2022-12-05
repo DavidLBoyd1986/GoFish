@@ -1,19 +1,14 @@
 /**
  * 
  */
-package GoFish;
+package com.boyd.gofish;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
-import com.boyd.deckofcards.*;
+import com.boyd.deckofcards.Card;
 import com.boyd.deckofcards.Card.Rank;
+import com.boyd.deckofcards.DeckOfCards;
 
-import GoFish.Player.Result;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 /**
  * @author David
  *

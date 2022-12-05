@@ -1,12 +1,10 @@
-package GoFish;
-
-import java.util.ArrayList;
-import java.util.HashMap;
+package com.boyd.gofish;
 
 import com.boyd.deckofcards.Card;
 import com.boyd.deckofcards.Card.Rank;
 
-import GoFish.Player.Result;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class HardPlayer extends Player implements PlayerInterface {
 

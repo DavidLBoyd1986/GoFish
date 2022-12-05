@@ -5,4 +5,4 @@
  * @author David
  *
  */
-package GoFish;
+package com.boyd.gofish;
