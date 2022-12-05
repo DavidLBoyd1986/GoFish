@@ -1,22 +1,15 @@
 /**
  * 
  */
-package GoFish;
+package com.boyd.gofish;
 
 //import java.util.HashMap;
-import java.util.Scanner;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.Optional;
-import java.util.Random;
+
+import com.boyd.gofish.Player.Result;
+import com.boyd.deckofcards.DeckOfCards;
+
+import java.util.*;
 import java.util.concurrent.TimeUnit;
-
-//import com.boyd.deckofcards.Card;
-//import com.boyd.deckofcards.Card.Rank;
-import com.boyd.deckofcards.*;
-
-import GoFish.Player.Result;
 
 /**
  * @author David

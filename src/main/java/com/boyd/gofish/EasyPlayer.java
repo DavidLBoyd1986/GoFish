@@ -1,12 +1,13 @@
-package GoFish;
+package com.boyd.gofish;
+
+import com.boyd.deckofcards.Card;
+import com.boyd.deckofcards.Card.Rank;
+import com.boyd.deckofcards.DeckOfCards;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.Random;
-import com.boyd.deckofcards.Card;
-import com.boyd.deckofcards.Card.Rank;
-import com.boyd.deckofcards.DeckOfCards;
 
 public class EasyPlayer extends Player implements PlayerInterface {
 

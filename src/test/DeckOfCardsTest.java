@@ -1,21 +1,18 @@
 package test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import com.boyd.deckofcards.Card;
+import com.boyd.deckofcards.Card.Rank;
+import com.boyd.deckofcards.Card.Suit;
+import com.boyd.deckofcards.DeckOfCards;
+import com.boyd.deckofcards.DeckOfCards.SuitPair;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
-//import java.util.Collections;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertFalse;
-
-import org.junit.jupiter.api.Test;
-
-import com.boyd.deckofcards.Card.Rank;
-import com.boyd.deckofcards.Card.Suit;
-import com.boyd.deckofcards.DeckOfCards.SuitPair;
-import com.boyd.deckofcards.Card;
-import com.boyd.deckofcards.DeckOfCards;
+import static org.junit.jupiter.api.Assertions.*;
 
 class DeckOfCardsTest {
 
