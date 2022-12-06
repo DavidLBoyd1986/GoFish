@@ -15,9 +15,9 @@ public class EasyPlayer extends Player implements PlayerInterface {
 		super(initName, initPosition);
 		name = initName;
 		position = initPosition;
-		hand = new ArrayList<Card>();
-		books = new HashMap<Rank, Card[]>();
-		bookCheck = new HashMap<Rank, Integer>();
+		hand = new ArrayList<>();
+		books = new HashMap<>();
+		bookCheck = new HashMap<>();
 		ID = name;
 	}
 
@@ -30,14 +30,13 @@ public class EasyPlayer extends Player implements PlayerInterface {
 		//Need to create new list without this Player
 		ArrayList<Player> playerList = new ArrayList<>();
 		for (Player player : players) {
-			if (player.getID() != this.getID()) {
+			if (!player.getID().equals(this.getID())) {
 				playerList.add(player);
 			}
 		}
 		Player playerRequested =
 			playerList.get(random.nextInt(playerList.size()));
-		Result result = new Result(rankRequested, playerRequested, false);
-		return result;
+		return new Result(rankRequested, playerRequested, false);
 	}
 	
 	@Override

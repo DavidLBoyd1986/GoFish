@@ -29,12 +29,11 @@ public class GoFish implements GoFishInterface {
 	
 	
 	public GoFish() {
-		players = new ArrayList<Player>();
-		activePlayers = new ArrayList<Player>();
-		easyPlayerNames = new ArrayList<String>();
-		averagePlayerNames = new ArrayList<String>();
-		hardPlayerNames = new ArrayList<String>();
-		//numOfPlayers = 4;
+		players = new ArrayList<>();
+		activePlayers = new ArrayList<>();
+		easyPlayerNames = new ArrayList<>();
+		averagePlayerNames = new ArrayList<>();
+		hardPlayerNames = new ArrayList<>();
 		gameOver = false;
 		deck = new DeckOfCards();
 		deck.shuffleDeck();
@@ -169,11 +168,10 @@ public class GoFish implements GoFishInterface {
 			bookCount += player.getNumOfBooks();
 		}
 		if (bookCount == 13) {
-			gameOver = true;
+			return true;
 		} else {
-			gameOver = false;
+			return false;
 		}
-		return gameOver;
 	}
 
 	public void outputGameResults(ArrayList<Player> players) {

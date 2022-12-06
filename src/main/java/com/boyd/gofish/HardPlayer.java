@@ -14,11 +14,11 @@ public class HardPlayer extends Player implements PlayerInterface {
 		super(initName, initPosition);
 		name = initName;
 		position = initPosition;
-		hand = new ArrayList<Card>();
-		books = new HashMap<Rank, Card[]>();
-		bookCheck = new HashMap<Rank, Integer>();
+		hand = new ArrayList<>();
+		books = new HashMap<>();
+		bookCheck = new HashMap<>();
 		ID = name;
-		resultList = new ArrayList<Result>();
+		resultList = new ArrayList<>();
 	}
 	
 	@Override

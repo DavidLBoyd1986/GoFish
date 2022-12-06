@@ -17,11 +17,11 @@ public class AveragePlayer extends Player implements PlayerInterface {
 		super(initName, initPosition);
 		name = initName;
 		position = initPosition;
-		hand = new ArrayList<Card>();
-		books = new HashMap<Rank, Card[]>();
-		bookCheck = new HashMap<Rank, Integer>();
+		hand = new ArrayList<>();
+		books = new HashMap<>();
+		bookCheck = new HashMap<>();
 		ID = name;
-		requestTracker = new HashMap<Rank, ArrayList<Player>>();
+		requestTracker = new HashMap<>();
 	}
 	
 	public HashMap<Rank, ArrayList<Player>> getRequestTracker() {
@@ -36,16 +36,15 @@ public class AveragePlayer extends Player implements PlayerInterface {
 
 		for (Card card : hand) {
 			if (bookCheck.containsKey(card.getRank())) {
-				Integer numOfRank = new Integer(
-						bookCheck.get(card.getRank()).intValue() + 1);
+				Integer numOfRank = bookCheck.get(card.getRank()).intValue() + 1;
 				bookCheck.replace(card.getRank(), numOfRank);
 				// If dealt 4 remember rank to createBook out of loop;
-				if (numOfRank.intValue() == 4) {
+				if (numOfRank == 4) {
 					rankToBook = card.getRank();
 					createBook = true;
 				}
 			} else {
-				Integer numOfRank = new Integer(1);
+				Integer numOfRank = 1;
 				bookCheck.put(card.getRank(), numOfRank);
 				updateRequestTracker(card.getRank());
 			}
@@ -62,15 +61,15 @@ public class AveragePlayer extends Player implements PlayerInterface {
 		//If already has one of those Cards
 		if (bookCheck.containsKey(rank)) {
 			// Add the cardCounts together
-			int oldCardCount = bookCheck.get(rank).intValue();
-			Integer newCardCount = new Integer(cardCount + oldCardCount);
+			int oldCardCount = bookCheck.get(rank);
+			Integer newCardCount = cardCount + oldCardCount;
 			// If person has all 4 of the Rank make the book and remove rank
-			if (newCardCount.intValue() == 4) {
+			if (newCardCount == 4) {
 				createBook(rank);
-				newCardCount = new Integer(0);
+				newCardCount = 0;
 				bookCheck.remove(rank);
 				updateRequestTracker(rank);
-			} else if (newCardCount.intValue() == 0) {
+			} else if (newCardCount == 0) {
 				// If they lost all the cards remove the rank from bookcheck
 				bookCheck.remove(rank);
 				updateRequestTracker(rank);
@@ -88,7 +87,7 @@ public class AveragePlayer extends Player implements PlayerInterface {
 	public void updateRequestTracker(Rank rank) {
 		// If rank is in HashMap remove it, if it isn't in HashMap add it
 		if (!requestTracker.containsKey(rank)) {
-			requestTracker.put(rank, new ArrayList<Player>());
+			requestTracker.put(rank, new ArrayList<>());
 		} else {requestTracker.remove(rank);}
 	}
 	
