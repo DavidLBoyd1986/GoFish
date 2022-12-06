@@ -17,9 +17,9 @@ public class InteractivePlayer extends Player implements PlayerInterface {
 		super(initName, initPosition);
 		name = initName;
 		position = initPosition;
-		hand = new ArrayList<Card>();
-		books = new HashMap<Rank, Card[]>();
-		bookCheck = new HashMap<Rank, Integer>();
+		hand = new ArrayList<>();
+		books = new HashMap<>();
+		bookCheck = new HashMap<>();
 		ID = name;
 		inputStream = initInputStream;
 	}
@@ -72,8 +72,7 @@ public class InteractivePlayer extends Player implements PlayerInterface {
 			e.printStackTrace();
 			System.out.println("Error taking turn while running getPlayerSelection()");
 		}
-		Result requestResult = new Result(rankRequested, playerRequested, false);
-		return requestResult;
+		return new Result(rankRequested, playerRequested, false);
 	}
 	
 	public Rank getRankSelection(Scanner inputScanner) {
@@ -88,7 +87,7 @@ public class InteractivePlayer extends Player implements PlayerInterface {
 		//Set up Rank variable
 		Rank rank = null;
 		//Create list of Rank Strings from Cards held to verify if input's valid
-		ArrayList<String> rankCheck = new ArrayList<String>();
+		ArrayList<String> rankCheck = new ArrayList<>();
 		for (Card card : this.hand) {
 			rankCheck.add(card.getRank().toString());
 		}
@@ -113,9 +112,9 @@ public class InteractivePlayer extends Player implements PlayerInterface {
 	public Player getPlayerSelection(Scanner inputScanner, ArrayList<Player> players) {
 		System.out.println("Please select which player the request will be made to: ");
 		// Create list of Player ID Strings to check if input is valid
-		ArrayList<String> playerIDs = new ArrayList<String>();
+		ArrayList<String> playerIDs = new ArrayList<>();
 		for (Player player : players) {
-			if (player.getID() != this.ID) {
+			if (!player.getID().equals(this.ID)) {
 				playerIDs.add(player.getID().toLowerCase());
 			}
 		}

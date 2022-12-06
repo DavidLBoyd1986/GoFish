@@ -34,9 +34,9 @@ public class Player implements PlayerInterface {
 	public Player(String initName, int initPosition) {
 		name = initName;
 		position = initPosition;
-		hand = new ArrayList<Card>();
-		books = new HashMap<Rank, Card[]>();
-		bookCheck = new HashMap<Rank, Integer>();
+		hand = new ArrayList<>();
+		books = new HashMap<>();
+		bookCheck = new HashMap<>();
 		ID = name;
 		
 	}
@@ -86,8 +86,7 @@ public class Player implements PlayerInterface {
 	
 	@Override
 	public int getNumOfBooks() {
-		int numOfBooks = books.size();
-		return numOfBooks;
+		return books.size();
 	}
 	
 	@Override
@@ -104,8 +103,9 @@ public class Player implements PlayerInterface {
 	public boolean hasCards() {
 		if (hand.size() == 0) {
 			return false;
+		} else {
+			return true;
 		}
-		return true;
 	}
 	
 	@Override
@@ -146,16 +146,15 @@ public class Player implements PlayerInterface {
 
 		for (Card card : hand) {
 			if (bookCheck.containsKey(card.getRank())) {
-				Integer numOfRank = new Integer(
-						bookCheck.get(card.getRank()).intValue() + 1);
+				Integer numOfRank = bookCheck.get(card.getRank()) + 1;
 				bookCheck.replace(card.getRank(), numOfRank);
 				// If dealt 4 remember rank to createBook out of loop;
-				if (numOfRank.intValue() == 4) {
+				if (numOfRank == 4) {
 					rankToBook = card.getRank();
 					createBook = true;
 				}
 			} else {
-				Integer numOfRank = new Integer(1);
+				Integer numOfRank = 1;
 				bookCheck.put(card.getRank(), numOfRank);
 			}
 		}
@@ -171,14 +170,14 @@ public class Player implements PlayerInterface {
 		//If already has one of those Cards
 		if (bookCheck.containsKey(rank)) {
 			// Add the cardCounts together
-			int oldCardCount = bookCheck.get(rank).intValue();
-			Integer newCardCount = new Integer(cardCount + oldCardCount);
+			int oldCardCount = bookCheck.get(rank);
+			Integer newCardCount = cardCount + oldCardCount;
 			// If person has all 4 of the Rank make the book and remove rank
-			if (newCardCount.intValue() == 4) {
+			if (newCardCount == 4) {
 				createBook(rank);
-				newCardCount = new Integer(0);
+				newCardCount = 0;
 				bookCheck.remove(rank);
-			} else if (newCardCount.intValue() == 0) {
+			} else if (newCardCount == 0) {
 				// If they lost all the cards remove the rank from bookcheck
 				bookCheck.remove(rank);
 			} else {

@@ -12,22 +12,22 @@ package com.boyd.deckofcards;
 // No Rep Exposure Argument
 // All methods are observer methods and only return copies
 
-/**
- * 
- * The total # of cards in DeckOfCards == (Suit.values().length * Rank.values().length)
- * @param initSuit is a constant of the Suit enum
- * @param initRank is a constant of the Rank enum
- */
 public class Card {
 
-	// These are public so they can be accessed for testing purposes
-	public enum Suit {DIAMOND, HEART, CLUB, SPADE};
+	// These are public, so they can be accessed for testing purposes
+	public enum Suit {DIAMOND, HEART, CLUB, SPADE}
 	public enum Rank {TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT,
-					  NINE, TEN, JACK, QUEEN, KING, ACE};
+					  NINE, TEN, JACK, QUEEN, KING, ACE}
 
-	private Suit suit;
-	private Rank rank;
-	
+	private final Suit suit;
+	private final Rank rank;
+
+	/**
+	 *
+	 * The total # of cards in DeckOfCards == (Suit.values().length * Rank.values().length)
+	 * @param initSuit is a constant of the Suit enum
+	 * @param initRank is a constant of the Rank enum
+	 */
 	public Card(Suit initSuit, Rank initRank) {
 		this.suit = initSuit;
 		this.rank = initRank;
@@ -37,16 +37,14 @@ public class Card {
 	 * @return the suit of the card
 	 */
 	public Suit getSuit() {
-		Suit tempSuit = this.suit;
-		return tempSuit;
+		return this.suit;
 	}
 	
 	/**
 	 * @return the rank of the card
 	 */
 	public Rank getRank() {
-		Rank tempRank = this.rank;
-		return tempRank;
+		return this.rank;
 	}
 	
 	@Override
@@ -59,8 +57,7 @@ public class Card {
 		if (o == this) return true;
 		if (!(o instanceof Card) ) return false;
 		Card other = (Card)o;
-		boolean cardsEqual = ( this.getSuit() == other.getSuit() && this.getRank() == other.getRank() );
-		return cardsEqual;
+		return (this.getSuit() == other.getSuit() && this.getRank() == other.getRank());
 	}
 
 	public String toString() {

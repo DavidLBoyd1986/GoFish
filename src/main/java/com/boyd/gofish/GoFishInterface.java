@@ -9,13 +9,13 @@ public interface GoFishInterface {
 	 * Creates a game of GoFish
 	 * 
 	 */
-	public void createGame();
+	void createGame();
 	
 	/**
 	 * Creates a game of GoFish for testing full functionality
 	 * Only computers play 
 	 */
-	public void createGameTest();
+	void createGameTest();
 	
 	/**
 	 * 	/**
@@ -24,25 +24,25 @@ public interface GoFishInterface {
 	 *
 	 * @param i - number of seconds to wait
 	 */
-	public void gameDelay(int i);
+	void gameDelay(int i);
 	
 	/**
 	 * Adds a player to the game of GoFish. Should only be used at the start
 	 * @param player - player to be added
 	 */
-	public void addPlayer(Player player);
+	void addPlayer(Player player);
 	
 	/**
 	 * Gets the players list
 	 * @return players - an ArrayList of all the Players in the game
 	 */
-	public ArrayList<Player> getPlayers();
+	ArrayList<Player> getPlayers();
 	
 	/**
 	 * Gets the active players list
 	 * @return players - an ArrayList of all the Players in the game
 	 */
-	public ArrayList<Player> getActivePlayers();
+	ArrayList<Player> getActivePlayers();
 	
 	/**
 	 * This is only called if the deck is empty!!
@@ -50,56 +50,53 @@ public interface GoFishInterface {
 	 * active players.
 	 * 
 	 */
-	public void checkActivePlayers();
+	void checkActivePlayers();
 	
 	/**
 	 * Set the number of Players for go fish
-	 * @param initNumOfPlayers - int between 2-5;
+	 * @param inputStream - scanner input stream;
 	 */
-	public void setNumOfPlayers(Scanner inputNumOfPlayer);
+	void setNumOfPlayers(Scanner inputStream);
 	
 	/**
 	 * Gets the num of Players in the game, even one's who have been eliminated because there are no cards left
 	 * 
 	 * @return - int representing the number of Players in the game.
 	 */
-	public int getNumOfPlayers();
+	int getNumOfPlayers();
 	
 	/**
 	 * Decides who the dealer is by dealing one card face up to every player, the player with the lowest card is set to be the dealer
-	 * 
 	 * Sets the variable 'dealer' to be that player
 	 */
 	//public void decideDealer();
 	
 	/**
 	 * Deal the Cards to the Players, the amount of Cards the Players get depends on the number of Players
-	 * 
 	 * Moves Cards from the DeckOfCards to the Player's hands
 	 */
-	public void dealCards();
+	void dealCards();
 	
 	/**
 	 * See if all 13 books have been won, and the game is over
 	 * 
 	 * @return - boolean showing if all 13 books have been won, and the game is over
 	 */
-	public boolean isGameOver();
+	boolean isGameOver();
 	
 	/**
 	 * Determine the winner of the game. Should only be run after isGameOver() is true
 	 * 
 	 * @return - Player that is the winner of the game, who has the most books
 	 */
-	public String getWinner();
+	String getWinner();
 	
-	public void outputGameResults(ArrayList<Player> players);
+	void outputGameResults(ArrayList<Player> players);
 	
-	public void outputTurnInformation(Player player);
+	void outputTurnInformation(Player player);
 	
 	/**
 	 * Places Players around a table in clockwise fashion
-	 * 
 	 * Positions are 1 - getNumOfPlayers() with 1 being the dealer
 	 */
 	//public void placePlayers();

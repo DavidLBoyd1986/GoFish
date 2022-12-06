@@ -9,17 +9,14 @@ public class DeckOfCards implements DeckOfCardsInterface, Iterable<Card> {
 
     private final int totalNumOfCards = Suit.values().length * Rank.values().length;
  
-	public ArrayList<Card> deck = new ArrayList<Card>();
-	public ArrayList<Card> discardPile = new ArrayList<Card>();
+	public ArrayList<Card> deck = new ArrayList<>();
+	public ArrayList<Card> discardPile = new ArrayList<>();
 	
 	/**
 	 * Build the DeckOfCards by creating and adding a Card for every combination of Suit and Rank
-	 * 
 	 * Adding some Reqs and Specs here that will be cleaned up later
-	 * 
 	 * Requirements:
 	 * 1. It's on the user of this class to verify the DeckOfCards is not empty (out of cards) before calling get methods.
-	 * 
 	 * 		I didn't want to force the user to load their code with try/catch statements when they should design their game
 	 * 		with the intent that the deck never ran out, and if it did the discard pile would be added back into the deck
 	 */
@@ -171,15 +168,15 @@ public class DeckOfCards implements DeckOfCardsInterface, Iterable<Card> {
 		for ( int i = 0; i < cardsSelected.length; i++) {
 			int cardIndex = cardsSelected[i];
 			cardIndex--;
-			cardsSelectedReversed[i] = Integer.valueOf(cardIndex);
+			cardsSelectedReversed[i] = cardIndex;
 		}
 		// Had to turn into Integer to use Collections.reverseOrder
 		Arrays.sort(cardsSelectedReversed, Collections.reverseOrder());
 		
 		int count = 0;
 		for ( Integer i : cardsSelectedReversed) {
-			Card card = deck.get(i.intValue());
-			deck.remove(i.intValue());
+			Card card = deck.get(i);
+			deck.remove(i);
 			cards[count] = card;
 			count ++;
 		}
@@ -327,7 +324,7 @@ public class DeckOfCards implements DeckOfCardsInterface, Iterable<Card> {
 	
 	@Override
 	public Iterator<Card> iterator() {
-		return new Iterator<Card> () {
+		return new Iterator<> () {
 			private final Iterator<Card> iter = deck.iterator();
 			
 			@Override
@@ -390,8 +387,7 @@ public class DeckOfCards implements DeckOfCardsInterface, Iterable<Card> {
 			if (o == this) return true;
 			if (!(o instanceof SuitPair) ) return false;
 			SuitPair other = (SuitPair)o;
-			boolean suitPair = ( this.suitString == other.suitString && this.rankString == other.rankString );
-			return suitPair;
+			return (this.suitString.equals(other.suitString) && this.rankString.equals(other.rankString));
 		}
 	}
 }
