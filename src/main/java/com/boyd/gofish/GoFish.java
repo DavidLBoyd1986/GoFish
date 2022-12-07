@@ -205,6 +205,7 @@ public class GoFish implements GoFishInterface {
 		//Get User input
 		Scanner inputStream = new Scanner(System.in);
 		this.setNumOfPlayers(inputStream);
+		String inputDump = inputStream.nextLine(); // gets rid of initial 'Invalid Rank Selection'
 		// Create User's Player
 		InteractivePlayer user = new InteractivePlayer("You", 1, inputStream);
 		this.addPlayer(user);
