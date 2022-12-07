@@ -47,7 +47,7 @@ public class InteractivePlayer extends Player implements PlayerInterface {
 					new Result(rankRequested, this, true));
 			//Go Fish
 		} else {
-			GoFish(deck, playerRequested, rankRequested, numOfCardsRetrieved);
+			GoFish(deck, playerRequested, rankRequested);
 			result = Optional.of(
 					new Result(rankRequested, playerRequested, false));
 		}
