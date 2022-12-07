@@ -44,15 +44,14 @@ public class InteractivePlayer extends Player implements PlayerInterface {
 		if (cardRequest) {
 			takeCards(playerRequested, rankRequested, numOfCardsRetrieved);
 			result = Optional.of(
-					new Result(rankRequested, this, cardRequest));
-			return result;
-		//Go Fish
+					new Result(rankRequested, this, true));
+			//Go Fish
 		} else {
 			GoFish(deck, playerRequested, rankRequested, numOfCardsRetrieved);
 			result = Optional.of(
-					new Result(rankRequested, playerRequested, cardRequest));
-			return result;
+					new Result(rankRequested, playerRequested, false));
 		}
+		return result;
 	}
 	
 	public Result getUserInput(ArrayList<Player> players, Scanner inputStream) {
@@ -91,11 +90,11 @@ public class InteractivePlayer extends Player implements PlayerInterface {
 		for (Card card : this.hand) {
 			rankCheck.add(card.getRank().toString());
 		}
+		String inputDump = inputScanner.nextLine(); // gets rid of initial 'Invalid Rank Selection'
 		
 		//Loop until input is valid
 		while (!inputValid) {
-			//System.out.println(inputScanner.next());
-			String rankRequest = inputScanner.next();
+			String rankRequest = inputScanner.nextLine(); // was next(), but it had issues, have to troubleshoot
 			rankRequest = rankRequest.toUpperCase();
 			rankRequest = rankRequest.trim();
 			// check it's a valid Rank before changing input String to Rank
@@ -125,7 +124,7 @@ public class InteractivePlayer extends Player implements PlayerInterface {
 		Player returnedPlayer = null;
 		//Input validation loop
 		while (!inputValid) {
-			String playerRequest = inputScanner.next();
+			String playerRequest = inputScanner.nextLine();
 			playerRequest = playerRequest.toLowerCase();
 			playerRequest = playerRequest.trim();
 			if (playerIDs.contains(playerRequest)) {
