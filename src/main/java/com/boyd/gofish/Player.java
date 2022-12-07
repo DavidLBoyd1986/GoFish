@@ -229,7 +229,7 @@ public class Player implements PlayerInterface {
 	}
 	
 	public void GoFish(DeckOfCards deck, Player playerRequested,
-			 		   Rank rankRequested, int numOfCardsRetrieved) {
+			 		   Rank rankRequested) {
 		// No cards left in deck
 		if (deck.getNumCardsInDeck() == 0 ) {
 			gameDelay(2);
@@ -243,9 +243,8 @@ public class Player implements PlayerInterface {
 		// Draw card
 		} else {
 			Rank rankDrawn = drawCard(deck);
-			numOfCardsRetrieved = 1;
 			repeatTurn = false;
-			updateBookCheck(rankDrawn, numOfCardsRetrieved);
+			updateBookCheck(rankDrawn, 1);
 			gameDelay(2);
 			System.out.println(this.getID() + " a requested " + 
 					rankRequested + " from " + playerRequested);

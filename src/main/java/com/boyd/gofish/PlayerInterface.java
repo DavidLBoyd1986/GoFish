@@ -141,10 +141,9 @@ public interface PlayerInterface {
 	 * @param deck - deck of cards used for the game
 	 * @param playerRequested - Player the request was made to
 	 * @param rankRequested - Rank of Card requested from the Player
-	 * @param numOfCardsRetrieved - int for the # of cards retrieved. Will be 1.
 	 */
 	void GoFish(DeckOfCards deck, Player playerRequested,
-						 Rank rankRequested, int numOfCardsRetrieved);
+						 Rank rankRequested);
 	
 	/**
 	 * The Player has the requested Rank, this takes the cards from the player
