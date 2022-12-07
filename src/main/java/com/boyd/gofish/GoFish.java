@@ -205,7 +205,6 @@ public class GoFish implements GoFishInterface {
 		//Get User input
 		Scanner inputStream = new Scanner(System.in);
 		this.setNumOfPlayers(inputStream);
-		inputStream.useDelimiter(System.lineSeparator());
 		// Create User's Player
 		InteractivePlayer user = new InteractivePlayer("You", 1, inputStream);
 		this.addPlayer(user);
@@ -224,44 +223,11 @@ public class GoFish implements GoFishInterface {
 		}
 		//Decide who goes first (will be person left of dealer)
 			// TODO need to decide dealer before I can do this
-		//Start game loop (while isGameOver is False, continue gameloop)
-		while (!gameOver) {
-			//The game loops through the players until gameOver condition is met
-			for (Player player : players) {
-				//If player is out of Cards and Deck is empty they aren't active
-				if (!this.getActivePlayers().contains(player)) {
-					continue;
-				}
-				//Player loop (while repeatTurn is true, continue playerloop)
-				player.setRepeatTurn(true);
-				while (player.repeatTurn) {
-					outputTurnInformation(player);
-					//Take the turn, and update resultList if necessary
-					result = player.takeTurn(this.getActivePlayers(), deck);
-					for (Player activePlayer: this.getActivePlayers()) {
-						if (activePlayer instanceof HardPlayer) {
-							activePlayer.updateResultList(result.get());
-						}
-					}
-					gameOver = isGameOver();
-					//If player and deck are both out of cards: remove player
-					if(deck.getNumCardsInDeck() == 0) {
-						this.checkActivePlayers();
-					}
-					//If player isn't still in the game continue
-					if (!this.getActivePlayers().contains(player)) {
-						player.repeatTurn = false;
-						continue;
-					}
-					System.out.println(" ");
-				}
-			}
-		}
+		playGameLoop(); // Game loops until over
 		outputGameResults(players);
 	}
 	
 	public void createGameTest() {
-		Optional<Result> result;
 		gameOver = false;
 		//Decide order around table
 			// TODO Randomize the Player positions
@@ -285,7 +251,14 @@ public class GoFish implements GoFishInterface {
 		//Decide who goes first (will be person left of dealer)
 			// TODO need to decide dealer before I can do this
 		//Start game loop (while isGameOver is False, continue gameloop)
+		playGameLoop();
+		outputGameResults(players);
+	}
+
+
+	private void playGameLoop() {
 		while (!gameOver) {
+			Optional<Result> result;
 			//The game loops through the players until gameOver condition is met
 			for (Player player : players) {
 				//If player is out of Cards and Deck is empty they aren't active
@@ -317,11 +290,10 @@ public class GoFish implements GoFishInterface {
 				}
 			}
 		}
-		outputGameResults(players);
 	}
-	
+
 	public static void main(String[] args) {
 		GoFish game1 = new GoFish();
-		game1.createGameTest();
+		game1.createGame();
 	}
 }
