@@ -219,11 +219,10 @@ public class Player implements PlayerInterface {
 		return result;
 	}
 	
-	public void outOfCards(DeckOfCards deck, int numOfCardsRetrieved) {
+	public void outOfCards(DeckOfCards deck) {
 		Rank rankDrawn = drawCard(deck);
-		numOfCardsRetrieved = 1;
 		repeatTurn = false;
-		updateBookCheck(rankDrawn, numOfCardsRetrieved);
+		updateBookCheck(rankDrawn, 1);
 		System.out.println(this.getID() + " is out of cards. "
 				+ "They had to Go Fish!!!");
 		System.out.println("You drew a: " + rankDrawn);

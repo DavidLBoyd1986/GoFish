@@ -159,9 +159,8 @@ public interface PlayerInterface {
 	/**
 	 * The player's hand is out of cards, so they must GoFish
 	 * @param deck- deck of cards used for the game
-	 * @param numOfCardsRetrieved - int for the # of cards retrieved.
 	 */
-	void outOfCards(DeckOfCards deck, int numOfCardsRetrieved);
+	void outOfCards(DeckOfCards deck);
 	
 	/**
 	 * Updates the resultList for HardPlayer class

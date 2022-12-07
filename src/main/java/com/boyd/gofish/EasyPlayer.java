@@ -47,7 +47,7 @@ public class EasyPlayer extends Player implements PlayerInterface {
 		Optional<Result> result = Optional.empty();
 		//If hand is empty, then can't request card, have to GoFish!!
 		if (this.getHand().size() == 0) {
-			outOfCards(deck, numOfCardsRetrieved);
+			outOfCards(deck);
 			return result;
 		}
 		//Decide Rank and Player for Requests, Result is used to return these.

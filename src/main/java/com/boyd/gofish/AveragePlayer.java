@@ -133,7 +133,7 @@ public class AveragePlayer extends Player implements PlayerInterface {
 		Optional<Result> result = Optional.empty();
 		//If hand is empty can't request card, try to GoFish!!
 		if (this.getHand().size() == 0) {
-			outOfCards(deck, numOfCardsRetrieved);
+			outOfCards(deck);
 			return result;
 		}
 		//Get the rank and player you will request

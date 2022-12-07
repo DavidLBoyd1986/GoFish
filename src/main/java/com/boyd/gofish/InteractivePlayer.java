@@ -31,7 +31,7 @@ public class InteractivePlayer extends Player implements PlayerInterface {
 		Optional<Result> result = Optional.empty();
 		//If hand is empty can't request card, try to GoFish!!
 		if (this.getHand().size() == 0) {
-			outOfCards(deck, numOfCardsRetrieved);
+			outOfCards(deck);
 			return result;
 		}
 		//Get user input for requests
@@ -90,8 +90,6 @@ public class InteractivePlayer extends Player implements PlayerInterface {
 		for (Card card : this.hand) {
 			rankCheck.add(card.getRank().toString());
 		}
-		String inputDump = inputScanner.nextLine(); // gets rid of initial 'Invalid Rank Selection'
-		
 		//Loop until input is valid
 		while (!inputValid) {
 			String rankRequest = inputScanner.nextLine(); // was next(), but it had issues, have to troubleshoot
