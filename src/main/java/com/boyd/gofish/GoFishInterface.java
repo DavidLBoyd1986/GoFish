@@ -56,8 +56,14 @@ public interface GoFishInterface {
 	 * Set the number of Players for go fish
 	 * @param inputStream - scanner input stream;
 	 */
-	void setNumOfPlayers(Scanner inputStream);
-	
+	void getNumOfPlayers(Scanner inputStream);
+
+	/**
+	 * Set the number of Players for go fish
+	 * @param numPlayerInput - int of the num of players the user inputted;
+	 */
+	void setNumOfPlayers(int numPlayerInput);
+
 	/**
 	 * Gets the num of Players in the game, even one's who have been eliminated because there are no cards left
 	 * 

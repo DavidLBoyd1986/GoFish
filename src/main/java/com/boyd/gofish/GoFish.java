@@ -105,12 +105,13 @@ public class GoFish implements GoFishInterface {
 	}
 
 	@Override
-	public void setNumOfPlayers(Scanner inputStream) {
+	public void getNumOfPlayers(Scanner inputStream) {
+		int numPlayerInput = 0;
 		System.out.println("Enter number of players, must be between 2 - 7: ");
 		boolean inputValid = false;
-		
+
 		while (!inputValid) {
-			numOfPlayers = inputStream.nextInt();
+			numPlayerInput = inputStream.nextInt();
 			if ((numOfPlayers >= 2) && (numOfPlayers <= 7)) {
 				inputValid = true;
 			} else {
@@ -118,6 +119,15 @@ public class GoFish implements GoFishInterface {
 						"Invalid input! Please enter a number between 2-7");
 			}
 		}
+		if (numPlayerInput == 0) {
+			throw new RuntimeException("Failed during user input numOfPlayers");
+		}
+		setNumOfPlayers(numPlayerInput);
+	}
+
+	@Override
+	public void setNumOfPlayers(int numPlayerInput) {
+		numOfPlayers = numPlayerInput;
 	}
 	
 	@Override
@@ -204,7 +214,7 @@ public class GoFish implements GoFishInterface {
 			// TODO Randomize the Player positions
 		//Get User input
 		Scanner inputStream = new Scanner(System.in);
-		this.setNumOfPlayers(inputStream);
+		this.getNumOfPlayers(inputStream);
 		String inputDump = inputStream.nextLine(); // gets rid of initial 'Invalid Rank Selection'
 		// Create User's Player
 		InteractivePlayer user = new InteractivePlayer("You", 1, inputStream);
@@ -233,9 +243,7 @@ public class GoFish implements GoFishInterface {
 		//Decide order around table
 			// TODO Randomize the Player positions
 		//Get User input
-		Scanner inputStream = new Scanner(System.in);
-		this.setNumOfPlayers(inputStream);
-		inputStream.useDelimiter(System.lineSeparator());
+		this.setNumOfPlayers(5);
 		//Create Computer Players
 		for (int i = 1; i <= numOfPlayers; i++) {
 			String playerName = this.getPlayerName("average");
