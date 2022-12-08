@@ -10,8 +10,8 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.Optional;
 
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertFalse;
+//import static org.junit.jupiter.api.Assert.*;
+//import static org.junit.jupiter.api.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.*;
 
 class DeckOfCardsTest {
@@ -384,6 +384,4 @@ class DeckOfCardsTest {
 		Card copyCard = copyDeck.getCardByIndex(15);
 		assert(testCard.equals(copyCard.toString()));		
 	}
-	
-	
 }
