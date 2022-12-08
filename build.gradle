@@ -1,9 +1,16 @@
 apply plugin: 'java'
 
-dependencies {
-    implementation 'org.junit.jupiter:junit-jupiter:5.9.0'
-}
+sourceSets.test.java.srcDirs = [ "src/test" ]
 
 repositories {
     mavenCentral()
+}
+
+dependencies {
+    implementation'org.junit.jupiter:junit-jupiter:5.9.0'
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: 'junit_jupiter:5.9.0'
+}
+
+test {
+    useJUnitPlatform()
 }

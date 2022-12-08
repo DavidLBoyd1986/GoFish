@@ -1,6 +1,6 @@
 package test;
 
-import GoFish.Player;
+import com.boyd.gofish.*;
 import com.boyd.deckofcards.Card;
 import com.boyd.deckofcards.Card.Rank;
 import com.boyd.deckofcards.Card.Suit;
@@ -10,8 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class PlayerTest {
 

@@ -1,7 +1,6 @@
 package test;
 
-import GoFish.GoFish;
-import GoFish.Player;
+import com.boyd.gofish.*;
 import com.boyd.deckofcards.Card;
 import com.boyd.deckofcards.Card.Rank;
 import org.junit.jupiter.api.BeforeEach;

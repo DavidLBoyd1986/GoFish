@@ -1,8 +1,8 @@
 package test;
 
-import GoFish.AveragePlayer;
-import GoFish.GoFish;
-import GoFish.Player;
+import com.boyd.gofish.AveragePlayer;
+import com.boyd.gofish.*;
+import com.boyd.gofish.Player;
 import com.boyd.deckofcards.Card.Rank;
 import com.boyd.deckofcards.Card.Suit;
 import com.boyd.deckofcards.DeckOfCards;
