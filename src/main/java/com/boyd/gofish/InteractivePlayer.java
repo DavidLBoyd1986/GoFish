@@ -13,8 +13,8 @@ public class InteractivePlayer extends Player implements PlayerInterface {
 
 	Scanner inputStream;
 	
-	public InteractivePlayer(String initName, int initPosition, Scanner initInputStream) {
-		super(initName, initPosition);
+	public InteractivePlayer(String initName, int initPosition, int initGameDelay, Scanner initInputStream) {
+		super(initName, initPosition, initGameDelay);
 		name = initName;
 		position = initPosition;
 		hand = new ArrayList<>();

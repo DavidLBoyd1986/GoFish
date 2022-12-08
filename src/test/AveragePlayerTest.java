@@ -59,11 +59,11 @@ public class AveragePlayerTest {
 	public void setup() throws Exception {
 		deck = new DeckOfCards();
 		GoFish game1 = new GoFish();
-		testPlayer = new AveragePlayer("average", 1);
+		testPlayer = new AveragePlayer("average", 1, 0);
 		players = new ArrayList<Player>();
-		testPlayer2 = new AveragePlayer("average", 2);
-		testPlayer3 = new AveragePlayer("average", 3);
-		testPlayer4 = new AveragePlayer("average", 4);
+		testPlayer2 = new AveragePlayer("average", 2, 0);
+		testPlayer3 = new AveragePlayer("average", 3, 0);
+		testPlayer4 = new AveragePlayer("average", 4, 0);
 		players.add(testPlayer);
 		players.add(testPlayer2);
 		players.add(testPlayer3);

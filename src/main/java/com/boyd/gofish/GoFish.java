@@ -25,6 +25,7 @@ public class GoFish implements GoFishInterface {
 	public ArrayList<String> easyPlayerNames;
 	public ArrayList<String> averagePlayerNames;
 	public ArrayList<String> hardPlayerNames;
+	int gameSpeed;
 	
 	
 	
@@ -43,6 +44,7 @@ public class GoFish implements GoFishInterface {
 				"Amanda", "April", "Ashley", "Derek"));
 		hardPlayerNames.addAll(Arrays.asList("Urkel", "Albert", "Isaac", 
 				"Ada", "Emily", "Elizabeth", "Alan"));
+		int gameSpeed = 1;
 	}
 	
 	@Override
@@ -104,15 +106,14 @@ public class GoFish implements GoFishInterface {
 		}
 	}
 
-	@Override
-	public void getNumOfPlayers(Scanner inputStream) {
+	public void getNumOfPlayersInput(Scanner inputStream) {
 		int numPlayerInput = 0;
 		System.out.println("Enter number of players, must be between 2 - 7: ");
 		boolean inputValid = false;
 
 		while (!inputValid) {
 			numPlayerInput = inputStream.nextInt();
-			if ((numOfPlayers >= 2) && (numOfPlayers <= 7)) {
+			if ((numPlayerInput >= 2) && (numPlayerInput <= 7)) {
 				inputValid = true;
 			} else {
 				System.out.println(
@@ -129,7 +130,41 @@ public class GoFish implements GoFishInterface {
 	public void setNumOfPlayers(int numPlayerInput) {
 		numOfPlayers = numPlayerInput;
 	}
-	
+
+	public int getGameDelay(Scanner inputStream) {
+		String gameDelayInput = "";
+		System.out.println("Enter desired game speed - slow, normal, fast (default is normal): ");
+		boolean inputValid = false;
+
+		while (!inputValid) {
+			gameDelayInput = inputStream.nextLine();
+			gameDelayInput = gameDelayInput.toUpperCase();
+			gameDelayInput = gameDelayInput.trim();
+			if ((gameDelayInput.equals("SLOW")) ||
+					(gameDelayInput.equals("NORMAL")) ||
+					(gameDelayInput.equals("FAST"))) {
+				inputValid = true;
+			} else if (gameDelayInput == "") {
+				gameSpeed = 1;
+				return 2;
+			} else {
+				System.out.println(
+						"Invalid input! Please enter: slow, normal, or fast");
+			}
+		}
+		if (gameDelayInput.equals("SLOW")) {
+			gameSpeed = 2;
+			return 3;
+		} else if (gameDelayInput.equals("NORMAL")) {
+			gameSpeed = 1;
+			return 2;
+		} else if (gameDelayInput.equals("FAST")) {
+			gameSpeed = 0;
+			return 1;
+		}
+		return 2;
+	}
+
 	@Override
 	public int getNumOfPlayers() {
 		return numOfPlayers;
@@ -197,7 +232,7 @@ public class GoFish implements GoFishInterface {
 	}
 	
 	public void outputTurnInformation(Player player) {
-		gameDelay(1);
+		gameDelay(gameSpeed);
 		//Regular Output
 		System.out.println(player.ID + " has " 
 				+ player.getHand().size() + " cards.");
@@ -214,15 +249,16 @@ public class GoFish implements GoFishInterface {
 			// TODO Randomize the Player positions
 		//Get User input
 		Scanner inputStream = new Scanner(System.in);
-		this.getNumOfPlayers(inputStream);
+		this.getNumOfPlayersInput(inputStream);
 		String inputDump = inputStream.nextLine(); // gets rid of initial 'Invalid Rank Selection'
+		int playerSpeed = getGameDelay(inputStream);
 		// Create User's Player
-		InteractivePlayer user = new InteractivePlayer("You", 1, inputStream);
+		InteractivePlayer user = new InteractivePlayer("You", 1, playerSpeed, inputStream);
 		this.addPlayer(user);
 		//Create Computer Players
 		for (int i = 2; i <= numOfPlayers; i++) {
 			String playerName = this.getPlayerName("average");
-			this.addPlayer(new AveragePlayer(playerName, i));
+			this.addPlayer(new AveragePlayer(playerName, i, playerSpeed));
 		}		
 		//Decide dealer
 			// TODO dealer will always be Randomized Player 1, need to implement that before this can be done
@@ -242,12 +278,13 @@ public class GoFish implements GoFishInterface {
 		gameOver = false;
 		//Decide order around table
 			// TODO Randomize the Player positions
-		//Get User input
+		//Set number of players
 		this.setNumOfPlayers(5);
+		gameSpeed = 0;
 		//Create Computer Players
 		for (int i = 1; i <= numOfPlayers; i++) {
 			String playerName = this.getPlayerName("average");
-			this.addPlayer(new AveragePlayer(playerName, i));
+			this.addPlayer(new AveragePlayer(playerName, i, 0));
 		}
 		//Decide dealer
 			// TODO dealer will always be Randomized Player 1, need to implement that before this can be done	

@@ -23,6 +23,7 @@ public class Player implements PlayerInterface {
 	public ArrayList<Card> hand;
 	public HashMap<Rank, Card[]> books;
 	public HashMap<Rank, Integer> bookCheck;
+	private int playerSpeed;
 	
 	
 	/**
@@ -31,13 +32,14 @@ public class Player implements PlayerInterface {
 	 * @param initName - a String representing the Player's name
 	 * @param initPosition - an int representing the Player's position at the table
 	 */
-	public Player(String initName, int initPosition) {
+	public Player(String initName, int initPosition, int initGameDelay) {
 		name = initName;
 		position = initPosition;
 		hand = new ArrayList<>();
 		books = new HashMap<>();
 		bookCheck = new HashMap<>();
 		ID = name;
+		playerSpeed = initGameDelay;
 		
 	}
 
@@ -232,10 +234,10 @@ public class Player implements PlayerInterface {
 			 		   Rank rankRequested) {
 		// No cards left in deck
 		if (deck.getNumCardsInDeck() == 0 ) {
-			gameDelay(2);
+			gameDelay(playerSpeed);
 			System.out.println(this.getID() + " requested a " + 
 					rankRequested + " from " + playerRequested);
-			gameDelay(2);
+			gameDelay(playerSpeed);
 			System.out.println(playerRequested.getID() +
 					" didn't have that card, and there are"
 					+ " no cards left in the deck to draw!!!");
@@ -245,10 +247,10 @@ public class Player implements PlayerInterface {
 			Rank rankDrawn = drawCard(deck);
 			repeatTurn = false;
 			updateBookCheck(rankDrawn, 1);
-			gameDelay(2);
+			gameDelay(playerSpeed);
 			System.out.println(this.getID() + " a requested " + 
 					rankRequested + " from " + playerRequested);
-			gameDelay(2);
+			gameDelay(playerSpeed);
 			System.out.println(playerRequested.getID() +
 					" didn't have that card. Go Fish!!!");
 		}
@@ -265,10 +267,10 @@ public class Player implements PlayerInterface {
 		}
 		updateBookCheck(rankRequested, numOfCardsRetrieved);
 		this.repeatTurn = true;
-		gameDelay(2);
+		gameDelay(playerSpeed);
 		System.out.println(this.getID() + " requested a " + rankRequested
 				+ " from " + playerRequested);
-		gameDelay(2);
+		gameDelay(playerSpeed);
 		System.out.println(this.getID() + " received "
 				+ numOfCardsRetrieved + " cards from " + playerRequested);
 	}

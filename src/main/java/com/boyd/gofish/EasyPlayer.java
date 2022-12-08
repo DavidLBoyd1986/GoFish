@@ -11,8 +11,8 @@ import java.util.Random;
 
 public class EasyPlayer extends Player implements PlayerInterface {
 
-	public EasyPlayer(String initName, int initPosition) {
-		super(initName, initPosition);
+	public EasyPlayer(String initName, int initPosition, int initGameDelay) {
+		super(initName, initPosition, initGameDelay);
 		name = initName;
 		position = initPosition;
 		hand = new ArrayList<>();

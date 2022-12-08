@@ -10,8 +10,8 @@ public class HardPlayer extends Player implements PlayerInterface {
 
 	ArrayList<Result> resultList;
 	
-	public HardPlayer(String initName, int initPosition) {
-		super(initName, initPosition);
+	public HardPlayer(String initName, int initPosition, int initGameDelay) {
+		super(initName, initPosition, initGameDelay);
 		name = initName;
 		position = initPosition;
 		hand = new ArrayList<>();
