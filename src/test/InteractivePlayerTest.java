@@ -63,7 +63,7 @@ public class InteractivePlayerTest {
 	public void setup() throws Exception {
 		deck = new DeckOfCards();
 		Scanner inputStream = new Scanner(System.in);
-		testPlayer = new InteractivePlayer("TestPlayer", 1, inputStream);
+		testPlayer = new InteractivePlayer("TestPlayer", 1, 0, inputStream);
 		hand = new ArrayList<Card>();
 		bookCheck = new HashMap<Rank, Integer>();
 		testPlayer.hand = hand;
@@ -181,9 +181,9 @@ public class InteractivePlayerTest {
 	
 	@Test //39
 	void testGetPlayerSelectionValidUpperCase() {
-		Player testPlayer2 = new Player("easy", 2);
-		Player testPlayer3 = new Player("easy", 3);
-		Player testPlayer4 = new Player("easy", 4);
+		Player testPlayer2 = new Player("easy", 2, 0);
+		Player testPlayer3 = new Player("easy", 3, 0);
+		Player testPlayer4 = new Player("easy", 4, 0);
 		ArrayList<Player> players = new ArrayList<Player>();
 		players.add(testPlayer2);
 		players.add(testPlayer3);
@@ -203,9 +203,9 @@ public class InteractivePlayerTest {
 	
 	@Test //40
 	void testGetPlayerSelectionValidLowerCase() {
-		Player testPlayer2 = new Player("easy", 2);
-		Player testPlayer3 = new Player("easy", 3);
-		Player testPlayer4 = new Player("easy", 4);
+		Player testPlayer2 = new Player("easy", 2, 0);
+		Player testPlayer3 = new Player("easy", 3, 0);
+		Player testPlayer4 = new Player("easy", 4, 0);
 		ArrayList<Player> players = new ArrayList<Player>();
 		players.add(testPlayer2);
 		players.add(testPlayer3);
@@ -224,9 +224,9 @@ public class InteractivePlayerTest {
 	
 	@Test //41
 	void testGetPlayerSelectionValidMixedCase() {
-		Player testPlayer2 = new Player("Test2", 2);
-		Player testPlayer3 = new Player("Test3", 3);
-		Player testPlayer4 = new Player("Test4", 4);
+		Player testPlayer2 = new Player("Test2", 2, 0);
+		Player testPlayer3 = new Player("Test3", 3, 0);
+		Player testPlayer4 = new Player("Test4", 4, 0);
 		ArrayList<Player> players = new ArrayList<Player>();
 		players.add(testPlayer2);
 		players.add(testPlayer3);
@@ -245,9 +245,9 @@ public class InteractivePlayerTest {
 	
 	@Test //42
 	void testGetPlayerSelectionInvalidEmpty() {
-		Player testPlayer2 = new Player("Test2", 2);
-		Player testPlayer3 = new Player("Test3", 3);
-		Player testPlayer4 = new Player("Test4", 4);
+		Player testPlayer2 = new Player("Test2", 2, 0);
+		Player testPlayer3 = new Player("Test3", 3, 0);
+		Player testPlayer4 = new Player("Test4", 4, 0);
 		ArrayList<Player> players = new ArrayList<Player>();
 		players.add(testPlayer2);
 		players.add(testPlayer3);
@@ -267,9 +267,9 @@ public class InteractivePlayerTest {
 	
 	@Test //43
 	void testGetPlayerSelectionInvalidString() {
-		Player testPlayer2 = new Player("Test2", 2);
-		Player testPlayer3 = new Player("Test3", 3);
-		Player testPlayer4 = new Player("Test4", 4);
+		Player testPlayer2 = new Player("Test2", 2, 0);
+		Player testPlayer3 = new Player("Test3", 3, 0);
+		Player testPlayer4 = new Player("Test4", 4, 0);
 		ArrayList<Player> players = new ArrayList<Player>();
 		players.add(testPlayer2);
 		players.add(testPlayer3);
@@ -289,9 +289,9 @@ public class InteractivePlayerTest {
 	
 	@Test //44
 	void testGetPlayerSelectionInvalidWhiteSpace() {
-		Player testPlayer2 = new Player("Test2", 2);
-		Player testPlayer3 = new Player("Test3", 3);
-		Player testPlayer4 = new Player("Test4", 4);
+		Player testPlayer2 = new Player("Test2", 2, 0);
+		Player testPlayer3 = new Player("Test3", 3, 0);
+		Player testPlayer4 = new Player("Test4", 4, 0);
 		ArrayList<Player> players = new ArrayList<Player>();
 		players.add(testPlayer2);
 		players.add(testPlayer3);
@@ -311,9 +311,9 @@ public class InteractivePlayerTest {
 	
 	@Test //45
 	void testGetPlayerSelectionInvalidCharacters() {
-		Player testPlayer2 = new Player("Test2", 2);
-		Player testPlayer3 = new Player("Test3", 3);
-		Player testPlayer4 = new Player("Test4", 4);
+		Player testPlayer2 = new Player("Test2", 2, 0);
+		Player testPlayer3 = new Player("Test3", 3, 0);
+		Player testPlayer4 = new Player("Test4", 4, 0);
 		ArrayList<Player> players = new ArrayList<Player>();
 		players.add(testPlayer2);
 		players.add(testPlayer3);
@@ -333,9 +333,9 @@ public class InteractivePlayerTest {
 	
 	@Test //46
 	void testGetPlayerSelectionInvalidMultiplePeople() {
-		Player testPlayer2 = new Player("Test2", 2);
-		Player testPlayer3 = new Player("Test3", 3);
-		Player testPlayer4 = new Player("Test4", 4);
+		Player testPlayer2 = new Player("Test2", 2, 0);
+		Player testPlayer3 = new Player("Test3", 3, 0);
+		Player testPlayer4 = new Player("Test4", 4, 0);
 		ArrayList<Player> players = new ArrayList<Player>();
 		players.add(testPlayer2);
 		players.add(testPlayer3);
@@ -356,9 +356,9 @@ public class InteractivePlayerTest {
 	
 	@Test //47
 	void testGetPlayerSelectionInvalidManyMistakes() {
-		Player testPlayer2 = new Player("Test2", 2);
-		Player testPlayer3 = new Player("Test3", 3);
-		Player testPlayer4 = new Player("Test4", 4);
+		Player testPlayer2 = new Player("Test2", 2, 0);
+		Player testPlayer3 = new Player("Test3", 3, 0);
+		Player testPlayer4 = new Player("Test4", 4, 0);
 		ArrayList<Player> players = new ArrayList<Player>();
 		players.add(testPlayer2);
 		players.add(testPlayer3);

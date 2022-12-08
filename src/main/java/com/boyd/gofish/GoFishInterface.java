@@ -56,7 +56,7 @@ public interface GoFishInterface {
 	 * Set the number of Players for go fish
 	 * @param inputStream - scanner input stream;
 	 */
-	void getNumOfPlayers(Scanner inputStream);
+	void getNumOfPlayersInput(Scanner inputStream);
 
 	/**
 	 * Set the number of Players for go fish

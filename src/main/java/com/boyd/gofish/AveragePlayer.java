@@ -13,8 +13,8 @@ public class AveragePlayer extends Player implements PlayerInterface {
 
 	private HashMap<Rank, ArrayList<Player>> requestTracker;
 	
-	public AveragePlayer(String initName, int initPosition) {
-		super(initName, initPosition);
+	public AveragePlayer(String initName, int initPosition, int initGameDelay) {
+		super(initName, initPosition, initGameDelay);
 		name = initName;
 		position = initPosition;
 		hand = new ArrayList<>();

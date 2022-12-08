@@ -40,6 +40,8 @@ public class GoFishTest {
      * Test 8 - testGetWinnerTie() - returns True if getWinner() accurately determines the winner in case of a tie
      * 
      * Test 9 - testCreateGameTest() - returns True if createGameTest runs smoothly and ends with a clear winner
+     *
+     * Test 10 - testGetGameDelay() - returns True if getGameDelay() only accepts valid input and set variable correctly
      */
 	
 	Player testPlayer1;
@@ -53,10 +55,10 @@ public class GoFishTest {
 	
 	@BeforeEach
 	public void setup() throws Exception {
-		testPlayer1 = new Player("easy", 1);
-		testPlayer2 = new Player("easy", 2);
-		testPlayer3 = new Player("easy", 3);
-		testPlayer4 = new Player("easy", 4);
+		testPlayer1 = new Player("easy", 1, 0);
+		testPlayer2 = new Player("easy", 2, 0);
+		testPlayer3 = new Player("easy", 3, 0);
+		testPlayer4 = new Player("easy", 4, 0);
 		testPlayers = new ArrayList<Player>();
 		testPlayers.add(testPlayer1);
 		testPlayers.add(testPlayer2);

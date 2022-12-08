@@ -91,7 +91,7 @@ public class PlayerTest {
 	@BeforeEach
 	public void setup() throws Exception {
 		deck = new DeckOfCards();
-		testPlayer = new Player("easy", 1);
+		testPlayer = new Player("easy", 1, 0);
 		hand = new ArrayList<Card>();
 		bookCheck = new HashMap<Rank, Integer>();
 		testPlayer.hand = hand;
@@ -270,7 +270,7 @@ public class PlayerTest {
 	
 	@Test //17
 	void testRequestCards() {
-		Player testPlayer2 = new Player("test", 2);
+		Player testPlayer2 = new Player("test", 2, 0);
 		testPlayer2.hand.add(deck.getExactCard(Suit.HEART, Rank.KING).get());
 		testPlayer2.hand.add(deck.getExactCard(Suit.CLUB, Rank.ACE).get());
 		testPlayer2.hand.add(deck.getExactCard(Suit.HEART, Rank.ACE).get());
@@ -300,7 +300,7 @@ public class PlayerTest {
 	
 	@Test //20
 	void testGetCardsOneCard() {
-		Player testPlayer2 = new Player("test2", 2);
+		Player testPlayer2 = new Player("test2", 2, 0);
 		testPlayer2.hand.add(deck.getExactCard(Suit.CLUB, Rank.ACE).get());
 		testPlayer2.bookCheck.put(Rank.ACE, 1);
 		Card[] retrievedCards = testPlayer.getCards(Rank.ACE, testPlayer2);
@@ -317,7 +317,7 @@ public class PlayerTest {
 	
 	@Test //21
 	void testGetCardsTwoCards() {
-		Player testPlayer2 = new Player("test2", 2);
+		Player testPlayer2 = new Player("test2", 2, 0);
 		testPlayer2.hand.add(deck.getExactCard(Suit.CLUB, Rank.ACE).get());
 		testPlayer2.hand.add(deck.getExactCard(Suit.SPADE, Rank.ACE).get());
 		testPlayer2.bookCheck.put(Rank.ACE, 2);
@@ -335,7 +335,7 @@ public class PlayerTest {
 	
 	@Test //22
 	void testGetCardsThreeCards() {
-		Player testPlayer2 = new Player("test2", 2);
+		Player testPlayer2 = new Player("test2", 2, 0);
 		testPlayer2.hand.add(deck.getExactCard(Suit.CLUB, Rank.ACE).get());
 		testPlayer2.hand.add(deck.getExactCard(Suit.SPADE, Rank.ACE).get());
 		testPlayer2.hand.add(deck.getExactCard(Suit.DIAMOND, Rank.ACE).get());
