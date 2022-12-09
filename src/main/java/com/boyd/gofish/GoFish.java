@@ -95,13 +95,17 @@ public class GoFish implements GoFishInterface {
 	@Override
 	public void checkActivePlayers() {
 		//Removes player from activePlayers if they are out of cards
-		for (Iterator<Player> iterator = this.getActivePlayers().iterator(); 
+		for (Iterator<Player> iterator = this.getActivePlayers().iterator();
 				iterator.hasNext();) {
 			Player player = iterator.next();
 			if(player.getHand().size() == 0) {
 				iterator.remove();
-				System.out.println("\n" + player.getID() + 
-						" is no longer active in the game.\n");
+				if (player instanceof InteractivePlayer) {
+					System.out.println("\n" + "You are no longer active in the game.\n");
+				} else {
+					System.out.println("\n" + player.getID() +
+							" is no longer active in the game.\n");
+				}
 			}
 		}
 	}
@@ -144,7 +148,7 @@ public class GoFish implements GoFishInterface {
 					(gameDelayInput.equals("NORMAL")) ||
 					(gameDelayInput.equals("FAST"))) {
 				inputValid = true;
-			} else if (gameDelayInput == "") {
+			} else if (gameDelayInput.equals("")) {
 				gameSpeed = 1;
 				return 2;
 			} else {
@@ -223,8 +227,13 @@ public class GoFish implements GoFishInterface {
 		String winner = getWinner();	
 		System.out.println("Final Results:");
 		for (Player player : this.getPlayers()) {
-			System.out.println(player.getID() + "'s Books: " +
-					player.getBooks());
+			if (player instanceof InteractivePlayer) {
+				System.out.println("Your Books: " +
+						player.getBooks());
+			} else {
+				System.out.println(player.getID() + "'s Books: " +
+						player.getBooks());
+			}
 		}
 		System.out.println("\nThe winner is: " + winner);
 		System.out.println("**The player in the later position "
@@ -233,12 +242,33 @@ public class GoFish implements GoFishInterface {
 	
 	public void outputTurnInformation(Player player) {
 		gameDelay(gameSpeed);
-		//Regular Output
-		System.out.println(player.ID + " has " 
-				+ player.getHand().size() + " cards.");
-		System.out.println(player.ID + "'s Books: " +
-						   player.getBooks());
-		System.out.println(this.getActivePlayers());
+		if (player instanceof InteractivePlayer) {
+			System.out.println("You have "
+					+ player.getHand().size() + " cards.");
+			System.out.println("Your Books: " +
+					player.getBooks());
+		} else {
+			System.out.println(player.ID + " has "
+					+ player.getHand().size() + " cards.");
+			System.out.println(player.ID + "'s Books: " +
+					player.getBooks());
+		}
+		System.out.println("The players have the following amount of cards in their hands");
+		StringBuilder playerCardAmount = new StringBuilder();
+		playerCardAmount.append("[");
+		int playerCount = 0;
+		for (Player p : this.activePlayers) {
+			playerCount++;
+			if (!p.equals(player)) {
+				playerCardAmount.append(p.name + ":" + p.hand.size());
+				if (playerCount < activePlayers.size()) { // on last player don't add comma
+					playerCardAmount.append(", ");
+					//TODO sometimes the trailing comma appears, FIX IT
+				}
+			}
+		}
+		playerCardAmount.append("]");
+		System.out.println(playerCardAmount);
 	}
 	
 	public void createGame() {
