@@ -127,6 +127,7 @@ public class Player implements PlayerInterface {
 	public Card[] getCards(Rank rank, Player player) {
 		Card[] requestedCards = new Card[4];
 		int count = 0;
+		//TODO this removes object from array being iterated over: FIX IT!!!
 		for (Iterator<Card> iterator = player.getHand().iterator(); iterator.hasNext();) {
 			Card card = iterator.next();
 			if (card.getRank().equals(rank)) {
@@ -196,7 +197,7 @@ public class Player implements PlayerInterface {
 	public void createBook(Rank rank) {
 		Card[] book = new Card[4];
 		int count = 0;
-
+		// TODO I'm removing an object from a list while looping over it. MUST FIX
 		for (Iterator<Card> iterator = hand.iterator(); iterator.hasNext();) {
 			Card card = iterator.next();
 			if (card.getRank().equals(rank)) {
@@ -248,11 +249,14 @@ public class Player implements PlayerInterface {
 			repeatTurn = false;
 			updateBookCheck(rankDrawn, 1);
 			gameDelay(playerSpeed);
-			System.out.println(this.getID() + " a requested " + 
+			System.out.println(this.getID() + " requested a " +
 					rankRequested + " from " + playerRequested);
 			gameDelay(playerSpeed);
 			System.out.println(playerRequested.getID() +
 					" didn't have that card. Go Fish!!!");
+			if (this instanceof InteractivePlayer) {
+				System.out.println("You drew an " + rankDrawn.toString());
+			}
 		}
 	}
 	
